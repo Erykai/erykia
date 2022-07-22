@@ -1,0 +1,33 @@
+{
+  "name": "erykai/erykia",
+  "description": "Artificial intelligence for creating websites, systems in php with restfull api",
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "alexdeovidal",
+      "email": "webav.com.br@gmail.com"
+    },
+    {
+      "name": "Leonardo Coutinho",
+      "email": "leonardo.maier3450@gmail.com"
+    }
+  ],
+  "config": {
+    "vendor-dir": "vendor"
+  },
+  "autoload": {
+    "psr-4": {
+      "Source\\": "source/"
+    },
+    "files": [
+      "config/_config.php"
+    ]
+  },
+  "require": {
+    "erykai/routes": "v1.0.0"
+  },
+  "require-dev": {
+    "alexdeovidal/docker-dev": "v1.1.1"
+  }
+}

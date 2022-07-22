@@ -1,0 +1,3 @@
+<?php
+
+const KEY_JWT = '8hNUH87T6VBUAYBiba@!@#CDCDFJklPPPSd2009A*&ˆ';
