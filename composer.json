@@ -25,7 +25,8 @@
     ]
   },
   "require": {
-    "erykai/routes": "v1.0.0"
+    "erykai/routes": "v1.0.0",
+    "erykai/database": "v1.0.1"
   },
   "require-dev": {
     "alexdeovidal/docker-dev": "v1.1.1"
