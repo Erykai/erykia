@@ -2,12 +2,12 @@
 
 namespace Source\Controller\Web;
 
-use Erykai\Routes\Middleware;
 use Source\Core\Controller;
-use Source\Core\Session;
 
 class User extends Controller
 {
+    protected object $user;
+
     public function store($query = null): bool
     {
         $this->user = $this->getData();
@@ -15,23 +15,17 @@ class User extends Controller
             echo $this->getError();
             return false;
         }
-        $this->request($query);
-        if (!$this->validateEmail()) {
-            echo $this->getError();
-            return false;
+
+        if($this->setQuery($query)){
+            $this->user->query = $this->getQuery();
         }
 
-        if ((new \Source\Model\User())->find('id', 'email=:email', ['email' => $this->user->email])->fetch()) {
-            $this->setError(t("this email already exists"));
-            echo $this->getError();
-            return false;
+        if($this->setFile()){
+            $this->upload('user','image');
         }
-
+        
         $user = new \Source\Model\User();
         foreach ($this->user as $key => $value) {
-            if ($key === 'password') {
-                $value = password_hash($value, PASSWORD_BCRYPT, ['cost' => 12]);
-            }
             $user->$key = $value;
         }
         if (!$user->save()) {

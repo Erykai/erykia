@@ -3,13 +3,14 @@
 namespace Source\Core;
 
 
-use Source\Model\User;
+use Composer\Package\Loader\ValidatingArrayLoader;
 
 class Controller
 {
     use Auth;
-    protected object $user;
+
     private object $data;
+    private string $upload;
     private ?object $query = null;
     private ?object $file = null;
     private ?string $error = null;
@@ -51,12 +52,15 @@ class Controller
 
     /**
      * @param array $data
+     * @return bool
      */
-    protected function setQuery(array $data): void
+    protected function setQuery(array $data): bool
     {
         if ($data['query']) {
             $this->query = (object)filter_var_array($data['query'], FILTER_DEFAULT);
+            return true;
         }
+        return false;
     }
 
     /**
@@ -91,24 +95,23 @@ class Controller
         return false;
     }
 
-    protected function request(?array $query): void
+    protected function upload(string $attribute, string $type)
     {
-        $this->setQuery($query);
-        if ($this->setFile()) {
-            $upload = new Upload();
-            $files = $this->getFile();
-            $count = $files->count;
-            unset($files->count);
-            if ($count > 1) {
-                foreach ($files as $file) {
-                    $input = $file->input;
-                    $this->user->$input = $upload->image($file);
-                }
-            } else {
-                $input = $files->input;
-                $this->user->$input = $upload->image($files);
-            }
+        $upload = new Upload();
+        $files = $this->getFile();
+        $count = $files->count;
+        unset($files->count);
 
+        if ($count > 1) {
+            foreach ($files as $file) {
+                $name = Helper::slug(pathinfo($file->name, PATHINFO_FILENAME));
+                $input = $file->input;
+                $this->$attribute->$input = $upload->$type($file, $input . '-' . $name);
+            }
+        } else {
+            $name = Helper::slug(pathinfo($files->name, PATHINFO_FILENAME));
+            $input = $files->input;
+            $this->$attribute->$input = $upload->$type($files, $input . '-' . $name);
         }
     }
 

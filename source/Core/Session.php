@@ -6,7 +6,7 @@ use stdClass;
 
 class Session
 {
-    protected ?object $session;
+    protected ?object $session = null;
     public function __construct()
     {
         $this->session = new stdClass();

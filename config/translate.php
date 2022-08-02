@@ -4,8 +4,8 @@ $str = [];
 if(!empty($_SERVER['HTTP_ACCEPT_LANGUAGE'])){
     [$lang] = explode(",", $_SERVER['HTTP_ACCEPT_LANGUAGE']);
 }
-$configPath = dirname(__DIR__, 1) . '/translate';
-require "$configPath/$lang.php";
+$configPathTranslate = dirname(__DIR__, 1) . '/translate';
+require "$configPathTranslate/$lang.php";
 
 $str = explode("&&&", $str);
 function t($translate)

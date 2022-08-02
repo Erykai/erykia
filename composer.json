@@ -26,7 +26,8 @@
   },
   "require": {
     "erykai/routes": "v1.0.0",
-    "erykai/database": "v1.0.1"
+    "erykai/database": "v1.0.2",
+    "ext-fileinfo": "*"
   },
   "require-dev": {
     "alexdeovidal/docker-dev": "v1.1.1"

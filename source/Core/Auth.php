@@ -3,6 +3,7 @@
 namespace Source\Core;
 
 use Erykai\Routes\Middleware;
+use Source\Model\User;
 
 trait Auth
 {
@@ -19,7 +20,7 @@ trait Auth
             return false;
         }
 
-        $login = (new \Source\Model\User())
+        $login = (new User())
             ->find('id, name, email, password', 'email=:email',['email'=>$this->user->email])
             ->fetch();
 
@@ -49,7 +50,7 @@ trait Auth
         return true;
     }
 
-    protected function validateLogin()
+    protected function validateLogin(): bool
     {
         if (!isset($this->session->get()->login)) {
             $this->setError(t("protected area login"));
