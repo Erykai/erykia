@@ -11,6 +11,7 @@ $route->get('/','Web@home');
 $route->namespace(Web::class);
 //users
 $route->default('/usuario/cadastro', 'User', [false,false,true,true]);
+$route->get('/usuario/cadastro/{id}/{slug}', 'User@read');
 $route->default('/blog/categoria', 'PostCategory', [false,true,true,true]);
 $route->default('/blog/post', 'Post', [false,true,true,true]);
 
