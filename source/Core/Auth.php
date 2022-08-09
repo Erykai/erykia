@@ -5,16 +5,20 @@ namespace Source\Core;
 use Erykai\Routes\Middleware;
 use Source\Model\User;
 
+/**
+ * @property Request $request
+ */
 trait Auth
 {
     protected object $login;
     public function login(): bool
     {
-        $this->user = $this->getData();
-        if (count(get_object_vars($this->user)) === 0) {
-            echo $this->getError();
+        $this->request = new Request();
+        if($this->request->error()){
+            echo $this->request->error();
             return false;
         }
+        $this->user = $this->request->data();
         if (!$this->validateEmail()) {
             echo $this->getError();
             return false;

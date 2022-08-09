@@ -8,13 +8,16 @@ use Source\Core\Upload;
 
 class User extends Controller
 {
-    protected object $user;
     protected object $query;
-    protected object $request;
+    protected Request $request;
 
     public function store(?array $query = null): bool
     {
         $this->request = new Request($query);
+        if($this->request->error()){
+            echo $this->request->error();
+            return false;
+        }
         //get all data sent via POST or JSON and convert in object
         //example $this->user->name = tal
         $this->user = $this->request->data();
@@ -70,7 +73,7 @@ class User extends Controller
     }
 
     public function edit($query = null)
-    {
+    {/*
         if (!$this->validateLogin()) {
             echo $this->getError();
             return false;
@@ -106,10 +109,10 @@ class User extends Controller
         }
       $this->session->destroy('login');
       $this->session->set('login', $user);
-    }
+    */}
 
     public function destroy(array $data)
-    {
+    {/*
         if(!isset($data[0])){
             $this->setError(t("you don't have this permission"));
             echo $this->getError();
@@ -137,5 +140,5 @@ class User extends Controller
         }
 
         $users->delete($user->id);
-    }
+   */ }
 }
