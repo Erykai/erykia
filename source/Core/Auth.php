@@ -11,7 +11,7 @@ use Source\Model\User;
 trait Auth
 {
     protected object $user;
-    protected object $login;
+    protected ?object $login;
     protected function auth(): string|bool
     {
         $this->request = new Request();
@@ -20,25 +20,25 @@ trait Auth
             return false;
         }
 
-        $login = (new User())
+        $this->login = (new User())
             ->find('id, name, email, password', 'email=:email',['email'=>$this->user->email])
             ->fetch();
 
-        if (!isset($login)) {
+        if (!isset($this->login )) {
             $this->setError(t("login invalid"));
             return false;
         }
 
-        if(!password_verify($this->user->password, $login->password)){
+        if(!password_verify($this->user->password, $this->login ->password)){
             $this->setError(t("password invalid"));
             return false;
         }
-        unset($login->password);
+        unset($this->login ->password);
 
         $middleware = new Middleware();
 
-        $this->session->set('login', $login);
-        return $middleware->create($login->email);
+        $this->session->set('login', $this->login );
+        return $middleware->create($this->login ->email);
     }
 
     protected function destroy()
