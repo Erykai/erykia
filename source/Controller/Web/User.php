@@ -2,14 +2,15 @@
 
 namespace Source\Controller\Web;
 
+use Source\Core\Auth;
 use Source\Core\Controller;
 use Source\Core\Request;
 use Source\Core\Upload;
 
 class User extends Controller
 {
+    use Auth;
     protected object $query;
-    protected Request $request;
 
     public function store(?array $query = null): bool
     {
@@ -20,24 +21,24 @@ class User extends Controller
         }
         //get all data sent via POST or JSON and convert in object
         //example $this->user->name = tal
-        $this->user = $this->request->data();
+        $this->user = $this->request->reponse()->data;
         //get all data sent via GET query ?name=tal&order=ASC and convert to object
         //example $this->user->query->name = tal
-        if($this->request->query()){
-            $this->query = $this->request->query();
+        if($this->request->reponse()->query){
+            $this->query = $this->request->reponse()->query;
         }
         //get FILES validate the mimetype
-        $upload = new Upload();
-        if ($upload->getError()) {
-            echo $upload->getError();
+        $this->upload = new Upload();
+        if ($this->upload->error()) {
+            echo $this->upload->error();
             return false;
         }
         //start a new object
         $user = new \Source\Model\User();
         $file = false;
         //check if there was upload
-        if($upload->save()){
-            foreach ($upload->getResponse() as $key => $value) {
+        if($this->upload->save()){
+            foreach ($this->upload->response() as $key => $value) {
                 //add FILES key as object
                 //example $user->cover = 'storage/image/2022/08/10/image.jpg'
                 //example $user->profile = 'storage/image/2022/08/10/profile.jpg'
@@ -53,7 +54,7 @@ class User extends Controller
         if (!$user->save()) {
             if($file){
                 //remove uploads if you don't save data
-                $upload->delete();
+                $this->upload->delete();
             }
             echo $user->error();
             return false;
@@ -65,7 +66,7 @@ class User extends Controller
     public function read(?array $query = null)
     {
         $this->request = new Request($query);
-        $id = $this->request->argument()->id;
+        $id = $this->request->reponse()->argument->id;
 
         $users = new \Source\Model\User();
         $user = $users->find("*", "id=:id",["id"=>$id])->fetch(true);
@@ -141,4 +142,5 @@ class User extends Controller
 
         $users->delete($user->id);
    */ }
+
 }

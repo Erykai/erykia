@@ -6,10 +6,10 @@ namespace Source\Core;
 
 class Controller
 {
-    use Auth;
+    protected Request $request;
+    protected Upload $upload;
     protected object $session;
-    protected string $error;
-    protected object $user;
+    protected ?string $error = null;
 
     public function __construct()
     {
@@ -17,9 +17,9 @@ class Controller
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getError(): string
+    protected function getError(): ?string
     {
         return $this->error;
     }
@@ -27,7 +27,7 @@ class Controller
     /**
      * @param string $error
      */
-    public function setError(string $error): void
+    protected function setError(string $error): void
     {
         $this->error = $error;
     }

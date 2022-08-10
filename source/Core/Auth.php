@@ -10,17 +10,13 @@ use Source\Model\User;
  */
 trait Auth
 {
+    protected object $user;
     protected object $login;
-    public function login(): bool
+    protected function auth(): string|bool
     {
         $this->request = new Request();
-        if($this->request->error()){
-            echo $this->request->error();
-            return false;
-        }
-        $this->user = $this->request->data();
+        $this->user = $this->request->reponse()->data;
         if (!$this->validateEmail()) {
-            echo $this->getError();
             return false;
         }
 
@@ -30,13 +26,11 @@ trait Auth
 
         if (!isset($login)) {
             $this->setError(t("login invalid"));
-            echo $this->getError();
             return false;
         }
 
         if(!password_verify($this->user->password, $login->password)){
             $this->setError(t("password invalid"));
-            echo $this->getError();
             return false;
         }
         unset($login->password);
@@ -44,11 +38,10 @@ trait Auth
         $middleware = new Middleware();
 
         $this->session->set('login', $login);
-        echo $middleware->create($login->email);
-        return true;
+        return $middleware->create($login->email);
     }
 
-    public function logout()
+    protected function destroy()
     {
         $this->session->destroy();
         return true;
