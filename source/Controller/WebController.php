@@ -3,7 +3,7 @@
 namespace Source\Controller;
 
 
-class Web
+class WebController
 {
     public function home(): void
     {

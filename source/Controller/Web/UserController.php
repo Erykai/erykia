@@ -6,39 +6,40 @@ use Source\Core\Auth;
 use Source\Core\Controller;
 use Source\Core\Request;
 use Source\Core\Upload;
+use Source\Model\User;
 
-class User extends Controller
+class UserController extends Controller
 {
     use Auth;
-    protected object $query;
+
+    protected ?object $query;
+    protected ?object $argument;
 
     public function store(?array $query = null): bool
     {
         $this->request = new Request($query);
-        if($this->request->error()){
-            echo $this->request->error();
+        if ($this->request->response()->type === "error") {
+            echo t($this->request->response());
             return false;
         }
-        //get all data sent via POST or JSON and convert in object
-        //example $this->user->name = tal
-        $this->user = $this->request->reponse()->data;
-        //get all data sent via GET query ?name=tal&order=ASC and convert to object
-        //example $this->user->query->name = tal
-        if($this->request->reponse()->query){
-            $this->query = $this->request->reponse()->query;
-        }
+        $this->user = $this->request->response()->data->request;
+        $this->query = $this->request->response()->data->query;
+        $this->argument = $this->request->response()->data->argument;
+
         //get FILES validate the mimetype
         $this->upload = new Upload();
-        if ($this->upload->error()) {
-            echo $this->upload->error();
+        if ($this->upload->response()->type === "error") {
+            echo t($this->upload->response());
             return false;
         }
+
+
         //start a new object
-        $user = new \Source\Model\User();
+        $user = new User();
         $file = false;
         //check if there was upload
-        if($this->upload->save()){
-            foreach ($this->upload->response() as $key => $value) {
+        if ($this->upload->save()) {
+            foreach ($this->upload->response()->data as $key => $value) {
                 //add FILES key as object
                 //example $user->cover = 'storage/image/2022/08/10/image.jpg'
                 //example $user->profile = 'storage/image/2022/08/10/profile.jpg'
@@ -52,11 +53,11 @@ class User extends Controller
         }
 
         if (!$user->save()) {
-            if($file){
+            if ($file) {
                 //remove uploads if you don't save data
                 $this->upload->delete();
             }
-            echo $user->error();
+            echo t($user->error());
             return false;
         }
         echo t("registration successful");
@@ -68,8 +69,8 @@ class User extends Controller
         $this->request = new Request($query);
         $id = $this->request->reponse()->argument->id;
 
-        $users = new \Source\Model\User();
-        $user = $users->find("*", "id=:id",["id"=>$id])->fetch(true);
+        $users = new User();
+        $user = $users->find("*", "id=:id", ["id" => $id])->fetch(true);
         var_dump($user);
     }
 
@@ -110,7 +111,8 @@ class User extends Controller
         }
       $this->session->destroy('login');
       $this->session->set('login', $user);
-    */}
+    */
+    }
 
     public function destroy(array $data)
     {/*
@@ -141,6 +143,7 @@ class User extends Controller
         }
 
         $users->delete($user->id);
-   */ }
+   */
+    }
 
 }

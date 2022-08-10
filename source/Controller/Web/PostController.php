@@ -5,7 +5,7 @@ namespace Source\Controller\Web;
 use Source\Core\Controller;
 use Source\Core\Helper;
 
-class Post extends Controller
+class PostController extends Controller
 {
     public function read(): void
     {

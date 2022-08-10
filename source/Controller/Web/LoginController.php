@@ -5,7 +5,7 @@ namespace Source\Controller\Web;
 use Source\Core\Auth;
 use Source\Core\Controller;
 
-class Login extends Controller
+class LoginController extends Controller
 {
     use Auth;
 
