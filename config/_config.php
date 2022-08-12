@@ -1,5 +1,9 @@
 <?php
 
+use Source\Core\Env;
+
+Env::start();
+
 /**
  * DATE
  */

@@ -24,7 +24,13 @@ class User extends Model
         if(isset($this->email)){
             if(!filter_var($this->email, FILTER_VALIDATE_EMAIL))
             {
-                $this->error = 'email invalid';
+                $dynamic = $this->email;
+                $this->setResponse(
+                    400,
+                    "error",
+                    "the email format $dynamic is invalid",
+                    dynamic: $dynamic
+                );
                 return false;
             }
             return true;
@@ -39,12 +45,25 @@ class User extends Model
             if($user)
             {
                 if(!isset($this->id)){
-                    $this->error = 'the email already exists';
+                    $dynamic = $this->email;
+                    $this->setResponse(
+                        400,
+                        "error",
+                        "the email $dynamic already exists",
+                        dynamic: $dynamic
+                    );
                     return false;
                 }
                 if($this->id !== $user->id)
                 {
-                    $this->error = 'the email already exists in another account';
+                    $dynamic = $this->email;
+                    $this->setResponse(
+                        400,
+                        "error",
+                        "the email $dynamic already exists in another account",
+                        dynamic: $dynamic
+                    );
+
                     return false;
                 }
                 return true;

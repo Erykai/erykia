@@ -25,10 +25,11 @@
     ]
   },
   "require": {
-    "erykai/routes": "v1.0.0",
-    "erykai/database": "v1.0.2",
+    "erykai/routes": "v1.1.0",
+    "erykai/database": "v1.1.0",
     "erykai/upload": "v1.2.2",
     "erykai/request": "v1.2.0",
+    "erykai/response": "v1.0.0",
     "ext-fileinfo": "*"
   },
   "require-dev": {

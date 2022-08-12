@@ -5,6 +5,7 @@ namespace Source\Controller\Web;
 use Source\Core\Auth;
 use Source\Core\Controller;
 use Source\Core\Request;
+use Source\Core\Response;
 use Source\Core\Upload;
 use Source\Model\User;
 
@@ -15,37 +16,41 @@ class UserController extends Controller
     protected ?object $query;
     protected ?object $argument;
 
-    public function store(?array $query = null): bool
+    public function store($query, string $response)
     {
         $this->request = new Request($query);
+        $this->response = new Response();
         if ($this->request->response()->type === "error") {
-            echo t($this->request->response());
+            if($response === 'json'){
+               echo $this->response->data($this->request->response())->lang()->$response();
+            }else{
+                var_dump($this->response->data($this->request->response())->lang()->$response());
+            }
             return false;
         }
         $this->user = $this->request->response()->data->request;
         $this->query = $this->request->response()->data->query;
         $this->argument = $this->request->response()->data->argument;
 
-        //get FILES validate the mimetype
         $this->upload = new Upload();
         if ($this->upload->response()->type === "error") {
-            echo t($this->upload->response());
+            if($response === 'json'){
+                echo $this->response->data($this->upload->response())->lang()->$response();
+            }else{
+                var_dump($this->response->data($this->upload->response())->lang()->$response());
+            }
             return false;
         }
 
-
-        //start a new object
         $user = new User();
-        $file = false;
-        //check if there was upload
+        $existUpload = false;
         if ($this->upload->save()) {
             foreach ($this->upload->response()->data as $key => $value) {
                 //add FILES key as object
                 //example $user->cover = 'storage/image/2022/08/10/image.jpg'
                 //example $user->profile = 'storage/image/2022/08/10/profile.jpg'
                 $user->$key = $value;
-                //activate to check if there was an upload, to remove the files if the data is not saved
-                $file = true;
+                $existUpload = true;
             }
         }
         foreach ($this->user as $key => $value) {
@@ -53,25 +58,40 @@ class UserController extends Controller
         }
 
         if (!$user->save()) {
-            if ($file) {
-                //remove uploads if you don't save data
+            if ($existUpload) {
                 $this->upload->delete();
             }
-            echo t($user->error());
+            if($response === 'json'){
+                echo $this->response->data($user->response())->lang()->$response();
+            }else{
+                var_dump($this->response->data($user->response())->lang()->$response());
+            }
             return false;
         }
-        echo t("registration successful");
+        if($response === 'json'){
+            echo $this->response->data($user->response())->lang()->$response();
+        }else{
+            var_dump($this->response->data($user->response())->lang()->$response());
+        }
         return true;
     }
-
-    public function read(?array $query = null)
+    public function read($query, string $response)
     {
+
         $this->request = new Request($query);
-        $id = $this->request->reponse()->argument->id;
+        $this->response = new Response();
+
+        $this->user = $this->request->response()->data->request;
+        $this->query = $this->request->response()->data->query;
+        $this->argument = $this->request->response()->data->argument;
 
         $users = new User();
-        $user = $users->find("*", "id=:id", ["id" => $id])->fetch(true);
-        var_dump($user);
+        //$user = $users->find("*", "id=:id", ["id" => $this->argument->id])->fetch(true);
+        $user = $users->find()->fetch(true);
+
+        echo $this->response->data($user)->$response();
+
+
     }
 
     public function edit($query = null)
@@ -145,5 +165,4 @@ class UserController extends Controller
         $users->delete($user->id);
    */
     }
-
 }

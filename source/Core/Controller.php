@@ -7,6 +7,7 @@ namespace Source\Core;
 class Controller
 {
     protected Request $request;
+    protected Response $response;
     protected Upload $upload;
     protected object $session;
     protected ?string $error = null;
