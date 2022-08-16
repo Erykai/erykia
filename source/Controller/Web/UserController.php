@@ -8,6 +8,7 @@ use Source\Core\Request;
 use Source\Core\Response;
 use Source\Core\Upload;
 use Source\Model\User;
+use stdClass;
 
 class UserController extends Controller
 {
@@ -21,9 +22,9 @@ class UserController extends Controller
         $this->request = new Request($query);
         $this->response = new Response();
         if ($this->request->response()->type === "error") {
-            if($response === 'json'){
-               echo $this->response->data($this->request->response())->lang()->$response();
-            }else{
+            if ($response === 'json') {
+                echo $this->response->data($this->request->response())->lang()->$response();
+            } else {
                 var_dump($this->response->data($this->request->response())->lang()->$response());
             }
             return false;
@@ -34,9 +35,9 @@ class UserController extends Controller
 
         $this->upload = new Upload();
         if ($this->upload->response()->type === "error") {
-            if($response === 'json'){
+            if ($response === 'json') {
                 echo $this->response->data($this->upload->response())->lang()->$response();
-            }else{
+            } else {
                 var_dump($this->response->data($this->upload->response())->lang()->$response());
             }
             return false;
@@ -61,37 +62,107 @@ class UserController extends Controller
             if ($existUpload) {
                 $this->upload->delete();
             }
-            if($response === 'json'){
+            if ($response === 'json') {
                 echo $this->response->data($user->response())->lang()->$response();
-            }else{
-                var_dump($this->response->data($user->response())->lang()->$response());
+                return false;
             }
+            var_dump($this->response->data($user->response())->lang()->$response());
             return false;
         }
-        if($response === 'json'){
+        if ($response === 'json') {
             echo $this->response->data($user->response())->lang()->$response();
-        }else{
-            var_dump($this->response->data($user->response())->lang()->$response());
+            return true;
         }
+        var_dump($this->response->data($user->response())->lang()->$response());
         return true;
     }
+
     public function read($query, string $response)
     {
-
         $this->request = new Request($query);
         $this->response = new Response();
 
         $this->user = $this->request->response()->data->request;
         $this->query = $this->request->response()->data->query;
         $this->argument = $this->request->response()->data->argument;
+        $search = [];
+        if(isset($this->query->search)){
+            $this->query->search = str_replace(["[","]"], [""],$this->query->search);
+            $search = explode(",", $this->query->search);
+        }
+        $find = null;
+        $params = null;
+
+        if(count($search) > 0){
+            foreach ($search as $key => $value) {
+                if(str_contains($value, "LIKE")){
+                    $return = explode("LIKE", $value);
+                    $find[$key] = "$return[0] LIKE :$return[0]";
+                    $params[$return[0]] = $return[1];
+                    continue;
+                }
+                if(str_contains($value, "!=")){
+                    $return = explode("!=", $value);
+                    $find[$key] = "$return[0] != :$return[0]";
+                    $params[$return[0]] = $return[1];
+                    continue;
+                }
+                if(str_contains($value, ">")){
+                    $return = explode(">", $value);
+                    $find[$key] = "$return[0] > :$return[0]";
+                    $params[$return[0]] = $return[1];
+                    continue;
+                }
+                if(str_contains($value, "<")){
+                    $return = explode("<", $value);
+                    $find[$key] = "$return[0] < :$return[0]";
+                    $params[$return[0]] = $return[1];
+                    continue;
+                }
+                if(str_contains($value, "=")){
+                    $return = explode("=", $value);
+                    $find[$key] = "$return[0] = :$return[0]";
+                    $params[$return[0]] = $return[1];
+                    continue;
+                }
+            }
+            $find = implode(" AND ", $find);
+            $params = array_filter($params);
+
+        }
 
         $users = new User();
-        //$user = $users->find("*", "id=:id", ["id" => $this->argument->id])->fetch(true);
-        $user = $users->find()->fetch(true);
+        $all = $users->find("id",$find,$params)->count();
 
-        echo $this->response->data($user)->$response();
+        //paginator
+        if (empty($this->query->per_page) || $this->query->per_page > 100) {
+            $this->query->per_page = "100";
+        }
+        if ($this->query->per_page > $all) {
+            $this->query->per_page = $all;
+        }
+        if (empty($this->query->page)) {
+            $this->query->page = "1";
+        }
+
+        $paginator = new stdClass();
+        $paginator->page = (int)$this->query->page;
+        $paginator->per_page = (int)$this->query->per_page;
+        $paginator->all_page = $all ? ceil($all / $this->query->per_page) : 0;
+        $paginator->all = (int) $all;
 
 
+        $user = $users->find("*",$find,$params)->limit($this->query->per_page)->fetch(true);
+
+        if (!$user) {
+            echo $this->response->data($users->response())->lang()->$response();
+            return false;
+        }
+
+        $paginator->data = $user;
+
+        echo $this->response->data($paginator)->$response();
+        return true;
     }
 
     public function edit($query = null)
