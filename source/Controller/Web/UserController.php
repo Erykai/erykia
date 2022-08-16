@@ -84,42 +84,45 @@ class UserController extends Controller
 
         $this->user = $this->request->response()->data->request;
         $this->query = $this->request->response()->data->query;
+        if (empty($this->query)) {
+            $this->query = new stdClass();
+        }
         $this->argument = $this->request->response()->data->argument;
         $search = [];
-        if(isset($this->query->search)){
-            $this->query->search = str_replace(["[","]"], [""],$this->query->search);
+        if (isset($this->query->search)) {
+            $this->query->search = str_replace(["[", "]"], [""], $this->query->search);
             $search = explode(",", $this->query->search);
         }
         $find = null;
-        $params = null;
+        $params = [];
 
-        if(count($search) > 0){
+        if (count($search) > 0) {
             foreach ($search as $key => $value) {
-                if(str_contains($value, "LIKE")){
+                if (str_contains($value, "LIKE")) {
                     $return = explode("LIKE", $value);
                     $find[$key] = "$return[0] LIKE :$return[0]";
                     $params[$return[0]] = $return[1];
                     continue;
                 }
-                if(str_contains($value, "!=")){
+                if (str_contains($value, "!=")) {
                     $return = explode("!=", $value);
                     $find[$key] = "$return[0] != :$return[0]";
                     $params[$return[0]] = $return[1];
                     continue;
                 }
-                if(str_contains($value, ">")){
+                if (str_contains($value, ">")) {
                     $return = explode(">", $value);
                     $find[$key] = "$return[0] > :$return[0]";
                     $params[$return[0]] = $return[1];
                     continue;
                 }
-                if(str_contains($value, "<")){
+                if (str_contains($value, "<")) {
                     $return = explode("<", $value);
                     $find[$key] = "$return[0] < :$return[0]";
                     $params[$return[0]] = $return[1];
                     continue;
                 }
-                if(str_contains($value, "=")){
+                if (str_contains($value, "=")) {
                     $return = explode("=", $value);
                     $find[$key] = "$return[0] = :$return[0]";
                     $params[$return[0]] = $return[1];
@@ -132,10 +135,13 @@ class UserController extends Controller
         }
 
         $users = new User();
-        $all = $users->find("id",$find,$params)->count();
+        $all = $users->find("id", $find, $params)->count();
 
         //paginator
-        if (empty($this->query->per_page) || $this->query->per_page > 100) {
+        if (empty($this->query->per_page)) {
+            $this->query->per_page = 100;
+        }
+        if ($this->query->per_page > 100) {
             $this->query->per_page = "100";
         }
         if ($this->query->per_page > $all) {
@@ -144,15 +150,49 @@ class UserController extends Controller
         if (empty($this->query->page)) {
             $this->query->page = "1";
         }
+        $order = null;
+        if (!empty($this->query->sort)) {
+            $sorts = explode(",", $this->query->sort);
+            foreach ($sorts as $sort) {
+
+                if (substr($sort, 0, 1) !== "-" && substr($sort, 0, 1) !== "+") {
+                    $order .= $sort . " ASC, ";
+                }
+
+                if (substr($sort, 0, 1) === "-") {
+                    $order .= substr($sort, 1) . " DESC, ";
+                }
+                if (substr($sort, 0, 1) === "+") {
+                    $order .= substr($sort, 1) . " ASC, ";
+                }
+            }
+
+            $order = trim($order);
+            $order = substr($order, 0, -1);
+        }
 
         $paginator = new stdClass();
         $paginator->page = (int)$this->query->page;
         $paginator->per_page = (int)$this->query->per_page;
         $paginator->all_page = $all ? ceil($all / $this->query->per_page) : 0;
-        $paginator->all = (int) $all;
+        $paginator->all = (int)$all;
+        $offset = 0;
+        //10 / 2 = 5 pages
+        //define page 4 + per_pag 2
+        if ($paginator->per_page !== $paginator->all) {
+            $offset =  ($paginator->per_page * $paginator->page);
+        }
+        var_dump($offset);
 
 
-        $user = $users->find("*",$find,$params)->limit($this->query->per_page)->fetch(true);
+
+        // all_page 3 / (page 2 / per_page 1)
+        //page 1
+        //per_page 1
+        //all_page 3
+        //all 3
+
+        $user = $users->find("*", $find, $params)->order($order)->limit($this->query->per_page)->offset($offset)->fetch(true);
 
         if (!$user) {
             echo $this->response->data($users->response())->lang()->$response();
