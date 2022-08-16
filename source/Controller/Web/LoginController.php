@@ -15,7 +15,8 @@ class LoginController extends Controller
             echo $auth;
             return true;
         }
-        echo $this->getError();
+
+        echo $this->response->data($this->getError())->lang()->json();;
         return false;
     }
 
