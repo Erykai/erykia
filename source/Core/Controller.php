@@ -10,26 +10,6 @@ use stdClass;
 class Controller
 {
     /**
-     * @var Request
-     */
-    protected Request $request;
-    /**
-     * @var Response
-     */
-    protected Response $response;
-    /**
-     * @var Upload
-     */
-    protected Upload $upload;
-    /**
-     * @var stdClass
-     */
-    protected stdClass $paginator;
-    /**
-     * @var object|null
-     */
-    protected ?object $query;
-    /**
      * @var object|null
      */
     protected ?object $argument;
@@ -37,10 +17,6 @@ class Controller
      * @var object|null
      */
     protected ?object $data;
-    /**
-     * @var object|Session
-     */
-    protected object $session;
     /**
      * @var object
      */
@@ -50,10 +26,6 @@ class Controller
      */
     protected ?string $find;
     /**
-     * @var array|null
-     */
-    protected ?array $params;
-    /**
      * @var int|null
      */
     protected ?int $offset;
@@ -61,6 +33,34 @@ class Controller
      * @var string|null
      */
     protected ?string $order;
+    /**
+     * @var stdClass
+     */
+    protected stdClass $paginator;
+    /**
+     * @var array|null
+     */
+    protected ?array $params;
+    /**
+     * @var object|null
+     */
+    protected ?object $query;
+    /**
+     * @var Request
+     */
+    protected Request $request;
+    /**
+     * @var Response
+     */
+    protected Response $response;
+    /**
+     * @var object|Session
+     */
+    protected object $session;
+    /**
+     * @var Upload
+     */
+    protected Upload $upload;
     /**
      * Controller
      */
@@ -70,6 +70,92 @@ class Controller
         $this->response = new Response();
         $this->setFind(null);
         $this->setParams(null);
+    }
+    /**
+     * @return object
+     */
+    protected function getError(): object
+    {
+        return $this->error;
+    }
+    /**
+     * @param int $code
+     * @param string $type
+     * @param string $message
+     * @param object|null $data
+     * @param string|null $dynamic
+     */
+    protected function setError(int $code, string $type, string $message, ?object $data = null, ?string $dynamic = null): void
+    {
+        $this->error = (object)[
+            "code" => $code,
+            "type" => $type,
+            "message" => $message,
+            "data" => $data,
+            "dynamic" => $dynamic
+        ];
+    }
+    /**
+     * @return string|null
+     */
+    public function getFind(): ?string
+    {
+        return $this->find;
+    }
+    /**
+     * @param string|null $find
+     */
+    public function setFind(?string $find): void
+    {
+        $this->find = $find;
+    }
+    /**
+     * @return int|null
+     */
+    public function getOffset(): ?int
+    {
+        return $this->offset;
+    }
+    /**
+     * @param int|null $offset
+     */
+    public function setOffset(?int $offset): void
+    {
+        $this->offset = $offset;
+    }
+    /**
+     * @return string|null
+     */
+    public function getOrder(): ?string
+    {
+        return $this->order;
+    }
+    /**
+     * @return void
+     */
+    public function setOrder(): void
+    {
+        $order = null;
+        if (!empty($this->query->sort)) {
+            $sorts = explode(",", $this->query->sort);
+            foreach ($sorts as $sort) {
+
+                if (substr($sort, 0, 1) !== "-" && substr($sort, 0, 1) !== "+") {
+                    $order .= $sort . " ASC, ";
+                }
+
+                if (substr($sort, 0, 1) === "-") {
+                    $order .= substr($sort, 1) . " DESC, ";
+                }
+                if (substr($sort, 0, 1) === "+") {
+                    $order .= substr($sort, 1) . " ASC, ";
+                }
+            }
+
+            $order = trim($order);
+            $order = substr($order, 0, -1);
+        }
+        $this->order = $order;
     }
     /**
      * @param int|null $all
@@ -110,11 +196,18 @@ class Controller
         return $this->paginator;
     }
     /**
-     * @return Request
+     * @return array|null
      */
-    public function getRequest(): Request
+    public function getParams(): ?array
     {
-        return $this->request;
+        return $this->params;
+    }
+    /**
+     * @param array|null $params
+     */
+    public function setParams(?array $params): void
+    {
+        $this->params = $params;
     }
     /**
      * @param array|null $request
@@ -174,105 +267,5 @@ class Controller
                 $this->setParams(array_filter($params));
             }
         }
-    }
-    /**
-     * @return object
-     */
-    protected function getError(): object
-    {
-        return $this->error;
-    }
-
-    /**
-     * @param int $code
-     * @param string $type
-     * @param string $message
-     * @param object|null $data
-     * @param string|null $dynamic
-     */
-    protected function setError(int $code, string $type, string $message, ?object $data = null, ?string $dynamic = null): void
-    {
-        $this->error = (object)[
-            "code" => $code,
-            "type" => $type,
-            "message" => $message,
-            "data" => $data,
-            "dynamic" => $dynamic
-        ];
-    }
-    /**
-     * @return string|null
-     */
-    public function getFind(): ?string
-    {
-        return $this->find;
-    }
-    /**
-     * @param string|null $find
-     */
-    public function setFind(?string $find): void
-    {
-        $this->find = $find;
-    }
-    /**
-     * @return array|null
-     */
-    public function getParams(): ?array
-    {
-        return $this->params;
-    }
-    /**
-     * @param array|null $params
-     */
-    public function setParams(?array $params): void
-    {
-        $this->params = $params;
-    }
-    /**
-     * @return int|null
-     */
-    public function getOffset(): ?int
-    {
-        return $this->offset;
-    }
-    /**
-     * @param int|null $offset
-     */
-    public function setOffset(?int $offset): void
-    {
-        $this->offset = $offset;
-    }
-    /**
-     * @return string|null
-     */
-    public function getOrder(): ?string
-    {
-        return $this->order;
-    }
-    /**
-     */
-    public function setOrder(): void
-    {
-        $order = null;
-        if (!empty($this->query->sort)) {
-            $sorts = explode(",", $this->query->sort);
-            foreach ($sorts as $sort) {
-
-                if (substr($sort, 0, 1) !== "-" && substr($sort, 0, 1) !== "+") {
-                    $order .= $sort . " ASC, ";
-                }
-
-                if (substr($sort, 0, 1) === "-") {
-                    $order .= substr($sort, 1) . " DESC, ";
-                }
-                if (substr($sort, 0, 1) === "+") {
-                    $order .= substr($sort, 1) . " ASC, ";
-                }
-            }
-
-            $order = trim($order);
-            $order = substr($order, 0, -1);
-        }
-        $this->order = $order;
     }
 }
