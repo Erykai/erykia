@@ -29,7 +29,7 @@ class User extends Model
             $migration = new Migration();
             $migration->table($this->table);
             $migration->column("id")->type("int(11)")->default();
-            $migration->column("id_user")->type("int(11)")->default()->null();
+            $migration->column("dad")->type("varchar(255)")->default();
             $migration->column("name")->type("varchar(255)")->default();
             $migration->column("email")->type("varchar(255)")->default();
             $migration->column("password")->type("varchar(255)")->default();

@@ -44,7 +44,15 @@ class UserController extends Controller
         foreach ($this->data as $key => $value) {
             $user->$key = $value;
         }
-
+        if ($this->validateLogin()) {
+            $id = (int)$this->session->get()->login->id;
+            $user->dad =
+                $id === 1
+                    ? $this->session->get()->login->id
+                    : $this->session->get()->login->id . "," . $this->session->get()->login->dad;
+        } else {
+            $user->dad = 1;
+        }
         if (!$user->save()) {
             if ($existUpload) {
                 $this->upload->delete();
@@ -75,7 +83,7 @@ class UserController extends Controller
         $this->setPaginator($all);
         $this->setOrder();
         $user = $users
-            ->find("*",$this->getFind(), $this->getParams())
+            ->find("*", $this->getFind(), $this->getParams())
             ->order($this->getOrder())
             ->limit($this->query->per_page)
             ->offset($this->getOffset())
@@ -91,27 +99,48 @@ class UserController extends Controller
 
     public function edit($query, string $response)
     {
-
-        if (!$this->validateLogin()) {
-            echo $this->response->data($this->getError())->lang()->$response();
-            return false;
-        }
         $this->setRequest($query);
-        var_dump($this);
+        if (!$this->permission()) {
+            echo $this->response->data($this->getError())->lang()->$response();
+        }
 
         $login = $this->session->get()->login;
         $users = (new User());
-        $user = $users->find('*', 'email=:email', ['email' => $login->email])->fetch();
-        if(!$user){
-            $this->setError(401, "error", "user does not exist");
+        $dad = $users->find('dad',
+            'id=:id',
+            ['id' => $this->argument->id])
+            ->fetch();
+        $user = null;
+
+
+        if ($login->id !== $this->argument->id) {
+            $dads = explode(",", $dad->dad);
+            foreach ($dads as $dad) {
+                if ($dad === $login->id) {
+                    $user = $users->find('*',
+                        'id=:id',
+                        ['id' => $this->argument->id])
+                        ->fetch();
+                }
+            }
+        } else {
+            $user = $users->find('*',
+                'id=:id',
+                ['id' => $this->argument->id])
+                ->fetch();
+        }
+
+
+        if (!$user) {
+            $this->setError(401, "error", "you do not have permission to make this edit");
             echo $this->response->data($this->getError())->lang()->json();
             return false;
         }
         foreach ($this->data as $key => $value) {
-            if(
+            if (
                 ($key === 'email') &&
                 (new User())->find('id', 'email=:email', ['email' => $this->data->$key])->fetch() &&
-                $this->data->$key !== $login->email
+                $this->data->$key !== $user->email
             ) {
                 $this->setError(401, "error", "this email already exists");
                 echo $this->response->data($this->getError())->lang()->json();
@@ -122,45 +151,76 @@ class UserController extends Controller
             }
             $user->$key = $this->data->$key;
         }
-        if(!$users->save()){
+        if (!$users->save()) {
             $this->setError(401, "error", "error saving");
             echo $this->response->data($this->getError())->lang()->json();
             return false;
         }
-      $this->session->destroy('login');
-      $this->session->set('login', $user);
-      return true;
+        if ($login->id === $this->argument->id) {
+            $this->session->destroy('login');
+            $this->session->set('login', $user);
+        }
+        return true;
     }
 
-    public function destroy(array $data)
-    {/*
-        if(!isset($data[0])){
-            $this->setError(t("you don't have this permission"));
-            echo $this->getError();
+    public function destroy($query, string $response): bool
+    {
+        $this->setRequest($query);
+        if (!$this->permission()) {
+            echo $this->response->data($this->getError())->lang()->$response();
             return false;
         }
-
-        if (!$this->validateLogin()) {
-            echo $this->getError();
-            return false;
-        }
-
         $login = $this->session->get()->login;
-        $users = new \Source\Model\User();
-        $user = $users->find('*', 'email=:email', ['email' => $login->email])->fetch();
-
-        if(!$user){
-            $this->setError(t("you don't have this permission"));
-            echo $this->getError();
-            return false;
-        }
-        if($user->id !== $data[0]['id']){
-            $this->setError(t("you don't have this permission"));
-            echo $this->getError();
+        if ($login->id === $this->argument->id) {
+            $this->setError(401, "error", "you cannot delete your registration");
+            echo $this->response->data($this->getError())->lang()->json();
             return false;
         }
 
-        $users->delete($user->id);
-   */
+        $users = (new User());
+        $dad = $users->find('dad',
+            'id=:id',
+            ['id' => $this->argument->id])
+            ->fetch();
+        $user = null;
+
+        if (!$dad) {
+            $this->setError(401, "error", "this data does not exist");
+            echo $this->response->data($this->getError())->lang()->json();
+            return false;
+        }
+
+        $dads = explode(",", $dad->dad);
+        foreach ($dads as $dad) {
+            if ($dad === $login->id) {
+                $user = $users->find('*',
+                    'id=:id',
+                    ['id' => $this->argument->id])
+                    ->fetch();
+            }
+        }
+
+        if (!$user) {
+            $this->setError(401, "error", "you do not have permission to make this delete");
+            echo $this->response->data($this->getError())->lang()->json();
+            return false;
+        }
+
+        $users->delete($this->argument->id);
+        $this->setError(200, "success", "registration successfully deleted");
+        echo $this->response->data($this->getError())->lang()->json();
+        return true;
+    }
+
+    private function permission(): bool
+    {
+        if (!$this->validateLogin()) {
+            return false;
+        }
+        if (isset($this->data->level) && $this->data->level > $this->session->get()->login->level) {
+            $this->setError(401, "error", "you do not have permission to make this edit -> user level min {$this->data->level}");
+            return false;
+        }
+        return true;
     }
 }

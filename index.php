@@ -5,17 +5,22 @@ use Source\Core\Route;
 require "vendor/autoload.php";
 
 $route = new Route();
-$route->namespace('Source\Controller');
-$route->get('/','WebController@home');
-$route->namespace("Source\Controller\Web");
-//users
-$route->default('/usuario/cadastro', 'UserController', [false,false,true,true], "json");
-$route->get('/usuario/cadastro/{id}/{slug}', 'UserController@read', response: "json");
 
+/**
+ * AUTO INCLUDE
+ */
 
-//login
-$route->post('/usuario/login','LoginController@login');
-$route->get('/usuario/sair','LoginController@logout');
+$configPaths = __DIR__ . '/routes';
+
+foreach (scandir($configPaths) as $configPath) {
+    $dirPaths = __DIR__ . '/routes/' . $configPath;
+    foreach (scandir($dirPaths) as $configFile) {
+        $file = $dirPaths . '/' . $configFile;
+        if (is_file($file) && pathinfo($file, PATHINFO_EXTENSION) == 'php') {
+            require_once $file;
+        }
+    }
+}
 
 $route->exec();
 
