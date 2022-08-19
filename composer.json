@@ -31,7 +31,9 @@
     "erykai/request": "v1.2.0",
     "erykai/response": "v1.0.0",
     "erykai/migration": "v1.1.0",
-    "ext-fileinfo": "*"
+    "erykai/translate": "v1.0.0",
+    "ext-fileinfo": "*",
+    "php": ">=8.0"
   },
   "require-dev": {
     "alexdeovidal/docker-dev": "v1.1.1"

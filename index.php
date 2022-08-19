@@ -1,7 +1,8 @@
 <?php
 
-use Source\Core\Response;
 use Source\Core\Route;
+use Source\Core\Translate;
+
 require "vendor/autoload.php";
 
 $route = new Route();
@@ -12,20 +13,31 @@ $route = new Route();
 
 $configPaths = __DIR__ . '/routes';
 
+$files = [];
 foreach (scandir($configPaths) as $configPath) {
     $dirPaths = __DIR__ . '/routes/' . $configPath;
-    foreach (scandir($dirPaths) as $configFile) {
-        $file = $dirPaths . '/' . $configFile;
-        if (is_file($file) && pathinfo($file, PATHINFO_EXTENSION) == 'php') {
-            require_once $file;
+    if (is_file($dirPaths)) {
+        $file = $dirPaths;
+        $files[] = $file;
+    }
+    if (is_dir($dirPaths)) {
+        foreach (scandir($dirPaths) as $configFile) {
+            $file = $dirPaths . '/' . $configFile;
+            if (is_file($file) && pathinfo($file, PATHINFO_EXTENSION) == 'php') {
+                if (!str_contains($file, "/../")) {
+                    $files[] = $file;
+                }
+
+            }
         }
     }
-}
 
+}
+foreach ($files as $file) {
+    require $file;
+}
 $route->exec();
 
 if ($route->response()->type === "error") {
-    $response = new Response();
-    $response->data($route->response())->lang();
-    echo $response->json();
+    echo (new Translate())->translator($route->response(), "message")->json();
 }

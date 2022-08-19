@@ -58,6 +58,10 @@ class Controller
      */
     protected object $session;
     /**
+     * @var Translate
+     */
+    protected Translate $translate;
+    /**
      * @var Upload
      */
     protected Upload $upload;
@@ -68,6 +72,7 @@ class Controller
     {
         $this->session = new Session();
         $this->response = new Response();
+        $this->translate = new Translate();
         $this->setFind(null);
         $this->setParams(null);
     }
