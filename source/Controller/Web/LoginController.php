@@ -9,14 +9,14 @@ class LoginController extends Controller
 {
     use Auth;
 
-    public function login(): bool
+    public function login($query, string $response): bool
     {
         if($auth = $this->auth()){
             echo $auth;
             return true;
         }
+        echo $this->translate->translator($this->getError(), "message")->$response();
 
-        echo $this->response->data($this->getError())->lang()->json();;
         return false;
     }
 

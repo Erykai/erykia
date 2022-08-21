@@ -11,7 +11,7 @@ class Translate extends \Erykai\Translate\Translate
         $return = new Response();
         $response->nameDefault = $nameDefault;
         $response->translate = $response->message;
-        $return->data($this->data($response)->lang()->response());
+        $return->data($this->data($response)->lang(TRANSLATE_DEFAULT)->response());
         unset($return->object()->message, $return->object()->nameDefault);
         return $return;
     }

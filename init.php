@@ -1,9 +1,8 @@
 <?php
-
 use Source\Core\Route;
 use Source\Core\Translate;
-
-require "vendor/autoload.php";
+$root = __DIR__;
+require "$root/vendor/autoload.php";
 
 $route = new Route();
 
@@ -11,11 +10,14 @@ $route = new Route();
  * AUTO INCLUDE
  */
 
-$configPaths = __DIR__ . '/routes';
+$configPaths = "$root/routes";
+//home
+$route->namespace('Source\Controller\Web');
+$route->get('/','WebController@home',type: 'json');
 
 $files = [];
 foreach (scandir($configPaths) as $configPath) {
-    $dirPaths = __DIR__ . '/routes/' . $configPath;
+    $dirPaths = $root . '/routes/' . $configPath;
     if (is_file($dirPaths)) {
         $file = $dirPaths;
         $files[] = $file;
@@ -23,7 +25,7 @@ foreach (scandir($configPaths) as $configPath) {
     if (is_dir($dirPaths)) {
         foreach (scandir($dirPaths) as $configFile) {
             $file = $dirPaths . '/' . $configFile;
-            if (is_file($file) && pathinfo($file, PATHINFO_EXTENSION) == 'php') {
+            if (is_file($file) && pathinfo($file, PATHINFO_EXTENSION) === 'php') {
                 if (!str_contains($file, "/../")) {
                     $files[] = $file;
                 }
