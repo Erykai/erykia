@@ -7,10 +7,6 @@
     {
       "name": "alexdeovidal",
       "email": "webav.com.br@gmail.com"
-    },
-    {
-      "name": "Leonardo Coutinho",
-      "email": "leonardo.maier3450@gmail.com"
     }
   ],
   "config": {
@@ -25,13 +21,13 @@
     ]
   },
   "require": {
-    "erykai/routes": "v1.1.0",
-    "erykai/database": "v1.2.0",
+    "erykai/routes": "v1.1.1",
+    "erykai/database": "v1.2.1",
     "erykai/upload": "v1.2.2",
-    "erykai/request": "v1.2.0",
-    "erykai/response": "v1.0.0",
+    "erykai/request": "v1.2.1",
+    "erykai/response": "v1.0.1",
     "erykai/migration": "v1.1.0",
-    "erykai/translate": "v1.0.0",
+    "erykai/translate": "v1.0.2",
     "ext-fileinfo": "*",
     "php": ">=8.0"
   },

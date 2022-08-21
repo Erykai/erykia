@@ -12,7 +12,7 @@ class Translate extends \Erykai\Translate\Translate
         $response->nameDefault = $nameDefault;
         $response->translate = $response->message;
         $return->data($this->data($response)->lang()->response());
-        unset($return->response()->message, $return->response()->nameDefault);
+        unset($return->object()->message, $return->object()->nameDefault);
         return $return;
     }
 
