@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body style="display: flex; justify-content: center;">
+<div style="width: 80%; min-height: 100vh; background-color: #f0f0f0; padding: 20px;">
+    <h3>Olá meu nome é Erykia.</h3>
+    <div id="message"></div>
+    <div style="position: fixed; bottom: 10px">
+        <label>
+            <input id="response" type="text" name="name" placeholder="Qual seu nome?">
+        </label>
+        <label>
+            <input id="send" type="button" name="name" value=">>>">
+        </label>
+    </div>
+</div>
+<script>
+    let send = document.querySelector('#send')
+    let requestData = null;
+    send.addEventListener('click', function () {
+        requestData = document.querySelector('#response');
+        request(requestData.name, requestData.value)
+    })
+    document.addEventListener('keypress', function (e) {
+        if (e.key === "Enter") {
+            requestData = document.querySelector('#response');
+            request(requestData.name, requestData.value)
+        }
+    })
+
+    function request(name, value) {
+        let data = JSON.stringify({
+            name: value
+        });
+
+        let xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+
+        xhr.addEventListener("readystatechange", function () {
+            if (this.readyState === 4) {
+                document.querySelector('#message').innerHTML += "<p>" + this.responseText + "</p>"
+            }
+        });
+
+        xhr.open("POST", "https://lvh.me/ia");
+        //xhr.setRequestHeader("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6IndlYmF2LmNvbS5icjMwN0BnbWFpbC5jb20ifQ==.cBC6daRbax+z+gbEBuMNF0wNsQk+24yMCYcHxvhosiw=");
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.send(data);
+    }
+
+</script>
+</body>
+</html>

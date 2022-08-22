@@ -38,15 +38,19 @@ class Env
      */
     private static function getFiles(): array
     {
-        return self::$files;
+        return self::$files ?? [];
     }
 
     /**
-     * @return void
+     * @return bool
      */
-    private static function setFiles(): void
+    private static function setFiles(): bool
     {
-        self::$files = file(self::getPath() ."/.env",FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        if(is_file(self::getPath() ."/.env")){
+            self::$files = file(self::getPath() ."/.env",FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+            return true;
+        }
+        return false;
     }
     /**
      * @return void

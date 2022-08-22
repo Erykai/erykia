@@ -1,10 +1,15 @@
 <?php
 use Source\Core\Route;
 use Source\Core\Translate;
+use Source\Model\User;
 $root = __DIR__;
 require "$root/vendor/autoload.php";
 
 $route = new Route();
+if($_GET['route'] !== "ia" && !getenv("CONN_USER")){
+    header("Location: /ia");
+}
+
 
 /**
  * AUTO INCLUDE
@@ -38,6 +43,7 @@ foreach (scandir($configPaths) as $configPath) {
 foreach ($files as $file) {
     require $file;
 }
+
 $route->exec();
 
 if ($route->response()->type === "error") {

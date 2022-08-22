@@ -11,7 +11,7 @@ class UserController extends Controller
 {
     use Auth;
 
-    public function store($query, string $response)
+    public function store($query, string $response): bool
     {
         $this->setRequest($query);
 
@@ -84,7 +84,7 @@ class UserController extends Controller
         return true;
     }
 
-    public function read($query, string $response)
+    public function read($query, string $response): bool
     {
 
         $this->setRequest($query);
@@ -128,7 +128,7 @@ class UserController extends Controller
         return true;
     }
 
-    public function edit($query, string $response)
+    public function edit($query, string $response): bool
     {
         $this->setRequest($query);
         if (!$this->permission()) {
@@ -169,8 +169,10 @@ class UserController extends Controller
         }
         foreach ($this->data as $key => $value) {
             if (
-                ($key === 'email') &&
-                (new User())->find('id', 'email=:email', ['email' => $this->data->$key])->fetch() &&
+                ($key === 'email')
+                &&
+                (new User())->find('id', 'email=:email', ['email' => $this->data->$key])->fetch()
+                &&
                 $this->data->$key !== $user->email
             ) {
                 $this->setError(401, "error", "this email already exists");
@@ -253,7 +255,10 @@ class UserController extends Controller
             return false;
         }
         if (isset($this->data->level) && $this->data->level > $this->session->get()->login->level) {
-            $this->setError(401, "error", "you do not have permission to make this edit -> user level min {$this->data->level}");
+            $this->setError(
+                401,
+                "error",
+                "you do not have permission to make this edit -> user level min {$this->data->level}");
             return false;
         }
         return true;

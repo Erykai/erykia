@@ -4,6 +4,12 @@ namespace Source\Model;
 
 use Source\Core\Model;
 
+/**
+ * @property mixed $id_user
+ * @property mixed|string $dad
+ * @property mixed|string $created_at
+ * @property mixed|string $updated_at
+ */
 class User extends Model
 {
     public function __construct()
@@ -27,7 +33,6 @@ class User extends Model
         if (!$tableExists) {
             require_once dirname(__DIR__, 2) . "/database/" . $this->table . ".php";
         }
-
     }
 
     public function save(): bool

@@ -1,5 +1,5 @@
 RewriteEngine On
-RewriteBase /
 RewriteCond %{THE_REQUEST} /public/([^\s?]*) [NC]
+RewriteCond %{DOCUMENT_ROOT}/public/$1 -f
 RewriteRule ^ %1 [L,NE,R=302]
 RewriteRule ^((?!public/).*)$ public/index.php?route=$1 [L,NC]
