@@ -29,7 +29,8 @@
     "erykai/migration": "v1.1.0",
     "erykai/translate": "v1.0.2",
     "ext-fileinfo": "*",
-    "php": ">=8.0"
+    "php": ">=8.0",
+    "ext-pdo": "*"
   },
   "require-dev": {
     "alexdeovidal/docker-dev": "v1.1.1"

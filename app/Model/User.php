@@ -17,7 +17,9 @@ class User extends Model
         parent::__construct(
             'users',
             [
-                'name',
+                'id_user',
+                'dad',
+                'name_user',
                 'email',
                 'password',
                 'level'

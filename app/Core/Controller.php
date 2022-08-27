@@ -2,6 +2,8 @@
 
 namespace Source\Core;
 
+use PDO;
+use PDOException;
 use stdClass;
 
 /**
@@ -16,6 +18,10 @@ class Controller
     /**
      * @var object|null
      */
+    /**
+     * @var PDO|String
+     */
+    protected PDO|String $conn;
     protected ?object $data;
     /**
      * @var object
@@ -75,6 +81,34 @@ class Controller
         $this->translate = new Translate();
         $this->setFind(null);
         $this->setParams(null);
+    }
+
+    /**
+     * @param string $dsn
+     * @param string $host
+     * @param string $base
+     * @param string $username
+     * @param string $password
+     * @return String|PDO
+     */
+    protected function conn(string $dsn, string $host, string $base, string $username, string $password): PDO|String
+    {
+        if (empty($this->conn)) {
+            try {
+                $this->conn = new PDO(
+                    $dsn . ":host=" . $host . ";dbname=" . $base,
+                    $username,
+                    $password,
+                    [
+                        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
+                        PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4"
+                    ]
+                );
+            } catch (PDOException $e) {
+                $this->conn = $e->getMessage();
+            }
+        }
+        return $this->conn;
     }
     /**
      * @return object
