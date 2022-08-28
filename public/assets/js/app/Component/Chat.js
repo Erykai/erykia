@@ -3,7 +3,7 @@ import {Database} from "../Core/Database.js";
 import {Element} from "../Core/Element.js";
 
 export class Chat {
-    //INPUT
+    //INPUT//
     static base() {
         Chat.response("Qual drive do seu banco de dados ex: mysql")
         Attribute.getInput().setAttribute('name', 'driver')
@@ -56,7 +56,7 @@ export class Chat {
         Attribute.getInput().setAttribute('name', 'pass')
         Chat.setValue()
     }
-    //SYSTEM
+    //SYSTEM//
     static conversation() {
         Attribute.setInput(Element.getId('response'))
         if(Attribute.getInput().name){
@@ -84,7 +84,7 @@ export class Chat {
     static setValue() {
         Attribute.getInput().value = localStorage.getItem(Attribute.getInput().name) ?? ''
     }
-    //TRIGGER
+    //TRIGGER//
     static database() {
         Chat.response("Desculpe mas preciso que informe todos dados corretamente")
         Chat.response("Qual local do seu banco? ex: localhost")
