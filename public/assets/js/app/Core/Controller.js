@@ -5,6 +5,20 @@ import {Element} from "./Element.js";
 import {Validate} from "../Helper/Validate.js";
 
 export class Controller {
+    static developer(developer = false) {
+        Attribute.setDeveloper(developer)
+    }
+    static send() {
+        if (!Validate.index(Attribute.getInput())) {
+            return false;
+        }
+        Attribute.setData(Attribute.getInput().name, Attribute.getInput().value)
+        localStorage.setItem(Attribute.getInput().name, Attribute.getInput().value)
+        Chat.response(Attribute.getInput().value, 'input')
+        let post = Object.assign({}, Attribute.getData())
+        localStorage.setItem('data', JSON.stringify(post))
+        Chat.conversation()
+    }
     static start() {
         Attribute.setSend(Element.getId('send'))
         Attribute.setInput(Element.getId('response'))
@@ -23,21 +37,4 @@ export class Controller {
             }
         })
     }
-
-    static send() {
-        if (!Validate.index(Attribute.getInput())) {
-            return false;
-        }
-        Attribute.setData(Attribute.getInput().name, Attribute.getInput().value)
-        localStorage.setItem(Attribute.getInput().name, Attribute.getInput().value)
-        Chat.response(Attribute.getInput().value, 'input')
-        let post = Object.assign({}, Attribute.getData())
-        localStorage.setItem('data', JSON.stringify(post))
-        Chat.conversation()
-    }
-
-    static developer(developer = false) {
-        Attribute.setDeveloper(developer)
-    }
-
 }

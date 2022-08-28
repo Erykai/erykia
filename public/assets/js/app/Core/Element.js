@@ -1,11 +1,8 @@
-export class Element
-{
-    static tag(tag = 'div')
-    {
-        return document.createElement(tag)
-    }
-    static getId(elementId)
-    {
+export class Element {
+    static getId(elementId) {
         return document.getElementById(elementId)
+    }
+    static tag(tag = 'div') {
+        return document.createElement(tag)
     }
 }

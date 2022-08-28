@@ -1,6 +1,6 @@
+import {Attribute} from "../Core/Attribute.js";
 import {Chat} from "../Component/Chat.js";
 import {Element} from "../Core/Element.js";
-import {Attribute} from "../Core/Attribute.js";
 
 export class Exist
 {

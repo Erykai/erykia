@@ -1,16 +1,17 @@
 import {Chat} from "../Component/Chat.js";
 
 export class Validate {
+    static message = ''
     static regex
     static value
-    static message = ''
 
     static index(input) {
         return this.validate(input)
     }
-
-    static validate(input)
-    {
+    static response(input) {
+        Chat.response(`${input.value} invalid ${input.name}${this.message}`)
+    }
+    static validate(input) {
         if (input.name === 'name') {
             this.regex = /[a-zA-Z ]{3,}$/
             this.value = input.value
@@ -33,7 +34,5 @@ export class Validate {
         return true;
 
     }
-    static response(input) {
-        Chat.response(`${input.value} invalid ${input.name}${this.message}`)
-    }
+
 }
