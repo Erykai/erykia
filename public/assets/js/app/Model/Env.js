@@ -11,6 +11,5 @@ export class Env {
         }
         Attribute.getInput().setAttribute('name', 'start')
         Chat.conversation()
-
     }
 }
