@@ -58,13 +58,14 @@ export class Chat {
     }
     //SYSTEM
     static conversation() {
-
         Attribute.setInput(Element.getId('response'))
-        localStorage.setItem('name', Attribute.getInput().name)
-        let name = this[Attribute.getInput().name]
-        if (typeof name === 'function') {
-            name()
-            return true
+        if(Attribute.getInput().name){
+            localStorage.setItem('name', Attribute.getInput().name)
+            let name = this[Attribute.getInput().name]
+            if (typeof name === 'function') {
+                name()
+                return true
+            }
         }
     }
     static response(data, request = 'ia') {
