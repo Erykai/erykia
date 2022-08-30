@@ -1,5 +1,6 @@
 import {Attribute} from './Attribute.js';
 import Model from "./Model.js";
+
 export class Database {
     static model(data, request) {
         let model
@@ -7,6 +8,7 @@ export class Database {
         model = model.toString()
         Model[model].index(data, request)
     }
+
     static request(data) {
         let header = new Headers();
         header.append("Content-Type", "application/json")
@@ -15,10 +17,14 @@ export class Database {
             method: Attribute.getMethod(),
             headers: Attribute.getHeader(),
             body: data,
-            redirect: 'follow'}
+            redirect: 'follow'
+        }
         fetch(Attribute.getUrl(), headers)
             .then(response => response.json())
-            .then((data) => {this.model(data, 'ia')})
+            .then((data) => {
+                this.model(data, 'ia')
+
+            })
             .catch(error => console.log('error', error))
     }
 }

@@ -6,7 +6,8 @@ $root = __DIR__;
 require "$root/vendor/autoload.php";
 
 $route = new Route();
-if($_GET['route'] !== "ia" && !getenv("CONN_USER")){
+
+if($_SERVER["REQUEST_METHOD"] !== "POST" && $_GET['route'] !== "ia" && !getenv("CONN_USER")){
     header("Location: /ia");
 }
 

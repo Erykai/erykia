@@ -6,18 +6,22 @@ use stdClass;
 
 class Translate extends \Erykai\Translate\Translate
 {
-    public function translatorString(string $message, string $nameDefault)
+    public function translatorString(string $message, string $file)
     {
         $response = new stdClass();
         $return = new Response();
-        $response->nameDefault = $nameDefault;
-        $response->translate = $message;
-        $return->data($this->data($response)->lang(TRANSLATE_DEFAULT)->response());
+        $response->file = $file;
+        $response->text = $message;
+        $return->data($this->data($response)->target()->response());
         unset($return->object()->message, $return->object()->nameDefault);
         return $return;
     }
     public function translator(object $response, string $nameDefault)
     {
+        if(!isset($response->message))
+        {
+            die('to use the Translate component send an object that contains the example attribute $data->message = "route";');
+        }
         $return = new Response();
         $response->nameDefault = $nameDefault;
         $response->translate = $response->message;

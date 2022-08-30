@@ -27,10 +27,11 @@
     "erykai/request": "v1.2.1",
     "erykai/response": "v1.0.1",
     "erykai/migration": "v1.1.0",
-    "erykai/translate": "v1.0.2",
+    "erykai/translate": "v1.0.5",
     "ext-fileinfo": "*",
     "php": ">=8.0",
-    "ext-pdo": "*"
+    "ext-pdo": "*",
+    "ext-curl": "*"
   },
   "require-dev": {
     "alexdeovidal/docker-dev": "v1.1.1"

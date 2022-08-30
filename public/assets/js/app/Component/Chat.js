@@ -3,63 +3,84 @@ import {Database} from "../Core/Database.js";
 import {Element} from "../Core/Element.js";
 
 export class Chat {
-    //INPUT//
+    //INPUT CREATE SYSTEM//
     static base() {
-        Chat.response("Qual drive do seu banco de dados ex: mysql")
+        Chat.translate("Which drive of your database ex: mysql")
         Attribute.getInput().setAttribute('name', 'driver')
         Chat.setValue()
     }
     static cryptography() {
+        Element.getId('load-chat').setAttribute('style','')
         Attribute.setUrl(window.location.href)
         Attribute.setMethod('POST')
         Database.request(localStorage.getItem('data'))
         Attribute.clearData()
     }
     static driver() {
-        Chat.response("Defina uma chave para criptografar e descritografar seus dados")
+        Chat.translate("Define a key to encrypt and decrypt your data")
         Attribute.getInput().setAttribute('name', 'cryptography')
         Chat.setValue()
     }
     static email() {
-        Chat.response("Defina uma senha segura, ela será usada para logar no sistema")
+        Chat.translate("Set a secure password, it will be used to log into the system")
         Attribute.getInput().setAttribute('name', 'password')
         Chat.setValue()
     }
     static host() {
-        Chat.response("Qual nome de usuário do banco de dados " + Attribute.getInput().value + "?")
+        Chat.translate("What database username " + Attribute.getInput().value + "?", Attribute.getInput().value)
         Attribute.getInput().setAttribute('name', 'username')
         Chat.setValue()
     }
     static name_user() {
-        Chat.response("Qual seu email?")
+        Chat.translate("What is your email?")
         Attribute.getInput().setAttribute('name', 'email')
         Chat.setValue()
     }
     static pass() {
-        Chat.response("Qual nome da sua base de dados?")
+        Chat.translate("What is your database name?")
         Attribute.getInput().setAttribute('name', 'base')
         Chat.setValue()
     }
     static password() {
+        Element.getId('load-chat').setAttribute('style','')
         Attribute.setUrl(window.location.href)
         Attribute.setMethod('POST')
         Database.request(localStorage.getItem('data'))
         Attribute.getInput().setAttribute('name', 'end')
     }
     static user() {
-        Chat.response("Qual seu nome?")
+        Chat.translate("What is your name?")
         Attribute.getInput().setAttribute('name', 'name_user')
         Chat.setValue()
     }
     static username() {
-        Chat.response("Qual a senha do usuário " + Attribute.getInput().value + " do banco de dados?")
+        Chat.translate("What is the user password " + Attribute.getInput().value + " from the database?",
+            Attribute.getInput().value)
         Attribute.getInput().setAttribute('name', 'pass')
         Chat.setValue()
+    }
+    //LOGIN//
+    static login() {
+        Chat.translate("What is your email?")
+        Attribute.getInput().setAttribute('name', 'login_email')
+        Chat.setValue()
+    }
+    static login_email() {
+        Chat.translate("What is your password?")
+        Attribute.getInput().setAttribute('name', 'login_password')
+        Chat.setValue()
+    }
+    static login_password() {
+        Element.getId('load-chat').setAttribute('style','')
+        Attribute.setUrl(window.location.href + '/login')
+        Attribute.setMethod('POST')
+        Database.request(localStorage.getItem('data'))
+        Attribute.getInput().setAttribute('name', 'end')
     }
     //SYSTEM//
     static conversation() {
         Attribute.setInput(Element.getId('response'))
-        if(Attribute.getInput().name){
+        if (Attribute.getInput().name) {
             localStorage.setItem('name', Attribute.getInput().name)
             let name = this[Attribute.getInput().name]
             if (typeof name === 'function') {
@@ -79,15 +100,28 @@ export class Chat {
             .appendChild(div)
             .appendChild(response)
         response.innerHTML += data
-        Element.getId('response').value = ""
+        if(!Attribute.getDeveloper()){
+            Element.getId('response').value = ""
+        }
     }
     static setValue() {
         Attribute.getInput().value = localStorage.getItem(Attribute.getInput().name) ?? ''
     }
+    static translate(message, dynamic = null) {
+        Element.getId('load-chat').setAttribute('style','')
+        let translate = {}
+        translate.text = message
+        if (dynamic) {
+            translate.dynamic = dynamic
+        }
+        Attribute.setUrl(window.location.href.replace("/ia", "") + "/component/language")
+        Attribute.setMethod('POST')
+        Database.request(JSON.stringify(translate))
+    }
     //TRIGGER//
     static database() {
-        Chat.response("Desculpe mas preciso que informe todos dados corretamente")
-        Chat.response("Qual local do seu banco? ex: localhost")
+        Chat.translate("Sorry but I need you to enter all data correctly. " +
+            "Where is your bank? ex: localhost")
         Attribute.getInput().setAttribute('name', 'host')
         Chat.setValue()
     }
@@ -97,9 +131,9 @@ export class Chat {
         Database.request('{"exist": "user"}')
     }
     static start() {
-        Chat.response("Olá meu nome é Erykia, #boraprogramar")
-        Chat.response("preciso dos dados de seu banco mariadb ou mysql")
-        Chat.response("Qual local do seu banco? ex: localhost")
+        Chat.translate("Hello my name is Erykia, let's program! " +
+            "I need your mariadb or mysql database data. " +
+            "Where is your bank? ex: localhost", "Erykia")
         Attribute.getInput().setAttribute('name', 'host')
         Chat.setValue()
     }
