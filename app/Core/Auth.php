@@ -20,7 +20,7 @@ trait Auth
         }
 
         $this->login = (new User())
-            ->find('id, id_user, name_user, email, password, level', 'email=:email',['email'=>$this->data->email])
+            ->find('id, id_user, name, email, password, level', 'email=:email',['email'=>$this->data->email])
             ->fetch();
 
         if (!isset($this->login )) {

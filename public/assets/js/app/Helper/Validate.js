@@ -1,4 +1,4 @@
-import {Chat} from "../Component/Chat.js";
+import {Chat} from "../Component/Chat/Chat.js";
 
 export class Validate {
     static message = ''

@@ -1,5 +1,5 @@
 import {Attribute} from "../Core/Attribute.js";
-import {Chat} from "../Component/Chat.js";
+import {Chat} from "../Component/Chat/Chat.js";
 
 export class Exist
 {
@@ -8,6 +8,6 @@ export class Exist
             localStorage.removeItem('data')
         }
         Attribute.getInput().setAttribute('name', 'login')
-        Chat.conversation()
+        Chat.conversation('login')
     }
 }

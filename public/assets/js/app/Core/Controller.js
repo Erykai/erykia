@@ -1,6 +1,6 @@
 import {Attribute} from './Attribute.js';
-import {Chat} from "../Component/Chat.js";
-import {Database} from './Database.js';
+import {Chat} from "../Component/Chat/Chat.js";
+import CoreDatabase from './Database.js';
 import {Element} from "./Element.js";
 import {Validate} from "../Helper/Validate.js";
 
@@ -17,16 +17,16 @@ export class Controller {
         Chat.response(Attribute.getInput().value, 'input')
         let post = Object.assign({}, Attribute.getData())
         localStorage.setItem('data', JSON.stringify(post))
-        Chat.conversation()
+        Chat.conversation(Attribute.getSend().name)
     }
     static start() {
         Attribute.setSend(Element.getId('send'))
         Attribute.setInput(Element.getId('response'))
         window.addEventListener("load", function () {
-            Attribute.setUrl(window.location.href)
+            Attribute.setUrl(window.location.href + '/database')
             Attribute.setMethod('POST')
-            Database.request('{"env": "isset"}')
-            Chat.conversation()
+            CoreDatabase.request('{"env": "isset"}')
+            Chat.conversation('user')
         })
         Attribute.getSend().addEventListener('click', () => {
             this.send()

@@ -5,7 +5,7 @@ $migration->table(basename( __FILE__ , ".php"));
 $migration->column("id")->type("int(11)")->default();
 $migration->column("id_user")->type("int(11)")->default();
 $migration->column("dad")->type("varchar(255)")->default();
-$migration->column("name_user")->type("varchar(255)")->default();
+$migration->column("name")->type("varchar(255)")->default();
 $migration->column("email")->type("varchar(255)")->default();
 $migration->column("password")->type("varchar(255)")->default();
 $migration->column("level")->type("int(11)")->default();

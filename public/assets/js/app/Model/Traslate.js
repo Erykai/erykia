@@ -1,4 +1,4 @@
-import {Chat} from "../Component/Chat.js";
+import {Chat} from "../Component/Chat/Chat.js";
 import {Element} from "../Core/Element.js";
 
 export class Translate {

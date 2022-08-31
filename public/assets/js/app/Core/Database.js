@@ -1,7 +1,7 @@
 import {Attribute} from './Attribute.js';
 import Model from "./Model.js";
 
-export class Database {
+export default class Database {
     static model(data, request) {
         let model
         model = Object.keys(data)

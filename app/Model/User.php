@@ -19,7 +19,7 @@ class User extends Model
             [
                 'id_user',
                 'dad',
-                'name_user',
+                'name',
                 'email',
                 'password',
                 'level'

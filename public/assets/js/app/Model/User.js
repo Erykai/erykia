@@ -1,5 +1,5 @@
 import {Attribute} from "../Core/Attribute.js";
-import {Chat} from "../Component/Chat.js";
+import {Chat} from "../Component/Chat/Chat.js";
 
 export class User {
     static index(response) {

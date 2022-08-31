@@ -1,15 +1,14 @@
 import {Attribute} from "../Core/Attribute.js";
-import {Chat} from "../Component/Chat.js";
+import {Chat} from "../Component/Chat/Chat.js";
 
 export class Env {
     static index(response) {
         if(response.env){
-            localStorage.removeItem('data')
             Attribute.getInput().setAttribute('name', 'env')
-            Chat.conversation()
+            Chat.conversation('user')
             return true
         }
         Attribute.getInput().setAttribute('name', 'start')
-        Chat.conversation()
+        Chat.conversation('database')
     }
 }

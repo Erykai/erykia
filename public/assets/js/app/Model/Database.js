@@ -1,5 +1,5 @@
 import {Attribute} from "../Core/Attribute.js";
-import {Chat} from "../Component/Chat.js";
+import {Chat} from "../Component/Chat/Chat.js";
 export class Database
 {
     static index(response) {
@@ -9,6 +9,6 @@ export class Database
         }
         Chat.response(response.database)
         Attribute.getInput().setAttribute('name', 'user')
-        Chat.conversation()
+        Chat.conversation('user')
     }
 }
