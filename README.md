@@ -1,9 +1,10 @@
-# erykia
+# Erykia
+###Artificial Intelligence in all languages
 
 Artificial intelligence for creating websites, systems in php with restfull api
 
 ### MODE INSTALL
-Download the latest version, unzip it on a php server, composer install, composer update
+Download the latest version, unzip it on a php server, composer install, composer update, create database mysql or mariadb
 and that's it! Now access your url, and Erykia will talk to you, to create your website or your system in PHP :)
 
 ### REQUIRE
