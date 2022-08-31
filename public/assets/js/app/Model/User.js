@@ -13,6 +13,8 @@ export class User {
     }
 
     static login() {
-        alert('faça login')
+        Chat.translate("Ready now just program!")
+        Element.getId('send').remove()
+        Element.getId('response').remove()
     }
 }
