@@ -59,6 +59,7 @@
 }
 #chatErykia{
     height: 80vh;
+    display: contents;
 }
 
 #response {

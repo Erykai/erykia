@@ -18,14 +18,17 @@ class Translate extends \Erykai\Translate\Translate
     }
     public function translator(object $response, string $nameDefault)
     {
-        if(!isset($response->message))
+        //validate return components ex response
+        if(isset($response->message)){
+            $response->text = $response->message;
+        }
+        if(!isset($response->text))
         {
-            die('to use the Translate component send an object that contains the example attribute $data->message = "route";');
+            die('to use the Translate component send an object that contains the example attribute $data->text = "route";');
         }
         $return = new Response();
-        $response->nameDefault = $nameDefault;
-        $response->translate = $response->message;
-        $return->data($this->data($response)->lang(TRANSLATE_DEFAULT)->response());
+        $response->file = $nameDefault;
+        $return->data($this->data($response)->target()->response());
         unset($return->object()->message, $return->object()->nameDefault);
         return $return;
     }
@@ -36,7 +39,7 @@ class Translate extends \Erykai\Translate\Translate
         if($dynamic){
             $routerTranslate->dynamic = $dynamic;
         }
-        $routerTranslate->message = $route;
+        $routerTranslate->text = $route;
         $router = $this->translator($routerTranslate, "route")->object()->translate;
         if(strpos($router, "<&>")){
             die($router . " in variable " . '$routeDefault and $routeTranslate');
