@@ -32,8 +32,5 @@
     "php": ">=8.0",
     "ext-pdo": "*",
     "ext-curl": "*"
-  },
-  "require-dev": {
-    "alexdeovidal/docker-dev": "v1.1.1"
   }
 }

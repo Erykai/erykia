@@ -20,11 +20,11 @@ export class Validate {
             this.regex = /\S+@\S+\.\S+/
             this.value = input.value
         }
-        if (input.name === 'password') {
-            this.regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
-            this.value = input.value
-            this.message = ` minimum 8 characters with at least 1 uppercase letter 1 lowercase letter and numbers`
-        }
+        // if (input.name === 'password') {
+        //     this.regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
+        //     this.value = input.value
+        //     this.message = ` minimum 8 characters with at least 1 uppercase letter 1 lowercase letter and numbers`
+        // }
         if(this.regex){
             if(!this.regex.test(this.value)){
                 this.response(input)
