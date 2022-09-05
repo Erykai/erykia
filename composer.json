@@ -4,7 +4,9 @@
   "minimum-stability": "stable",
   "license": "MIT",
   "scripts": {
-    "command": "sh start.sh"
+    "startMac": "sh start.sh",
+    "startWin": "powershell .\\start.ps1",
+    "startLinux": "sh start.sh"
   },
   "authors": [
     {
@@ -38,6 +40,6 @@
     "ext-curl": "*"
   },
   "require-dev": {
-    "alexdeovidal/docker-dev": "v1.1.1"
+    "alexdeovidal/docker-dev": "main-dev"
   }
 }

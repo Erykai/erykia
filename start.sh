@@ -1,4 +1,4 @@
-#version PHP -> 56, 70, 72, 73, 74, 80 or 81
+#version PHP -> 56.yml, 70.yml, 72.yml, 73.yml, 74.yml, 80.yml or 81.yml
 #erikia requer >=80
 phpVersion="80"
 #folder system example
