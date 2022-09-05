@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2b71e411b14829533dfae680640a282e",
+    "content-hash": "c21f4dfb25b6c4dc08c27bc66f0e280b",
     "packages": [
         {
             "name": "erykai/database",
-            "version": "v1.2.2",
+            "version": "v1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Erykai/database.git",
-                "reference": "f215d447a6fa6b1c2a47efba0bf70cea0da3be28"
+                "reference": "a6e9f3a9726a24581ce0aff4ba576d5af5943586"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Erykai/database/zipball/f215d447a6fa6b1c2a47efba0bf70cea0da3be28",
-                "reference": "f215d447a6fa6b1c2a47efba0bf70cea0da3be28",
+                "url": "https://api.github.com/repos/Erykai/database/zipball/a6e9f3a9726a24581ce0aff4ba576d5af5943586",
+                "reference": "a6e9f3a9726a24581ce0aff4ba576d5af5943586",
                 "shasum": ""
             },
             "require": {
@@ -43,9 +43,9 @@
             "description": "Responsible for making CRUD with database, using PDO, compatible with: Cubrid, FreeTDS / Microsoft SQL Server / Sybase, Firebird, IBM DB2, IBM Informix Dynamic Server, MySQL 3.x/4.x/5.x, Oracle Call Interface, ODBC v3 (IBM DB2, unixODBC and win32 ODBC), PostgreSQL, SQLite 3 and SQLite 2, Microsoft SQL Server / SQL Azure e MariaDB",
             "support": {
                 "issues": "https://github.com/Erykai/database/issues",
-                "source": "https://github.com/Erykai/database/tree/v1.2.2"
+                "source": "https://github.com/Erykai/database/tree/v1.3.0"
             },
-            "time": "2022-08-21T18:06:32+00:00"
+            "time": "2022-09-02T13:14:40+00:00"
         },
         {
             "name": "erykai/migration",
@@ -86,6 +86,46 @@
                 "source": "https://github.com/Erykai/migration/tree/v1.1.0"
             },
             "time": "2022-08-17T11:49:27+00:00"
+        },
+        {
+            "name": "erykai/pluralize",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Erykai/pluralize.git",
+                "reference": "5fe35e7c2abcba30b0fb322edfffc2486fa8f87f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Erykai/pluralize/zipball/5fe35e7c2abcba30b0fb322edfffc2486fa8f87f",
+                "reference": "5fe35e7c2abcba30b0fb322edfffc2486fa8f87f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Erykai\\Pluralize\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "alexdeovidal",
+                    "email": "contato@webav.com.br"
+                }
+            ],
+            "description": "Converts plural words to singular and singular to plural",
+            "support": {
+                "issues": "https://github.com/Erykai/pluralize/issues",
+                "source": "https://github.com/Erykai/pluralize/tree/v1.0.1"
+            },
+            "time": "2022-09-04T11:19:46+00:00"
         },
         {
             "name": "erykai/request",
@@ -170,16 +210,16 @@
         },
         {
             "name": "erykai/routes",
-            "version": "v1.1.2",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Erykai/routes.git",
-                "reference": "88d8dd4cc425ae0fce1320b2d7f2977b6d780997"
+                "reference": "6423c14907ad1b03f180abe0738e695c32416778"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Erykai/routes/zipball/88d8dd4cc425ae0fce1320b2d7f2977b6d780997",
-                "reference": "88d8dd4cc425ae0fce1320b2d7f2977b6d780997",
+                "url": "https://api.github.com/repos/Erykai/routes/zipball/6423c14907ad1b03f180abe0738e695c32416778",
+                "reference": "6423c14907ad1b03f180abe0738e695c32416778",
                 "shasum": ""
             },
             "require": {
@@ -204,22 +244,22 @@
             "description": "Responsible for managing application routes",
             "support": {
                 "issues": "https://github.com/Erykai/routes/issues",
-                "source": "https://github.com/Erykai/routes/tree/v1.1.2"
+                "source": "https://github.com/Erykai/routes/tree/v1.2.0"
             },
-            "time": "2022-08-21T18:03:15+00:00"
+            "time": "2022-09-01T19:57:17+00:00"
         },
         {
             "name": "erykai/translate",
-            "version": "v2.1.0",
+            "version": "v2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Erykai/translate.git",
-                "reference": "59e8ab4cb616d4f6cd7fab419d89e3e3b81ae489"
+                "reference": "e1e28211cdcbcce292ec47cdd57dc58d5b678468"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Erykai/translate/zipball/59e8ab4cb616d4f6cd7fab419d89e3e3b81ae489",
-                "reference": "59e8ab4cb616d4f6cd7fab419d89e3e3b81ae489",
+                "url": "https://api.github.com/repos/Erykai/translate/zipball/e1e28211cdcbcce292ec47cdd57dc58d5b678468",
+                "reference": "e1e28211cdcbcce292ec47cdd57dc58d5b678468",
                 "shasum": ""
             },
             "require": {
@@ -245,9 +285,9 @@
             "description": "Component for all language translation, system messages and routes",
             "support": {
                 "issues": "https://github.com/Erykai/translate/issues",
-                "source": "https://github.com/Erykai/translate/tree/v2.1.0"
+                "source": "https://github.com/Erykai/translate/tree/v2.1.1"
             },
-            "time": "2022-08-31T10:37:06+00:00"
+            "time": "2022-09-05T10:26:44+00:00"
         },
         {
             "name": "erykai/upload",
@@ -290,7 +330,40 @@
             "time": "2022-08-10T11:02:58+00:00"
         }
     ],
-    "packages-dev": [],
+    "packages-dev": [
+        {
+            "name": "alexdeovidal/docker-dev",
+            "version": "v1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/alexdeovidal/docker-dev.git",
+                "reference": "8fb9ee38b8723c4707f14074d6be03f523954b14"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/alexdeovidal/docker-dev/zipball/8fb9ee38b8723c4707f14074d6be03f523954b14",
+                "reference": "8fb9ee38b8723c4707f14074d6be03f523954b14",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alex Vidal",
+                    "email": "webav.com.br@gmail.com"
+                }
+            ],
+            "description": "Docker complete for developer PHP 8, MariaDB 10 And PhpMyAdmin",
+            "support": {
+                "issues": "https://github.com/alexdeovidal/docker-dev/issues",
+                "source": "https://github.com/alexdeovidal/docker-dev/tree/v1.1.1"
+            },
+            "time": "2022-05-17T11:27:54+00:00"
+        }
+    ],
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": [],

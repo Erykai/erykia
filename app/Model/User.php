@@ -17,7 +17,7 @@ class User extends Model
         parent::__construct(
             'users',
             [
-                'id_user',
+                'id_users',
                 'dad',
                 'name',
                 'email',
@@ -27,14 +27,6 @@ class User extends Model
         );
         $this->migration();
 
-    }
-
-    public function migration(): void
-    {
-        $tableExists = $this->conn->query("SHOW TABLES LIKE '$this->table'")->rowCount() > 0;
-        if (!$tableExists) {
-            require_once dirname(__DIR__, 2) . "/database/" . $this->table . ".php";
-        }
     }
 
     public function save(): bool

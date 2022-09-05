@@ -11,18 +11,24 @@ use stdClass;
  */
 class Controller
 {
+    use Auth;
+
     /**
      * @var object|null
      */
     protected ?object $argument;
     /**
-     * @var object|null
+     * @var string|null
      */
+    protected ?string $columns = null;
     /**
      * @var PDO|String
      */
-    protected PDO|String $conn;
-    protected ?object $data;
+    protected PDO|string $conn;
+    /**
+     * @var object|null
+     */
+    protected ?object $dataRequest;
     /**
      * @var object
      */
@@ -31,9 +37,15 @@ class Controller
      * @var string|null
      */
     protected ?string $find;
+
+    /**
+     * @var bool
+     */
+    private bool $issetUpload = false;
     /**
      * @var int|null
      */
+
     protected ?int $offset;
     /**
      * @var string|null
@@ -60,7 +72,7 @@ class Controller
      */
     protected Response $response;
     /**
-     * @var object|Session
+     * @var object
      */
     protected object $session;
     /**
@@ -71,6 +83,7 @@ class Controller
      * @var Upload
      */
     protected Upload $upload;
+
     /**
      * Controller
      */
@@ -82,6 +95,7 @@ class Controller
         $this->setFind(null);
         $this->setParams(null);
     }
+    //SYSTEM
 
     /**
      * @param string $dsn
@@ -91,7 +105,7 @@ class Controller
      * @param string $password
      * @return String|PDO
      */
-    protected function conn(string $dsn, string $host, string $base, string $username, string $password): PDO|String
+    protected function conn(string $dsn, string $host, string $base, string $username, string $password): PDO|string
     {
         if (empty($this->conn)) {
             try {
@@ -110,6 +124,43 @@ class Controller
         }
         return $this->conn;
     }
+
+    /**
+     * @return bool
+     */
+    protected function permission(): bool
+    {
+        if (!$this->validateLogin()) {
+            return false;
+        }
+        if (isset($this->data->level) && $this->data->level > $this->session->get()->login->level) {
+            $this->setError(
+                401,
+                "error",
+                "you do not have permission to make this edit -> user level min {$this->data->level}");
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getColumns(): ?string
+    {
+        return $this->columns;
+    }
+
+    /**
+     */
+    public function setColumns(): void
+    {
+        if (!empty($this->query->columns)) {
+            $this->columns = $this->query->columns;
+        }
+    }
+    //GET AND SET
+
     /**
      * @return object
      */
@@ -117,6 +168,7 @@ class Controller
     {
         return $this->error;
     }
+
     /**
      * @param int $code
      * @param string $type
@@ -134,6 +186,7 @@ class Controller
             "dynamic" => $dynamic
         ];
     }
+
     /**
      * @return string|null
      */
@@ -141,6 +194,7 @@ class Controller
     {
         return $this->find;
     }
+
     /**
      * @param string|null $find
      */
@@ -148,6 +202,23 @@ class Controller
     {
         $this->find = $find;
     }
+
+    /**
+     * @return bool
+     */
+    public function isIssetUpload(): bool
+    {
+        return $this->issetUpload;
+    }
+
+    /**
+     * @param bool $issetUpload
+     */
+    public function setIssetUpload(bool $issetUpload): void
+    {
+        $this->issetUpload = $issetUpload;
+    }
+
     /**
      * @return int|null
      */
@@ -155,6 +226,7 @@ class Controller
     {
         return $this->offset;
     }
+
     /**
      * @param int|null $offset
      */
@@ -162,6 +234,7 @@ class Controller
     {
         $this->offset = $offset;
     }
+
     /**
      * @return string|null
      */
@@ -169,6 +242,7 @@ class Controller
     {
         return $this->order;
     }
+
     /**
      * @return void
      */
@@ -196,12 +270,13 @@ class Controller
         }
         $this->order = $order;
     }
+
     /**
      * @param int|null $all
      */
     protected function setPaginator(?int $all): void
     {
-        if(isset($this->query)){
+        if (isset($this->query)) {
             if (empty($this->query->per_page)) {
                 $this->query->per_page = 100;
             }
@@ -227,6 +302,7 @@ class Controller
         }
 
     }
+
     /**
      * @return stdClass
      */
@@ -234,6 +310,7 @@ class Controller
     {
         return $this->paginator;
     }
+
     /**
      * @return array|null
      */
@@ -241,6 +318,7 @@ class Controller
     {
         return $this->params;
     }
+
     /**
      * @param array|null $params
      */
@@ -248,6 +326,7 @@ class Controller
     {
         $this->params = $params;
     }
+
     /**
      * @param array|null $request
      */
@@ -256,17 +335,22 @@ class Controller
         $this->request = new Request($request);
         $this->data = $this->request->response()->data->request;
         $this->query = $this->request->response()->data->query;
+        if(isset($this->request->response()->data->query->columns)){
+            $this->columns = $this->request->response()->data->query->columns;
+        }
         if (empty($this->query)) {
             $this->query = new stdClass();
         }
         $this->argument = $this->request->response()->data->argument;
     }
+
     /**
      * @param string $search
      */
     protected function setSearch(string $search): void
     {
         $search = str_replace(["[", "]"], [""], $search);
+
         $search = explode(",", $search);
         if (count($search) > 0) {
             foreach ($search as $key => $value) {
@@ -298,10 +382,9 @@ class Controller
                     $return = explode("=", $value);
                     $find[$key] = "$return[0] = :$return[0]";
                     $params[$return[0]] = $return[1];
-                    continue;
                 }
             }
-            if(isset($find, $params)){
+            if (isset($find, $params)) {
                 $this->setFind(implode(" AND ", $find));
                 $this->setParams(array_filter($params));
             }

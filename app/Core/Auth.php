@@ -20,7 +20,7 @@ trait Auth
         }
 
         $this->login = (new User())
-            ->find('id, id_user, name, email, password, level', 'email=:email',['email'=>$this->data->email])
+            ->find('id, id_users, name, email, password, level', 'email=:email',['email'=>$this->data->email])
             ->fetch();
 
         if (!isset($this->login )) {
@@ -39,13 +39,6 @@ trait Auth
         $this->session->set('login', $this->login );
         return $middleware->create($this->login ->email);
     }
-
-    protected function destroy()
-    {
-        $this->session->destroy();
-        return true;
-    }
-
     protected function validateLogin(): bool
     {
         if (!isset($this->session->get()->login)) {
@@ -55,7 +48,6 @@ trait Auth
         $this->login = $this->session->get()->login;
         return true;
     }
-
     protected function validateEmail(): bool
     {
         if (!empty($this->data->email)) {
