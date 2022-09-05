@@ -3,6 +3,6 @@
 phpVersion="80"
 #folder system example
 pathProject="/Applications/XAMPP/xamppfiles/htdocs/alexdeovidal/erykia/"
-pathFile="vendor/alexdeovidal/docker-dev/php-"$phpVersion"-docker-compose.yml up -d"
+pathFile="vendor/alexdeovidal/docker-dev/"$phpVersion".yml up -d"
 #path docker-composer
 /usr/local/bin/docker-compose -f $pathProject$pathFile
