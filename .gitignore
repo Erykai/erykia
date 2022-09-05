@@ -2,3 +2,4 @@ vendor
 translate
 composer.phar
 _db-docker-dev_
+composer.lock
