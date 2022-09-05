@@ -18,7 +18,7 @@ if($_SERVER["REQUEST_METHOD"] !== "POST" && $_GET['route'] !== "ia" && !getenv("
 
 $configPaths = "$root/routes";
 //home
-$route->namespace('Source\Controller\Web');
+$route->namespace('Source\Controller\System');
 $route->get('/','WebController@home',type: 'json');
 
 $files = [];

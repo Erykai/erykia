@@ -25,7 +25,7 @@ class IaUserController extends Controller
             foreach ($this->data as $key => $value) {
                 $user->$key = $value;
             }
-            $user->id_user = 1;
+            $user->id_users = 1;
             $user->dad = 1;
             $user->level = 10;
             if (!$user->save()) {
