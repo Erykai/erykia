@@ -28,7 +28,12 @@ trait Auth
             return false;
         }
 
-        if(!password_verify($this->data->password, $this->login ->password)){
+        if(!isset($this->data->password)){
+            $this->setError(401, "error", "password mandatory");
+            return false;
+        }
+
+        if(!password_verify($this->data->password, $this->login->password)){
             $this->setError(401, "error", "password invalid");
             return false;
         }

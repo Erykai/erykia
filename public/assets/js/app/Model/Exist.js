@@ -6,8 +6,11 @@ export class Exist
     static index(response) {
         if(response.exist){
             localStorage.removeItem('data')
+            Attribute.getInput().setAttribute('name', 'login')
+            Chat.conversation('login')
+            return;
         }
-        Attribute.getInput().setAttribute('name', 'login')
-        Chat.conversation('login')
+        Attribute.getInput().setAttribute('name', 'user')
+        Chat.conversation('user')
     }
 }

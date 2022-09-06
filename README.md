@@ -9,11 +9,11 @@ and that's it! Now access your url, and Erykia will talk to you, to create your 
 
 ### INSTALL DOCKER https://www.docker.com/
 ######terminal exec
-UP use --build ex docker-compose up -d --build not image cache
+UP
 ```
-docker-compose up -d
+docker-compose up -d --build
 or
-docker compose up -d
+docker compose up -d --build
 ```
 
 ######terminal exec
@@ -27,7 +27,7 @@ docker compose down
 VERIFY ERROR
 ```
 docker-compose ps
-or
+
 docker compose ps
 ```
 

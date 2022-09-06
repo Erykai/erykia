@@ -41,7 +41,12 @@ CONN_BASE=' . $this->data->base . '
 CONN_HOST=' . $this->data->host . '
 CONN_DSN=' . $this->data->driver . '
 ###JWT###
-KEY_JWT=' . $this->data->cryptography . '';
+KEY_JWT=' . $this->data->cryptography . '
+###ERYKIA###
+ERYKIA_PORT=80
+ERYKIA_SSL_PORT=443
+ERIKIA_DB_PORT=3306
+';
             file_put_contents($file, $data);
             $database['database'] = $this->translate
                 ->translatorString("database data was created successfully", "ia")

@@ -9,8 +9,16 @@ $route = new Route();
 
 if($_SERVER["REQUEST_METHOD"] !== "POST" && $_GET['route'] !== "ia" && !getenv("CONN_USER")){
     header("Location: /ia");
-}
+}else{
+    if(getenv("CONN_USER")){
+        $users = new User();
+        $user = $users->find('id', 'id=:id',['id'=>1])->fetch();
+        if($_SERVER["REQUEST_METHOD"] !== "POST" && !$user && $_GET['route'] !== "ia"){
+            header("Location: /ia");
+        }
+    }
 
+}
 
 /**
  * AUTO INCLUDE
