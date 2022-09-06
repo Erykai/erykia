@@ -3,11 +3,6 @@
   "description": "Artificial intelligence for creating websites, systems in php with restfull api",
   "minimum-stability": "stable",
   "license": "MIT",
-  "scripts": {
-    "startMac": "sh start.sh",
-    "startWin": "powershell .\\start.ps1",
-    "startLinux": "sh start.sh"
-  },
   "authors": [
     {
       "name": "alexdeovidal",
@@ -38,8 +33,5 @@
     "php": ">=8.0",
     "ext-pdo": "*",
     "ext-curl": "*"
-  },
-  "require-dev": {
-    "alexdeovidal/docker-dev": "main-dev"
   }
 }
