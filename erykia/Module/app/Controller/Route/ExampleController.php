@@ -1,12 +1,12 @@
 <?php
 
-namespace Source\Controller\Route;
+namespace Source\Controller\Namespace;
 
 use Source\Core\Auth;
 use Source\Core\Controller;
 use Source\Core\Upload;
 use Source\Model\Example;
-//Example //example //examples
+//Namespace examples Example example
 class ExampleController extends Controller
 {
     use Auth;
@@ -15,7 +15,7 @@ class ExampleController extends Controller
     {
         $this->setRequest($query);
 
-        if(!$this->permission()) {
+        if (!$this->permission()) {
             echo $this->translate->translator($this->getError(), "message")->json();
             return false;
         }
@@ -43,14 +43,14 @@ class ExampleController extends Controller
         }
         if ($this->validateLogin()) {
             $id = (int)$this->session->get()->login->id;
-            $example->id_users= $this->session->get()->login->id;
+            $example->id_examples = $this->session->get()->login->id;
             $example->dad =
                 $id === 1
                     ? $this->session->get()->login->id
                     : $this->session->get()->login->id . "," . $this->session->get()->login->dad;
         } else {
             $example->dad = 1;
-            $example->id_users= 1;
+            $example->id_examples = 1;
         }
 
         $example->created_at = date("Y-m-d H:i:s");
@@ -76,15 +76,14 @@ class ExampleController extends Controller
         $examples = new Example();
         $arguments = (array)$this->argument;
 
-        if($arguments)
-        {
+        if ($arguments) {
             $find = null;
             foreach ($arguments as $key => $argument) {
                 $find .= "$key = :$key AND ";
             }
             $find = substr(trim($find), 0, -4);
-            $example = $examples->find(condition:  $find, params:  $arguments)->fetchReference(getColumn: $this->getColumns());
-            if(!$example){
+            $example = $examples->find(condition: $find, params: $arguments)->fetchReference(getColumn: $this->getColumns());
+            if (!$example) {
                 echo $this->translate->translator($examples->response(), "message")->$response();
                 return false;
             }
@@ -152,9 +151,23 @@ class ExampleController extends Controller
         }
 
         foreach ($this->data as $key => $value) {
+            if (
+                ($key === 'email')
+                &&
+                (new Example())->find('id', 'email=:email', ['email' => $this->data->$key])->fetch()
+                &&
+                $this->data->$key !== $example->email
+            ) {
+                $this->setError(401, "error", "this email already exists");
+                echo $this->translate->translator($this->getError(), "message")->json();
+                return false;
+            }
+            if ($key === 'password') {
+                $this->data->$key = password_hash($value, PASSWORD_BCRYPT, ['cost' => 12]);
+            }
             $example->$key = $this->data->$key;
         }
-        if(isset($example->updated_at)){
+        if (isset($example->updated_at)) {
             $example->updated_at = date("Y-m-d H:i:s");
         }
         if (!$examples->save()) {
@@ -162,7 +175,10 @@ class ExampleController extends Controller
             echo $this->translate->translator($this->getError(), "message")->json();
             return false;
         }
-
+        if ($login->id === $this->argument->id) {
+            $this->session->destroy('login');
+            $this->session->set('login', $example);
+        }
         echo $this->translate->translator($examples->response(), "message")->json();
         return true;
     }
@@ -171,6 +187,12 @@ class ExampleController extends Controller
     {
         $this->setRequest($query);
         if (!$this->permission()) {
+            echo $this->translate->translator($this->getError(), "message")->json();
+            return false;
+        }
+        $login = $this->session->get()->login;
+        if ($login->id === $this->argument->id) {
+            $this->setError(401, "error", "you cannot delete your registration");
             echo $this->translate->translator($this->getError(), "message")->json();
             return false;
         }
@@ -189,7 +211,6 @@ class ExampleController extends Controller
         }
 
         $dads = explode(",", $dad->dad);
-        $login = $this->session->get()->login;
         foreach ($dads as $dad) {
             if ($dad === $login->id) {
                 $example = $examples->find('*',

@@ -137,7 +137,7 @@ class UserController extends Controller
                 }
             }
         } else {
-            $use = $users->find('*',
+            $user = $users->find('*',
                 'users.id=:id',
                 ['id' => $this->argument->id])
                 ->fetchReference(getColumn: $this->getColumns());
