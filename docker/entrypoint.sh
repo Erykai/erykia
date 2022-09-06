@@ -1,3 +1,3 @@
 #!/bin/bash
-composer install
+composer i
 exec apache2-foreground
