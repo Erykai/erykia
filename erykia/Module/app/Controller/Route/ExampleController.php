@@ -43,14 +43,14 @@ class ExampleController extends Controller
         }
         if ($this->validateLogin()) {
             $id = (int)$this->session->get()->login->id;
-            $example->id_examples = $this->session->get()->login->id;
+            $example->id_users = $this->session->get()->login->id;
             $example->dad =
                 $id === 1
                     ? $this->session->get()->login->id
                     : $this->session->get()->login->id . "," . $this->session->get()->login->dad;
         } else {
             $example->dad = 1;
-            $example->id_examples = 1;
+            $example->id_users = 1;
         }
 
         $example->created_at = date("Y-m-d H:i:s");
@@ -82,7 +82,7 @@ class ExampleController extends Controller
                 $find .= "$key = :$key AND ";
             }
             $find = substr(trim($find), 0, -4);
-            $example = $examples->find(condition: $find, params: $arguments)->fetchReference(getColumn: $this->getColumns());
+            $example = $examples->find(condition: $find, params: $arguments)->fetchReference(getColumns: $this->getColumns());
             if (!$example) {
                 echo $this->translate->translator($examples->response(), "message")->$response();
                 return false;
@@ -122,7 +122,7 @@ class ExampleController extends Controller
         $dad = $examples->find('examples.dad',
             'examples.id=:id',
             ['id' => $this->argument->id])
-            ->fetchReference(getColumn: $this->getColumns());
+            ->fetch();
         $example = null;
 
 
@@ -133,14 +133,14 @@ class ExampleController extends Controller
                     $example = $examples->find('*',
                         'examples.id=:id',
                         ['id' => $this->argument->id])
-                        ->fetchReference(getColumn: $this->getColumns());
+                        ->fetch();
                 }
             }
         } else {
             $example = $examples->find('*',
                 'examples.id=:id',
                 ['id' => $this->argument->id])
-                ->fetchReference(getColumn: $this->getColumns());
+                ->fetch();
         }
 
 
@@ -201,7 +201,7 @@ class ExampleController extends Controller
         $dad = $examples->find('examples.dad',
             'examples.id=:id',
             ['id' => $this->argument->id])
-            ->fetchReference(getColumn: $this->getColumns());
+            ->fetch();
         $example = null;
 
         if (!$dad) {
@@ -216,7 +216,7 @@ class ExampleController extends Controller
                 $example = $examples->find('*',
                     'examples.id=:id',
                     ['id' => $this->argument->id])
-                    ->fetchReference(getColumn: $this->getColumns());
+                    ->fetch();
             }
         }
 
