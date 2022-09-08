@@ -94,38 +94,38 @@ class Model extends Database
             }
 
             $key = array_search("name", $getColumns, true);
-            if($key !== null){
-                $getColumns[$key] = $this->table.".".$getColumns[$key];
+            if ($key !== null) {
+                $getColumns[$key] = $this->table . "." . $getColumns[$key];
             }
         }
         $columns = $this->conn->query("SHOW COLUMNS FROM $this->table")->fetchAll();
         $inner = null;
         $returnColumns = null;
-
-        foreach ($columns as $column) {
-            if ((strpos($column->Field, "id_")) !== false) {
-                $table = str_replace("id_", "", $column->Field);
-                if (isset($this->params)) {
-                    $keyParam = array_search($table, array_keys($this->params), true);
-                    if ($keyParam !== false) {
-                        $params[] = $table . '.name';
-                        $paramsReplace[] = " $table ";
-                    }
+        $relationships = Helper::relationship($columns, $this->table);
+        foreach ($relationships->relationship as $key => $relationship) {
+            if (isset($this->params)) {
+                $keyParam = array_search($relationship, array_keys($this->params), true);
+                if ($keyParam !== false) {
+                    $params[] = $relationship . '.name';
+                    $paramsReplace[] = " $relationship ";
                 }
-                if (!empty($getColumns)) {
-                    $key = array_search($table, $getColumns, true);
-                    if ($key !== false) {
-                        $getColumns[$key] = $table . '.name' . " $table";
-                    }
-                }
-                if($table !== $this->table){
-                    $inner .= "INNER JOIN $table ON $this->table.$column->Field = $table.id ";
-                }
-
-                $returnColumns .= "$table.name $table,";
-            } else {
-                $returnColumns .= "$this->table.$column->Field,";
             }
+            if (!empty($getColumns)) {
+                $key = array_search($relationship, $getColumns, true);
+                if ($key !== false) {
+                    $getColumns[$key] = $relationship . '.name' . " $relationship";
+                }
+            }
+            if ($relationship !== $this->table) {
+                $inner .= "INNER JOIN $relationship ON $this->table.$key = $relationship.id ";
+            }
+            $returnColumns .= "$relationship.name $relationship,";
+        }
+        foreach ($relationships->tables as $key => $table) {
+            if($key !== 'name'){
+                $returnColumns .= $this->table ."."."$key,";
+            }
+
         }
 
         $select = explode("SELECT", $this->query)[1];
@@ -134,42 +134,36 @@ class Model extends Database
         if ($inner) {
             $returnColumns = substr($returnColumns, 0, -1);
             $this->inner($inner);
-            if (!empty($getColumns)) {
-                $getColumns = implode(",", $getColumns);
-                $this->query = str_replace($columnsRequest, " $getColumns ", $this->query);
-            } else if ($columnsRequest === " * ") {
-                $this->query = str_replace("*", $returnColumns, $this->query);
-            } else {
-                $this->query = str_replace($returnColumns, " $columnsRequest ", $this->query);
-            }
-        }else{
-            if (!empty($getColumns)) {
-                $getColumns = implode(",", $getColumns);
-                $this->query = str_replace($columnsRequest, " $getColumns ", $this->query);
-            } else if ($columnsRequest === " * ") {
-                $this->query = str_replace("*", $returnColumns, $this->query);
-            } else {
-                $this->query = str_replace($returnColumns, " $columnsRequest ", $this->query);
-            }
         }
+
+        if (!empty($getColumns)) {
+            $getColumns = implode(",", $getColumns);
+            $this->query = str_replace($columnsRequest, " $getColumns ", $this->query);
+        } else if ($columnsRequest === " * ") {
+            $this->query = str_replace("*", $returnColumns, $this->query);
+        } else {
+            $this->query = str_replace($returnColumns, " $columnsRequest ", $this->query);
+        }
+
 
         $where = explode("WHERE", $this->query);
         if (isset($where[1])) {
             $whereColumns = explode("AND", $where[1]);
             foreach ($whereColumns as $key => $value) {
-                if(isset($params[$key])){
+                if (isset($params[$key])) {
                     $returnParams[] = str_replace($paramsReplace[$key], " " . $params[$key] . " ", $value);
 
-                }else{
+                } else {
                     $arrayColums = array_keys($this->params)[$key];
-                    $returnParams[] = str_replace(" $arrayColums ", $this->table.'.'.array_keys($this->params)[$key] . " ", $value);
+                    $returnParams[] = str_replace(" $arrayColums ", $this->table . '.' . array_keys($this->params)[$key] . " ", $value);
                 }
 
             }
             $newQuery = implode("AND ", $returnParams);
-            $newQuery = $where[0] ."WHERE". $newQuery;
+            $newQuery = $where[0] . "WHERE" . $newQuery;
             $this->query = $newQuery;
         }
+
         if ($count) {
             return $this->count();
         }

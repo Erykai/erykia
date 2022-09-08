@@ -82,7 +82,7 @@ class UserController extends Controller
                 $find .= "$key = :$key AND ";
             }
             $find = substr(trim($find), 0, -4);
-            $user = $users->find(condition: $find, params: $arguments)->fetchReference(getColumn: $this->getColumns());
+            $user = $users->find(condition: $find, params: $arguments)->fetchReference(getColumns: $this->getColumns());
             if (!$user) {
                 echo $this->translate->translator($users->response(), "message")->$response();
                 return false;
@@ -122,7 +122,7 @@ class UserController extends Controller
         $dad = $users->find('users.dad',
             'users.id=:id',
             ['id' => $this->argument->id])
-            ->fetchReference(getColumn: $this->getColumns());
+            ->fetchReference(getColumns: $this->getColumns());
         $user = null;
 
 
@@ -133,14 +133,14 @@ class UserController extends Controller
                     $user = $users->find('*',
                         'users.id=:id',
                         ['id' => $this->argument->id])
-                        ->fetchReference(getColumn: $this->getColumns());
+                        ->fetchReference(getColumns: $this->getColumns());
                 }
             }
         } else {
             $user = $users->find('*',
                 'users.id=:id',
                 ['id' => $this->argument->id])
-                ->fetchReference(getColumn: $this->getColumns());
+                ->fetchReference(getColumns: $this->getColumns());
         }
 
 
@@ -201,7 +201,7 @@ class UserController extends Controller
         $dad = $users->find('users.dad',
             'users.id=:id',
             ['id' => $this->argument->id])
-            ->fetchReference(getColumn: $this->getColumns());
+            ->fetchReference(getColumns: $this->getColumns());
         $user = null;
 
         if (!$dad) {
@@ -216,7 +216,7 @@ class UserController extends Controller
                 $user = $users->find('*',
                     'users.id=:id',
                     ['id' => $this->argument->id])
-                    ->fetchReference(getColumn: $this->getColumns());
+                    ->fetchReference(getColumns: $this->getColumns());
             }
         }
 
