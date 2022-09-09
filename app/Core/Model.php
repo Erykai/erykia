@@ -2,7 +2,6 @@
 
 namespace Source\Core;
 
-use Cassandra\Varint;
 use Erykai\Database\Database;
 use Source\Model\User;
 
@@ -111,9 +110,9 @@ class Model extends Database
                 }
             }
             if (!empty($getColumns)) {
-                $key = array_search($relationship, $getColumns, true);
-                if ($key !== false) {
-                    $getColumns[$key] = $relationship . '.name' . " $relationship";
+                $keyColumns = array_search($relationship, $getColumns, true);
+                if ($keyColumns !== false) {
+                    $getColumns[$keyColumns] = $relationship . '.name' . " $relationship";
                 }
             }
             if ($relationship !== $this->table) {
@@ -145,7 +144,6 @@ class Model extends Database
             $this->query = str_replace($returnColumns, " $columnsRequest ", $this->query);
         }
 
-
         $where = explode("WHERE", $this->query);
         if (isset($where[1])) {
             $whereColumns = explode("AND", $where[1]);
@@ -163,7 +161,6 @@ class Model extends Database
             $newQuery = $where[0] . "WHERE" . $newQuery;
             $this->query = $newQuery;
         }
-
         if ($count) {
             return $this->count();
         }

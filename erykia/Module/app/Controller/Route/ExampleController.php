@@ -191,11 +191,12 @@ class ExampleController extends Controller
             return false;
         }
         $login = $this->session->get()->login;
-        if ($login->id === $this->argument->id) {
-            $this->setError(401, "error", "you cannot delete your registration");
-            echo $this->translate->translator($this->getError(), "message")->json();
-            return false;
-        }
+        //if users not delete my user
+//        if ($login->id === $this->argument->id) {
+//            $this->setError(401, "error", "you cannot delete your registration");
+//            echo $this->translate->translator($this->getError(), "message")->json();
+//            return false;
+//        }
 
         $examples = (new Example());
         $dad = $examples->find('examples.dad',
