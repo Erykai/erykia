@@ -27,10 +27,9 @@ services:
       - ./_db-docker-dev_/logs:/var/log/mysql
       - ./_db-docker-dev_/conf:/etc/mysql
       - ./docker/init.sql:/data/application/init.sql
-      - ./docker/countries-states-cities.sql:/data/application/countries-states-cities.sql
     ports:
       - '${ERIKIA_DB_PORT:-3306}:3306'
-    command: --init-file /data/application/init.sql --init-file /data/application/countries-states-cities.sql
+    command: --init-file /data/application/init.sql
     environment:
       MYSQL_USER: root
       MYSQL_PASSWORD: root
