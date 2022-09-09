@@ -37,7 +37,72 @@ docker-compose logs php
 or
 docker compose logs php
 ```
-
+### CREATE NEW MODULE EXAMPLE JSON
+Example streaming and category.
+##### send post https://lvh.me/module or https://localhost/module raw json
+```json
+{
+  "component": "streaming",
+  "namespace": "stream",
+  "database": {
+    "id_streamings_categories":{
+      "type": "int(11)"
+    },
+    "id_countries":{
+      "type": "int(11)"
+    },
+    "id_states":{
+      "type": "int(11)"
+    },
+    "id_cities":{
+      "type": "int(11)"
+    },
+    "name":{
+      "type": "varchar(255)"
+    },
+    "subtitle":{
+      "type": "text"
+    },
+    "description":{
+      "type": "text"
+    },
+    "tag":{
+      "type": "text",
+      "null": true
+    },
+    "url":{
+      "type": "varchar(255)"
+    },
+    "like":{
+      "type": "int(11)",
+      "null": true
+    },
+    "dislike":{
+      "type": "int(11)",
+      "null": true
+    },
+    "slug":{
+      "type": "text"
+    },
+    "cover":{
+      "type": "text",
+      "null": true
+    }
+  },
+  "category": {
+    "name": {
+      "type": "varchar(255)"
+    },
+    "slug": {
+      "type": "text"
+    },
+    "icon": {
+      "type": "text",
+      "null": true
+    }
+  }
+}
+```
 ### REQUIRE
 `composer`
 `php: >=8.0`
