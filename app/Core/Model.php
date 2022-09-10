@@ -80,6 +80,12 @@ class Model extends Database
 
     public function fetchReference(bool $all = false, ?string $getColumns = "", $count = false)
     {
+        $columns = $this->conn->query("SHOW COLUMNS FROM $this->table")->fetchAll();
+        $inner = null;
+        $returnColumns = null;
+        $relationships = Helper::relationship($columns, $this->table);
+
+
         if (!empty($getColumns)) {
             $getColumns = explode(",", $getColumns);
             $key = array_search("id", $getColumns);
@@ -93,14 +99,12 @@ class Model extends Database
             }
 
             $key = array_search("name", $getColumns, true);
-            if ($key !== null) {
+            if ($key) {
                 $getColumns[$key] = $this->table . "." . $getColumns[$key];
             }
         }
-        $columns = $this->conn->query("SHOW COLUMNS FROM $this->table")->fetchAll();
-        $inner = null;
-        $returnColumns = null;
-        $relationships = Helper::relationship($columns, $this->table);
+
+
         foreach ($relationships->relationship as $key => $relationship) {
             if (isset($this->params)) {
                 $keyParam = array_search($relationship, array_keys($this->params), true);
@@ -161,6 +165,8 @@ class Model extends Database
             $newQuery = $where[0] . "WHERE" . $newQuery;
             $this->query = $newQuery;
         }
+
+
         if ($count) {
             return $this->count();
         }
