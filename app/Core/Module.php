@@ -2,10 +2,31 @@
 
 namespace Source\Core;
 use RuntimeException;
+
+/**
+ * create module
+ */
 trait Module
 {
     /**
-     *
+     * @var string
+     */
+    private string $path;
+    /**
+     * @var string
+     */
+    private string $component;
+    /**
+     * @var array
+     */
+    private array $modelNotNull;
+    /**
+     * @var array
+     */
+    private array $database;
+
+    /**
+     * start create module
      */
     protected function start(): void
     {

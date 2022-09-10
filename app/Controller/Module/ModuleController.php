@@ -13,29 +13,18 @@ use stdClass;
 class ModuleController extends Controller
 {
     use Module;
-    /**
-     * @var string
-     */
-    private string $path;
-    /**
-     * @var string
-     */
-    private string $component;
-    /**
-     * @var array
-     */
-    private array $modelNotNull;
-    /**
-     * @var array
-     */
-    private array $database;
 
     /**
      * @param $query
+     * @return bool
      */
-    public function store($query): void
+    public function store($query): bool
     {
         $this->setRequest($query);
+        if (!$this->permission()) {
+            echo $this->translate->translator($this->getError(), "message")->json();
+            return false;
+        }
         if ($this->data->category) {
             $this->data->component .= "_category";
             $this->start();
@@ -50,5 +39,6 @@ class ModuleController extends Controller
         $return->dynamic = $this->data->component;
         $translate = new Translate();
         echo $translate->translator($return,"message")->json();
+        return true;
     }
 }
