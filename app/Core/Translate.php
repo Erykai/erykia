@@ -35,6 +35,7 @@ class Translate extends \Erykai\Translate\Translate
             $response->text = $return->getResponse()->translate;
             $return->data($response);
         }
+
         return $return;
 
     }

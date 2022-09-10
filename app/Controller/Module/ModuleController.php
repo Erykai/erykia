@@ -6,6 +6,8 @@ use RuntimeException;
 use Source\Core\Controller;
 use Source\Core\Helper;
 use Source\Core\Pluralize;
+use Source\Core\Translate;
+use stdClass;
 
 /**
  * create news modules erykia
@@ -42,8 +44,13 @@ class ModuleController extends Controller
         $this->data->component = str_replace("_category","",$this->data->component);
         $this->start();
 
-
-
+        $return = new stdClass();
+        $return->code = 200;
+        $return->type = "success";
+        $return->text = $this->data->component . " created successfully";
+        $return->dynamic = $this->data->component;
+        $translate = new Translate();
+        echo $translate->translator($return,"message")->json();
     }
 
     /**
@@ -120,6 +127,15 @@ class ModuleController extends Controller
         if ($isModel) {
             $this->model();
         }
+        //create database
+        $Example = ucfirst(strtolower($this->data->component));
+        if(str_contains($Example,"_")){
+            $Example = explode("_", $Example);
+            $Example = $Example[0] . ucfirst(strtolower($Example[1]));
+        }
+        $class = $Example;
+        $class = "\Source\Model\\" . $class;
+        $Class = new $class();
     }
 
     /**
