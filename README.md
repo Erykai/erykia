@@ -1,13 +1,18 @@
 # Erykia 👩🏻
-###Artificial Intelligence in all languages 🌎
+### Artificial Intelligence in all languages 🌎
 
 🤖 Artificial intelligence for creating websites, systems in php with restfull api
 
 ### MODE INSTALL
 `require git https://git-scm.com/` 
 `require docker https://www.docker.com/` 
-
-###Terminal exec
+### REQUIRE
+`composer`
+`php: >=8.0`
+`ext-pdo`
+`ext-curl`
+`docker`
+### Terminal exec
 UP
 ```shell
 git clone https://github.com/Erykai/erykia.git
@@ -15,7 +20,7 @@ cd erykia
 docker compose up -d --build
 ```
 
-######terminal exec
+###### terminal exec
 DOWN
 ```shell
 docker compose down
@@ -31,8 +36,8 @@ LOGS PHP
 docker compose logs php
 ```
 
-####Open your browser and go to https://lvh.me or https://localhost
-#####PMA http://lvh.me:8080
+#### Open your browser and go to https://lvh.me or https://localhost
+##### PMA http://lvh.me:8080
 
 ### CREATE NEW MODULE EXAMPLE JSON
 Example streaming and category.
@@ -100,9 +105,3 @@ Example streaming and category.
   }
 }
 ```
-### REQUIRE
-`composer`
-`php: >=8.0`
-`ext-pdo`
-`ext-curl`
-`docker`
