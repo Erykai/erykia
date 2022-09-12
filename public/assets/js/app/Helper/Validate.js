@@ -9,7 +9,7 @@ export class Validate {
         return this.validate(input)
     }
     static response(input) {
-        Chat.response(`${input.value} invalid ${input.name}${this.message}`)
+        Chat.translate(`invalid ${input.name}${this.message}`)
     }
     static validate(input) {
         if (input.name === 'name') {
