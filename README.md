@@ -1,42 +1,39 @@
-# Erykia
-###Artificial Intelligence in all languages
+# Erykia 👩🏻
+###Artificial Intelligence in all languages 🌎
 
-Artificial intelligence for creating websites, systems in php with restfull api
+🤖 Artificial intelligence for creating websites, systems in php with restfull api
 
 ### MODE INSTALL
-Download the latest version, unzip it on a php server, composer install, composer update, create database mysql or mariadb
-and that's it! Now access your url, and Erykia will talk to you, to create your website or your system in PHP :)
+`require git https://git-scm.com/` 
+`require docker https://www.docker.com/` 
 
-### INSTALL DOCKER https://www.docker.com/
-######terminal exec
+###Terminal exec
 UP
-```
-docker-compose up -d --build
-or
+```shell
+git clone https://github.com/Erykai/erykia.git
+cd erykia
 docker compose up -d --build
 ```
 
 ######terminal exec
 DOWN
-```
-docker-compose down
-or
+```shell
 docker compose down
 ```
 
 VERIFY ERROR
-```
-docker-compose ps
-
+```shell
 docker compose ps
 ```
 
 LOGS PHP
-```
-docker-compose logs php
-or
+```shell
 docker compose logs php
 ```
+
+####Open your browser and go to https://lvh.me or https://localhost
+#####PMA http://lvh.me:8080
+
 ### CREATE NEW MODULE EXAMPLE JSON
 Example streaming and category.
 ##### send post https://lvh.me/module or https://localhost/module raw json

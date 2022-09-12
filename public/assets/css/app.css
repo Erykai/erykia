@@ -1,26 +1,109 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto');
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css");
+body{
+    background: rgba(110,110,110,0.84);
+    scrollbar-width: thin;
+    scrollbar-color: #26343c #ffffffa1;
+}
+body::-webkit-scrollbar, .chatbot::-webkit-scrollbar {
+    width: 12px;
+}
+
+body::-webkit-scrollbar-track, .chatbot::-webkit-scrollbar-track {
+    background: #26343c;
+}
+
+body::-webkit-scrollbar-thumb, .chatbot::-webkit-scrollbar-thumb {
+    background-color: #ffffffa1;
+    border-radius: 20px;
+    border: 3px solid #26343c;
+}
+i{
+    font-style: normal;
+}
+label{
+    width: 100%;
+}
 .container {
-    width: 600px;
+    max-width: 600px;
     margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    background-color: rgb(212, 211, 211);
+    background-image: url(../img/bg-erykia.png);
+    background-color: #000;
     border-radius: 15px;
-    box-shadow: 0 0 10px grey;
+    box-shadow: 0px 0px 20px 0px #0000006b;
     font-family: 'Roboto', sans-serif;
+}
+
+.header-ia {
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-content: space-around;
+    align-items: center;
+    background: #1f2c33;
+    border-radius: 15px 15px 0px 0px;
+    box-shadow: -1px 2px 6px rgb(0 0 0 / 72%);
+}
+
+.profile-img {
+    background-image: url(../img/erykia.png);
+    background-color: #000000;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: 100%;
+    width: 60px;
+    height: 60px;
+    border: solid 1px #0da684;
+    margin: 5px;
+}
+
+.header-ia button {
+    border: none;
+    background-color: transparent;
+    margin: 5px;
+    color: white;
+    font-size: 2rem;
+}
+
+.header-ia button:hover {
+    cursor: pointer;
+}
+
+.chat-name {
+    width: calc(100% - 125px);
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.chat-name i {
+    color: rgb(10 167 132);
+    font-size: 0.8rem;
+}
+
+.title-chat {
+    font-size: 22px;
+    margin: 0;
+    color: #fff;
+    text-align: initial;
 }
 
 .chatbot {
     display: flex;
-    justify-content: flex-end;
     flex-direction: column;
-    background-color: white;
+    justify-content: flex-start;
     width: 100%;
     padding: 0 10px;
-    height: 80vh;
+    height: calc(100vh - 150px);
     overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #26343c #ffffffa1;
 }
+.chatbot > :first-child { margin-top: auto }
 
 .chatbot-response-ia {
     display: flex;
@@ -35,56 +118,81 @@
 }
 
 .response-ia {
-    background-color: #cecece;
+    background-color: #1f2c33;
+    color: #fff;
     max-width: 60%;
     border-radius: 0 30px 30px 30px;
-    margin: 10px 0;
-    padding: 1px 17px;
-    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.719);
+    margin: 20px 0;
+    padding: 10px 30px;
+    box-shadow: 3px 3px 5px rgb(0 0 0 / 72%);
 }
 
-.response-ia .load{
+.response-ia .load {
     width: 50px;
 }
 
 .response-input {
-    background-color: #25710e;
+    background-color: rgb(1 93 75);
     color: #fff;
     max-width: 60%;
     border-radius: 30px 0 30px 30px;
     margin: 10px 0;
     padding: 10px 30px;
-    box-shadow: -3px 3px 5px rgba(0, 0, 0, 0.719);
+    box-shadow: -3px 3px 5px rgb(0 0 0 / 72%);
+    word-break: break-all;
 }
 
 .responsetext {
-    padding: 20px 5px;
-
+    padding: 10px;
     width: 100%;
     text-align: center;
+    display: flex;
+    align-items: center;
+    background: #1f2c33;
+    border-radius: 0px 0px 15px 15px;
+    box-shadow: 0px -1px 6px rgb(0 0 0 / 72%);
 }
-#chatErykia{
-    height: 80vh;
-    display: contents;
+
+#chatErykia {
+    display: flex;
+    flex-direction: column;
+
+}
+
+#chatErykia> :first-child {
+    margin-top: auto !important;
 }
 
 #response {
-    width: 90%;
-    height: 2rem;
-    border-radius: 10px;
+    width: calc(100% - 20px);
+    height: 30px;
+    border-radius: 7px;
     border: none;
+    padding: 6px 10px;
+    background: #26343c;
+    color: #ffffffa1;
 }
+
 #response:focus {
     outline: 0;
-    border: 1px solid grey;
-}
-#send{
-    height: 2.15rem;
-    border-radius: 10px;
     border: none;
-    background-color: rgb(85, 191, 240);
 }
-#send:hover{
-    border: 1px solid grey;
+
+#send {
+    border: none;
+    background-color: transparent;
+}
+
+#send i {
+    color: #ffffff66;
+    font-size: 30px;
+}
+.bi-send::before {
+    transform: rotate(45deg);
+}
+
+
+#send:hover {
+    border: none;
     cursor: pointer;
 }

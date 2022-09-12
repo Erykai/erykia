@@ -1,18 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../../public/assets/css/app.css" rel="stylesheet">
-
+    <title>Erykia</title>
 </head>
 
 <body>
-
 <div class="container">
-    <h3>Chat Erykia IA</h3>
-    <div class="chatbot" >
+    <div class="header-ia">
+        <div class="profile-img">
+        </div>
+        <div class="chat-name">
+            <h3 class="title-chat">Erykia</h3>
+            <i class="bi bi-circle-fill"> Online</i>
+        </div>
+
+        <button><i class="bi bi-three-dots-vertical"></i></button>
+    </div>
+
+    <div class="chatbot" id="chatScroll">
         <div id="chatErykia">
 
         </div>
@@ -28,9 +38,7 @@
         <label>
             <input id="response" type="text" name="" placeholder="Aguardando resposta...">
         </label>
-        <label>
-            <input id="send" name="" type="button" value=">>>">
-        </label>
+        <button id="send" type="button"><i class="bi bi-send"></i></button>
     </div>
 </div>
 <script type="module" src="../../public/assets/js/app.js"></script>

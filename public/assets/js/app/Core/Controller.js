@@ -34,6 +34,7 @@ export class Controller {
         Attribute.getInput().addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 this.send()
+
             }
         })
     }

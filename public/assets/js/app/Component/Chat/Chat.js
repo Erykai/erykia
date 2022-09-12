@@ -29,6 +29,8 @@ export class Chat {
         if(!Attribute.getDeveloper()){
             Element.getId('response').value = ""
         }
+        let chatScroll = Element.getId('chatScroll')
+        chatScroll.scroll(0,chatScroll.scrollHeight + chatScroll.clientHeight)
     }
     static save() {
         Attribute.getInput().value = localStorage.getItem(Attribute.getInput().name) ?? ''
