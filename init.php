@@ -1,10 +1,10 @@
 <?php
+
 use Source\Core\Route;
 use Source\Core\Translate;
 use Source\Model\User;
 $root = __DIR__;
 require "$root/vendor/autoload.php";
-
 $route = new Route();
 
 if($_SERVER["REQUEST_METHOD"] !== "POST" && $_GET['route'] !== "ia" && !getenv("CONN_USER")){
