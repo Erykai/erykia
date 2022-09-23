@@ -12,7 +12,8 @@ class LoginController extends Controller
     public function login($query, string $response): bool
     {
         if($auth = $this->auth()){
-            echo $auth;
+            $json['bearerToken'] = $auth;
+            echo $this->response->data((object)$json)->json();
             return true;
         }
         echo $this->translate->translator($this->getError(), "message")->$response();
@@ -23,6 +24,10 @@ class LoginController extends Controller
     public function logout(): bool
     {
         $this->session->destroy();
+        $json['logout'] = $this->translate
+            ->translatorString("You left successfully, come back soon!","message")
+            ->object()->text;
+        echo $this->response->data((object)$json)->json();
         return true;
     }
 }

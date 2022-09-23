@@ -104,33 +104,38 @@ class Model extends Database
             }
         }
 
-
-        foreach ($relationships->relationship as $key => $relationship) {
-            if (isset($this->params)) {
-                $keyParam = array_search($relationship, array_keys($this->params), true);
-                if ($keyParam !== false) {
-                    $params[] = $relationship . '.name';
-                    $paramsReplace[] = " $relationship ";
+        if (isset($relationships->relationship)) {
+            foreach ($relationships->relationship as $key => $relationship) {
+                if (isset($this->params)) {
+                    $keyParam = array_search($relationship, array_keys($this->params), true);
+                    if ($keyParam !== false) {
+                        $params[] = $relationship . '.name';
+                        $paramsReplace[] = " $relationship ";
+                    }
                 }
-            }
-            if (!empty($getColumns)) {
-                $keyColumns = array_search($relationship, $getColumns, true);
-                if ($keyColumns !== false) {
-                    $getColumns[$keyColumns] = $relationship . '.name' . " $relationship";
+                if (!empty($getColumns)) {
+                    $keyColumns = array_search($relationship, $getColumns, true);
+                    if ($keyColumns !== false) {
+                        $getColumns[$keyColumns] = $relationship . '.name' . " $relationship";
+                    }
                 }
-            }
-            if ($relationship !== $this->table) {
-                $inner .= "INNER JOIN $relationship ON $this->table.$key = $relationship.id ";
-            }
-            $returnColumns .= "$relationship.name $relationship,";
-        }
-        foreach ($relationships->tables as $key => $table) {
-            if($key !== 'name'){
-                $returnColumns .= $this->table ."."."$key,";
+                if ($relationship !== $this->table) {
+                    $inner .= "INNER JOIN $relationship ON $this->table.$key = $relationship.id ";
+                }
+                $returnColumns .= "$relationship.name $relationship,";
             }
 
         }
 
+        if (isset($relationships->tables)) {
+            foreach ($relationships->tables as $key => $table) {
+                // if ($key !== 'name') {
+                $returnColumns .= $this->table . "." . "$key,";
+                //   }
+
+            }
+            $returnColumns = substr($returnColumns, 0, -1);
+        }
         $select = explode("SELECT", $this->query)[1];
         $columnsRequest = explode("FROM", $select)[0];
 
@@ -165,7 +170,6 @@ class Model extends Database
             $newQuery = $where[0] . "WHERE" . $newQuery;
             $this->query = $newQuery;
         }
-
 
         if ($count) {
             return $this->count();
