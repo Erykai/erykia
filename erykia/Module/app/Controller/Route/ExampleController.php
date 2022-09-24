@@ -4,6 +4,7 @@ namespace Source\Controller\Namespace;
 
 use Source\Core\Auth;
 use Source\Core\Controller;
+use Source\Core\Response;
 use Source\Core\Upload;
 use Source\Model\Example;
 //Namespace examples Example example
@@ -16,7 +17,7 @@ class ExampleController extends Controller
         $this->setRequest($query);
 
         if (!$this->permission()) {
-            echo $this->translate->translator($this->getError(), "message")->json();
+            echo $this->translate->translator($this->getResponse(), "message")->json();
             return false;
         }
 
@@ -87,7 +88,7 @@ class ExampleController extends Controller
                 echo $this->translate->translator($examples->response(), "message")->$response();
                 return false;
             }
-            echo $this->response->data($example)->$response();
+            echo (new Response())->data($example)->$response();
             return true;
         }
 
@@ -106,7 +107,7 @@ class ExampleController extends Controller
             return false;
         }
         $this->paginator->data = $example;
-        echo $this->response->data($this->getPaginator())->$response();
+        echo (new Response())->data($this->getPaginator())->$response();
         return true;
     }
 
@@ -114,7 +115,7 @@ class ExampleController extends Controller
     {
         $this->setRequest($query);
         if (!$this->permission()) {
-            echo $this->translate->translator($this->getError(), "message")->$response();
+            echo $this->translate->translator($this->getResponse(), "message")->$response();
         }
 
         $login = $this->session->get()->login;
@@ -125,6 +126,11 @@ class ExampleController extends Controller
             ->fetch();
         $example = null;
 
+        if(!$dad){
+            $this->setResponse(401, "error", "this example does not exist", "edit");
+            echo $this->translate->translator($this->getResponse(), "message")->json();
+            return false;
+        }
 
         if ($login->id !== $this->argument->id) {
             $dads = explode(",", $dad->dad);
@@ -145,8 +151,8 @@ class ExampleController extends Controller
 
 
         if (!$example) {
-            $this->setError(401, "error", "you do not have permission to make this edit");
-            echo $this->translate->translator($this->getError(), "message")->json();
+            $this->setResponse(401, "error", "you do not have permission to make this edit", "edit");
+            echo $this->translate->translator($this->getResponse(), "message")->json();
             return false;
         }
 
@@ -158,8 +164,8 @@ class ExampleController extends Controller
                 &&
                 $this->data->$key !== $example->email
             ) {
-                $this->setError(401, "error", "this email already exists");
-                echo $this->translate->translator($this->getError(), "message")->json();
+                $this->setResponse(401, "error", "this email already exists","edit");
+                echo $this->translate->translator($this->getResponse(), "message")->json();
                 return false;
             }
             if ($key === 'password') {
@@ -171,8 +177,8 @@ class ExampleController extends Controller
             $example->updated_at = date("Y-m-d H:i:s");
         }
         if (!$examples->save()) {
-            $this->setError(401, "error", "error saving");
-            echo $this->translate->translator($this->getError(), "message")->json();
+            $this->setResponse(401, "error", "error saving","edit");
+            echo $this->translate->translator($this->getResponse(), "message")->json();
             return false;
         }
         if ($login->id === $this->argument->id) {
@@ -187,14 +193,14 @@ class ExampleController extends Controller
     {
         $this->setRequest($query);
         if (!$this->permission()) {
-            echo $this->translate->translator($this->getError(), "message")->json();
+            echo $this->translate->translator($this->getResponse(), "message")->json();
             return false;
         }
         $login = $this->session->get()->login;
         //if users not delete my user
 //        if ($login->id === $this->argument->id) {
-//            $this->setError(401, "error", "you cannot delete your registration");
-//            echo $this->translate->translator($this->getError(), "message")->json();
+//            $this->setResponse(401, "error", "you cannot delete your registration");
+//            echo $this->translate->translator($this->getResponse(), "message")->json();
 //            return false;
 //        }
 
@@ -206,8 +212,8 @@ class ExampleController extends Controller
         $example = null;
 
         if (!$dad) {
-            $this->setError(401, "error", "this data does not exist");
-            echo $this->translate->translator($this->getError(), "message")->json();
+            $this->setResponse(401, "error", "this example does not exist", "delete");
+            echo $this->translate->translator($this->getResponse(), "message")->json();
             return false;
         }
 
@@ -222,14 +228,14 @@ class ExampleController extends Controller
         }
 
         if (!$example) {
-            $this->setError(401, "error", "you do not have permission to make this delete");
-            echo $this->translate->translator($this->getError(), "message")->json();
+            $this->setResponse(401, "error", "you do not have permission to make this delete", "delete");
+            echo $this->translate->translator($this->getResponse(), "message")->json();
             return false;
         }
 
         $examples->delete($this->argument->id);
-        $this->setError(200, "success", "registration successfully deleted");
-        echo $this->translate->translator($this->getError(), "message")->json();
+        $this->setResponse(200, "success", "registration successfully deleted", "delete");
+        echo $this->translate->translator($this->getResponse(), "message")->json();
         return true;
     }
 }

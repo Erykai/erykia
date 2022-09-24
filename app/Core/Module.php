@@ -24,7 +24,6 @@ trait Module
      * @var array
      */
     private array $database;
-
     /**
      * start create module
      */
@@ -98,16 +97,17 @@ trait Module
         }
         if ($isModel) {
             $this->model();
+            //create database
+            $Example = ucfirst(strtolower($this->data->component));
+            if(str_contains($Example,"_")){
+                $Example = explode("_", $Example);
+                $Example = $Example[0] . ucfirst(strtolower($Example[1]));
+            }
+            $class = $Example;
+            $class = "\Source\Model\\" . $class;
+            $Class = new $class();
         }
-        //create database
-        $Example = ucfirst(strtolower($this->data->component));
-        if(str_contains($Example,"_")){
-            $Example = explode("_", $Example);
-            $Example = $Example[0] . ucfirst(strtolower($Example[1]));
-        }
-        $class = $Example;
-        $class = "\Source\Model\\" . $class;
-        $Class = new $class();
+
     }
 
     /**
@@ -158,7 +158,10 @@ trait Module
         if (isset($this->modelNotNull)) {
             $model = implode(PHP_EOL, $this->modelNotNull);
             $file = str_replace('/*#####*/', $model, file_get_contents($this->getComponent()));
-            file_put_contents($this->getComponent(), $file);
+            if(file_put_contents($this->getComponent(), $file) === false)
+            {
+                throw new RuntimeException("error creating " . $this->getComponent());
+            }
             unset($this->modelNotNull);
         }
 
@@ -241,8 +244,8 @@ trait Module
         $this->path = "/erykia/Module/";
         return [
             "app/Controller/Route/ExampleController.php",
-            "app/Model/Example.php",
             "database/examples.php",
+            "app/Model/Example.php",
             "routes/Route/ExampleController.php"
         ];
     }
@@ -253,8 +256,8 @@ trait Module
     protected function validate(): bool
     {
         if (!isset($this->data->component, $this->data->namespace, $this->data->database)) {
-            $this->setError(401, "error", "component, namespace and database is mandatory");
-            echo $this->translate->translator($this->getError(), "message")->json();
+            $this->setResponse(401, "error", "component, namespace and database is mandatory", "module");
+            echo (new Translate())->translator($this->getResponse(), "message")->json();
             return false;
         }
         return true;

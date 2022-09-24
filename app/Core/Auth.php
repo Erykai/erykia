@@ -24,17 +24,17 @@ trait Auth
             ->fetch();
 
         if (!isset($this->login )) {
-            $this->setError(401, "error", "login invalid");
+            $this->setResponse(401, "error", "login invalid", "login");
             return false;
         }
 
         if(!isset($this->data->password)){
-            $this->setError(401, "error", "password mandatory");
+            $this->setResponse(401, "error", "password mandatory", "login");
             return false;
         }
 
         if(!password_verify($this->data->password, $this->login->password)){
-            $this->setError(401, "error", "password invalid");
+            $this->setResponse(401, "error", "password invalid", "login");
             return false;
         }
         unset($this->login ->password);
@@ -47,7 +47,7 @@ trait Auth
     protected function validateLogin(): bool
     {
         if (!isset($this->session->get()->login)) {
-            $this->setError(401, "error", "protected area login");
+            $this->setResponse(401, "error", "protected area login", "login");
             return false;
         }
         $this->login = $this->session->get()->login;
@@ -58,12 +58,12 @@ trait Auth
         if (!empty($this->data->email)) {
             $this->data->email = (filter_var($this->data->email, FILTER_VALIDATE_EMAIL));
             if (!$this->data->email) {
-                $this->setError(401, "error", "invalid email format");
+                $this->setResponse(401, "error", "invalid email format", "login");
                 return false;
             }
             return true;
         }
-        $this->setError(401, "error", "invalid email format");
+        $this->setResponse(401, "error", "invalid email format", "login");
         return false;
     }
 }

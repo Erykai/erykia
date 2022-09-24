@@ -26,18 +26,13 @@ class Controller
      */
     protected PDO|string $conn;
     /**
-     * @var object|null
-     */
-    protected ?object $dataRequest;
-    /**
      * @var object
      */
-    private object $error;
+    protected object $response;
     /**
      * @var string|null
      */
     protected ?string $find;
-
     /**
      * @var bool
      */
@@ -45,7 +40,6 @@ class Controller
     /**
      * @var int|null
      */
-
     protected ?int $offset;
     /**
      * @var string|null
@@ -68,10 +62,6 @@ class Controller
      */
     protected Request $request;
     /**
-     * @var Response
-     */
-    protected Response $response;
-    /**
      * @var object
      */
     protected object $session;
@@ -90,13 +80,11 @@ class Controller
     public function __construct()
     {
         $this->session = new Session();
-        $this->response = new Response();
         $this->translate = new Translate();
         $this->setFind(null);
         $this->setParams(null);
     }
     //SYSTEM
-
     /**
      * @param string $dsn
      * @param string $host
@@ -124,7 +112,6 @@ class Controller
         }
         return $this->conn;
     }
-
     /**
      * @return bool
      */
@@ -134,15 +121,16 @@ class Controller
             return false;
         }
         if (isset($this->data->level) && $this->data->level > $this->session->get()->login->level) {
-            $this->setError(
+            $this->setResponse(
                 401,
                 "error",
-                "you do not have permission to make this edit -> user level min {$this->data->level}");
+                "you do not have permission to make this edit -> user level min {$this->data->level}",
+                "controller"
+            );
             return false;
         }
         return true;
     }
-
     /**
      * @return string|null
      */
@@ -150,7 +138,6 @@ class Controller
     {
         return $this->columns;
     }
-
     /**
      */
     public function setColumns(): void
@@ -160,33 +147,32 @@ class Controller
         }
     }
     //GET AND SET
-
     /**
      * @return object
      */
-    protected function getError(): object
+    protected function getResponse(): object
     {
-        return $this->error;
+        return $this->response;
     }
-
     /**
      * @param int $code
      * @param string $type
-     * @param string $message
+     * @param string $text
+     * @param string $model
      * @param object|null $data
      * @param string|null $dynamic
      */
-    protected function setError(int $code, string $type, string $message, ?object $data = null, ?string $dynamic = null): void
+    protected function setResponse(int $code, string $type, string $text, string $model, ?object $data = null, ?string $dynamic = null): void
     {
-        $this->error = (object)[
+        $this->response = (object)[
             "code" => $code,
             "type" => $type,
-            "message" => $message,
+            "text" => $text,
+            "model" => $model,
             "data" => $data,
             "dynamic" => $dynamic
         ];
     }
-
     /**
      * @return string|null
      */
@@ -194,7 +180,6 @@ class Controller
     {
         return $this->find;
     }
-
     /**
      * @param string|null $find
      */
@@ -202,7 +187,6 @@ class Controller
     {
         $this->find = $find;
     }
-
     /**
      * @return bool
      */
@@ -210,7 +194,6 @@ class Controller
     {
         return $this->issetUpload;
     }
-
     /**
      * @param bool $issetUpload
      */
@@ -218,7 +201,6 @@ class Controller
     {
         $this->issetUpload = $issetUpload;
     }
-
     /**
      * @return int|null
      */
@@ -226,7 +208,6 @@ class Controller
     {
         return $this->offset;
     }
-
     /**
      * @param int|null $offset
      */
@@ -234,7 +215,6 @@ class Controller
     {
         $this->offset = $offset;
     }
-
     /**
      * @return string|null
      */
@@ -242,7 +222,6 @@ class Controller
     {
         return $this->order;
     }
-
     /**
      * @return void
      */
@@ -270,7 +249,6 @@ class Controller
         }
         $this->order = $order;
     }
-
     /**
      * @param int|null $all
      */
@@ -302,7 +280,6 @@ class Controller
         }
 
     }
-
     /**
      * @return stdClass
      */
@@ -310,7 +287,6 @@ class Controller
     {
         return $this->paginator;
     }
-
     /**
      * @return array|null
      */
@@ -318,7 +294,6 @@ class Controller
     {
         return $this->params;
     }
-
     /**
      * @param array|null $params
      */
@@ -326,7 +301,6 @@ class Controller
     {
         $this->params = $params;
     }
-
     /**
      * @param array|null $request
      */
@@ -343,7 +317,6 @@ class Controller
         }
         $this->argument = $this->request->response()->data->argument;
     }
-
     /**
      * @param string $search
      */

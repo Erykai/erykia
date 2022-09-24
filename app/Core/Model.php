@@ -16,6 +16,7 @@ class Model extends Database
                     400,
                     "error",
                     "the email format $dynamic is invalid",
+                    "email",
                     dynamic: $dynamic
                 );
                 return false;
@@ -37,6 +38,7 @@ class Model extends Database
                         400,
                         "error",
                         "the email $dynamic already exists",
+                        "email",
                         dynamic: $dynamic
                     );
                     return false;
@@ -47,6 +49,7 @@ class Model extends Database
                         400,
                         "error",
                         "the email $dynamic already exists in another account",
+                        "email",
                         dynamic: $dynamic
                     );
 
