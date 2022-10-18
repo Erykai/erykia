@@ -4,19 +4,20 @@ namespace Source\Controller\System;
 
 use Source\Core\Auth;
 use Source\Core\Controller;
+use Source\Core\Response;
 
 class LoginController extends Controller
 {
     use Auth;
 
-    public function login($query, string $response): bool
+    public function login(): bool
     {
         if($auth = $this->auth()){
-            $json['bearerToken'] = $auth;
-            echo $this->response->data((object)$json)->json();
+            $this->setResponse(200, "success", $auth, "bearerToken", $this->login);
+            echo (new Response())->data($this->getResponse())->json();
             return true;
         }
-        echo $this->translate->translator($this->getResponse(), "message")->$response();
+        echo $this->translate->translator($this->getResponse(), "message")->json();
 
         return false;
     }
@@ -24,10 +25,8 @@ class LoginController extends Controller
     public function logout(): bool
     {
         $this->session->destroy();
-        $json['logout'] = $this->translate
-            ->translatorString("You left successfully, come back soon!","message")
-            ->object()->text;
-        echo $this->response->data((object)$json)->json();
+        $this->setResponse(200, "success", "You left successfully, come back soon!", "logout");
+        echo $this->translate->translator($this->getResponse(), "message")->json();
         return true;
     }
 }
