@@ -143,10 +143,13 @@ class Model extends Database
         $columnsRequest = explode("FROM", $select)[0];
 
         if ($inner) {
-            $returnColumns = substr($returnColumns, 0, -1);
+            $comma = substr($returnColumns, -1);
+            if ($comma === ",") {
+                $returnColumns = substr($returnColumns, 0, -1);
+
+            }
             $this->inner($inner);
         }
-
         if (!empty($getColumns)) {
             $getColumns = implode(",", $getColumns);
             $this->query = str_replace($columnsRequest, " $getColumns ", $this->query);
@@ -170,7 +173,7 @@ class Model extends Database
 
             }
             $newQuery = implode("AND ", $returnParams);
-            $newQuery = $where[0] . "WHERE" . $newQuery;
+            $newQuery = $where[0] . "WHERE " . $newQuery;
             $this->query = $newQuery;
         }
 

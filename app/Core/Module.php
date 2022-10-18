@@ -97,15 +97,6 @@ trait Module
         }
         if ($isModel) {
             $this->model();
-            //create database
-            $Example = ucfirst(strtolower($this->data->component));
-            if(str_contains($Example,"_")){
-                $Example = explode("_", $Example);
-                $Example = $Example[0] . ucfirst(strtolower($Example[1]));
-            }
-            $class = $Example;
-            $class = "\Source\Model\\" . $class;
-            $Class = new $class();
         }
 
     }
@@ -241,7 +232,7 @@ trait Module
      */
     protected function files(): array
     {
-        $this->path = "/erykia/Module/";
+        $this->path = "/modules/";
         return [
             "app/Controller/Route/ExampleController.php",
             "database/examples.php",

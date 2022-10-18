@@ -1,6 +1,6 @@
 <?php
 //define name folder uploads system
-const UPLOAD_DIR = 'storage';
+const UPLOAD_DIR = 'public/storage';
 //define mimetypes accepts
 const UPLOAD_MIMETYPE = [
     'image/jpeg',

@@ -6,8 +6,8 @@ use Source\Core\Controller;
 
 class WebController extends Controller
 {
-    public function home()
+    public function home(): void
     {
-        echo "hello home";
+        require dirname(__DIR__, 3) . "/public/theme/".THEME_DEFAULT."/index.html";
     }
 }

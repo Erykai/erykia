@@ -37,12 +37,12 @@ trait Auth
             $this->setResponse(401, "error", "password invalid", "login");
             return false;
         }
-        unset($this->login ->password);
+        unset($this->login->password);
 
         $middleware = new Middleware();
 
         $this->session->set('login', $this->login );
-        return $middleware->create($this->login ->email);
+        return $middleware->create($this->login->email);
     }
     protected function validateLogin(): bool
     {

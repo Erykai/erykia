@@ -16,7 +16,7 @@ class UserController extends Controller
     {
         $this->setRequest($query);
 
-        if (!$this->permission()) {
+        if ($this->validateLogin() && !$this->permission()) {
             echo $this->translate->translator($this->getResponse(), "message")->json();
             return false;
         }
@@ -114,6 +114,7 @@ class UserController extends Controller
     public function edit($query, string $response): bool
     {
         $this->setRequest($query);
+
         if (!$this->permission()) {
             echo $this->translate->translator($this->getResponse(), "message")->$response();
         }
@@ -137,14 +138,14 @@ class UserController extends Controller
             $dads = explode(",", $dad->dad);
             foreach ($dads as $dad) {
                 if ($dad === $login->id) {
-                    $user = $users->find('*',
+                    $user = $users->find('id,name,email,cover',
                         'users.id=:id',
                         ['id' => $this->argument->id])
                         ->fetchReference(getColumns: $this->getColumns());
                 }
             }
         } else {
-            $user = $users->find('*',
+            $user = $users->find('id,name,email,cover',
                 'users.id=:id',
                 ['id' => $this->argument->id])
                 ->fetchReference(getColumns: $this->getColumns());
@@ -169,15 +170,30 @@ class UserController extends Controller
                 echo $this->translate->translator($this->getResponse(), "message")->json();
                 return false;
             }
-            if ($key === 'password') {
-                $this->data->$key = password_hash($value, PASSWORD_BCRYPT, ['cost' => 12]);
-            }
+
             $user->$key = $this->data->$key;
         }
         if (isset($user->updated_at)) {
             $user->updated_at = date("Y-m-d H:i:s");
         }
+
+        $this->upload = new Upload();
+        if ($this->upload->response()->type === "error") {
+            echo $this->translate->translator($this->upload->response(), "message")->$response();
+            return false;
+        }
+
+        if ($this->upload->save()) {
+            foreach ($this->upload->response()->data as $key => $value) {
+                $user->$key = $value;
+                $this->setIssetUpload(true);
+            }
+        }
+
         if (!$users->save()) {
+            if ($this->isIssetUpload()) {
+                $this->upload->delete();
+            }
             $this->setResponse(401, "error", "error saving", "edit");
             echo $this->translate->translator($this->getResponse(), "message")->json();
             return false;
@@ -238,4 +254,9 @@ class UserController extends Controller
         echo $this->translate->translator($this->getResponse(), "message")->json();
         return true;
     }
+
+//    public function registration($query, string $response): bool
+//    {
+//
+//    }
 }

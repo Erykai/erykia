@@ -176,7 +176,23 @@ class ExampleController extends Controller
         if (isset($example->updated_at)) {
             $example->updated_at = date("Y-m-d H:i:s");
         }
+
+        $this->upload = new Upload();
+        if ($this->upload->response()->type === "error") {
+            echo $this->translate->translator($this->upload->response(), "message")->$response();
+            return false;
+        }
+
+        if ($this->upload->save()) {
+            foreach ($this->upload->response()->data as $key => $value) {
+                $example->$key = $value;
+                $this->setIssetUpload(true);
+            }
+        }
         if (!$examples->save()) {
+            if ($this->isIssetUpload()) {
+                $this->upload->delete();
+            }
             $this->setResponse(401, "error", "error saving","edit");
             echo $this->translate->translator($this->getResponse(), "message")->json();
             return false;
