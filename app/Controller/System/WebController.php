@@ -8,6 +8,6 @@ class WebController extends Controller
 {
     public function home()
     {
-        echo "home";
+        echo "hello home";
     }
 }
