@@ -21,9 +21,9 @@
     ]
   },
   "require": {
-    "erykai/routes": "v1.3.2",
-    "erykai/database": "v1.4.1",
-    "erykai/upload": "v1.3.1",
+    "erykai/routes": "v1.3.3",
+    "erykai/database": "v1.4.3",
+    "erykai/upload": "v1.4.1",
     "erykai/request": "v1.3.0",
     "erykai/response": "v1.1.0",
     "erykai/migration": "v1.2.0",

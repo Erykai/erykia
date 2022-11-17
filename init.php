@@ -56,5 +56,6 @@ foreach ($files as $file) {
 $route->exec();
 
 if ($route->response()->type === "error") {
+    http_response_code($route->response()->code);
     echo (new Translate())->translator($route->response(), "message")->json();
 }
