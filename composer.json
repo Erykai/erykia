@@ -29,6 +29,7 @@
     "erykai/migration": "v1.2.0",
     "erykai/translate": "v2.2.0",
     "erykai/pluralize": "v1.1.0",
+    "erykai/cryption": "v2.1.0",
     "ext-fileinfo": "*",
     "php": ">=8.0",
     "ext-pdo": "*",
