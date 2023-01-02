@@ -12,6 +12,7 @@ services:
       - ./docker/apache/lvh.me.crt:/etc/ssl/certs/lvh.me.crt
       - ./docker/apache/lvh.me.key:/etc/ssl/private/lvh.me.key
       - ./docker/apache/000-default.conf:/etc/apache2/sites-enabled/000-default.conf
+      - ./docker/imagick/policy.xml:/etc/ImageMagick-6/policy.xml
     ports:
       - '${ERYKIA_PORT:-80}:80'
       - '${ERYKIA_SSL_PORT:-443}:443'

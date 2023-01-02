@@ -30,9 +30,12 @@
     "erykai/translate": "v2.2.0",
     "erykai/pluralize": "v1.1.0",
     "erykai/cryption": "v2.1.0",
+    "erykai/compress": "v1.0.2",
     "ext-fileinfo": "*",
     "php": ">=8.0",
     "ext-pdo": "*",
-    "ext-curl": "*"
+    "ext-curl": "*",
+    "ext-imagick": "*",
+    "ext-gd": "*"
   }
 }
