@@ -3,3 +3,6 @@ translate
 composer.phar
 _db-docker-dev_
 composer.lock
+/public/dashboard/assets/node_modules/
+/public/dashboard/assets/package-lock.json
+/public/dashboard/assets/package.json

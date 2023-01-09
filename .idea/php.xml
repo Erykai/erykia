@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PhpIncludePathManager">
+    <include_path>
+      <path value="$PROJECT_DIR$/vendor/erykai/translate" />
+      <path value="$PROJECT_DIR$/vendor/erykai/pluralize" />
+      <path value="$PROJECT_DIR$/vendor/erykai/request" />
+      <path value="$PROJECT_DIR$/vendor/erykai/migration" />
+      <path value="$PROJECT_DIR$/vendor/erykai/routes" />
+      <path value="$PROJECT_DIR$/vendor/erykai/upload" />
+      <path value="$PROJECT_DIR$/vendor/composer" />
+      <path value="$PROJECT_DIR$/vendor/erykai/database" />
+      <path value="$PROJECT_DIR$/vendor/erykai/response" />
+      <path value="$PROJECT_DIR$/vendor/erykai/cryption" />
+      <path value="$PROJECT_DIR$/vendor/erykai/compress" />
+      <path value="$PROJECT_DIR$/vendor/erykai/template" />
+    </include_path>
+  </component>
+  <component name="PhpProjectSharedConfiguration" php_language_level="8.0">
+    <option name="suggestChangeDefaultLanguageLevel" value="false" />
+  </component>
+</project>

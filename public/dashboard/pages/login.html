@@ -1,0 +1,121 @@
+<div class="row auth-wrapper gx-0">
+  <div class="col-lg-4 col-xl-3 bg-dark auth-box-2 on-sidebar" style="
+                             background: url(./public/erykia/assets/img/erykia.png);
+                             background-position: bottom;
+                             background-repeat: no-repeat;
+                             background-size: contain;
+                                 ">
+  </div>
+  <div class="col-lg-8 col-xl-9 d-flex align-items-center justify-content-center">
+    <div class="row justify-content-center w-100 mt-4 mt-lg-0">
+      <div class="col-lg-6 col-xl-3 col-md-7">
+        <div class="card" id="loginform">
+          <div class="card-body">
+            <h2>{{Erykia Admin}}</h2>
+            <p class="text-muted fs-4">{{New Here}}? <a href="javascript:void(0)" id="to-register">{{Create an account}}</a></p>
+            <form id="login" class="form-horizontal mt-4 pt-4 needs-validation" novalidate>
+              <div class="form-floating mb-3">
+                <input type="email" class="form-control form-input-bg" id="tb-email" placeholder="{{name@example.com}}" required>
+                <label for="tb-email">Email</label>
+                <div class="invalid-feedback">
+                  {{Email is required}}
+                </div>
+              </div>
+
+              <div class="form-floating mb-3">
+                <input type="password" class="form-control form-input-bg" id="text-password" placeholder="*****" required>
+                <label for="text-password">{{Password}}</label>
+                <div class="invalid-feedback">
+                  {{Password is required}}
+                </div>
+              </div>
+
+              <div class="d-flex align-items-center mb-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="r-me1">
+                  <label class="form-check-label" for="r-me1">
+                    {{Remember me}}
+                  </label>
+                </div>
+                <div class="ms-auto">
+                  <a href="javascript:void(0)" id="to-recover" class="fw-bold">{{Forgot Password}}?</a>
+                </div>
+              </div>
+              <div class="d-flex align-items-stretch button-group mt-4 pt-2">
+                <button id="login" type="submit" class="btn btn-info btn-lg px-4">{{Sign in}}</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="card" id="registerform">
+          <div class="card-body">
+            <h2>{{Sign Up Form}}</h2>
+            <p class="text-muted fs-4">{{Enter given details for new account}}</p>
+            <form id="register" class="form-horizontal mt-4 pt-4 needs-validation" novalidate action="index.html">
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control form-input-bg" id="tb-rfname" placeholder="{{john deo}}" required>
+                <label for="tb-rfname">{{Full Name}}</label>
+                <div class="invalid-feedback">
+                  {{Full name is required}}
+                </div>
+              </div>
+              <div class="form-floating mb-3">
+                <input type="email" class="form-control form-input-bg" id="tb-remail" placeholder="{{john@gmail.com}}" required>
+                <label for="tb-remail">Email</label>
+                <div class="invalid-feedback">
+                  {{Email is required}}
+                </div>
+              </div>
+              <div class="form-floating mb-3">
+                <input type="password" class="form-control form-input-bg" id="text-rpassword" placeholder="*****" required>
+                <label for="text-rpassword">{{Password}}</label>
+                <div class="invalid-feedback">
+                  {{Password is required}}
+                </div>
+              </div>
+
+              <div class="form-check mb-4 pb-2">
+                <input class="form-check-input" type="checkbox" value="" id="r-me" required>
+                <label class="form-check-label" for="r-me">
+                  {{Remember me}}
+                </label>
+                <div class="invalid-feedback">
+                  {{You must agree before submitting}}.
+                </div>
+              </div>
+              <div class="d-flex align-items-stretch button-group">
+                <button type="submit" class="btn btn-info btn-lg px-4">{{Submit}}</button>
+                <a href="javascript:void(0)" id="to-login2" class="btn btn-lg btn-light-secondary text-secondary font-weight-medium">{{Cancel}}</a>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="card" id="recoverform">
+          <div class="card-body">
+            <div class="logo">
+              <h3>{{Recover Password}}</h3>
+              <p class="text-muted fs-4">{{Enter your Email and instructions will be sent to you}}!</p>
+            </div>
+            <div class="mt-4 pt-4">
+              <!-- Form -->
+              <form id="recovery" class="form-horizontal mt-4 pt-4 needs-validation" novalidate>
+                <!-- email -->
+                <div class="form-floating mb-3">
+                  <input type="email" class="form-control form-input-bg" id="remail" placeholder="{{john@gmail.com}}" required>
+                  <label for="remail">Email</label>
+                  <div class="invalid-feedback">
+                    {{Email is required}}
+                  </div>
+                </div>
+                <div class="d-flex align-items-stretch button-group">
+                  <button type="submit" class="btn btn-info btn-lg px-4">{{Submit}}</button>
+                  <a href="javascript:void(0)" id="to-login" class="btn btn-lg btn-light-secondary text-secondary font-weight-medium">{{Cancel}}</a>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
