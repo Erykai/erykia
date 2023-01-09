@@ -64,4 +64,17 @@ class Helper
         return self::$conn;
     }
 
+    public static function language()
+    {
+        $lang = 'en';
+        if (!empty($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+            [$l] = explode(",", $_SERVER['HTTP_ACCEPT_LANGUAGE']);
+            $lang = $l;
+        }
+        if(TRANSLATE_DEFAULT){
+            $lang =  TRANSLATE_DEFAULT;
+        }
+        return $lang;
+    }
+
 }

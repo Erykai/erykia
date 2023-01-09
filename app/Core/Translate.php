@@ -13,6 +13,7 @@ class Translate extends \Erykai\Translate\Translate
         $response->file = $file;
         $response->text = $message;
         $return->data($this->data($response)->target()->response());
+        $return->object()->text = $return->object()->translate;
         unset($return->object()->message, $return->object()->nameDefault);
         return $return;
     }

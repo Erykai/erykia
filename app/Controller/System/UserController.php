@@ -12,7 +12,7 @@ class UserController extends Controller
 {
     use Auth;
 
-    public function store($query, string $response): bool
+    public function store(array $query, string $response): bool
     {
         $this->setRequest($query);
 
@@ -25,20 +25,22 @@ class UserController extends Controller
             echo $this->translate->translator($this->request->response(), "message")->$response();
             return false;
         }
-
-        $this->upload = new Upload();
-        if ($this->upload->response()->type === "error") {
-            echo $this->translate->translator($this->upload->response(), "message")->$response();
-            return false;
-        }
-
         $user = new User();
-        if ($this->upload->save()) {
-            foreach ($this->upload->response()->data as $key => $value) {
-                $user->$key = $value;
-                $this->setIssetUpload(true);
+        $this->upload = new Upload();
+        if (isset($this->data->cover)) {
+            if ($this->upload->response()->type === "error") {
+                echo $this->translate->translator($this->upload->response(), "message")->$response();
+                return false;
+            }
+            if ($this->upload->save()) {
+                foreach ($this->upload->response()->data as $key => $value) {
+                    $user->$key = $value;
+                    $this->setIssetUpload(true);
+                }
             }
         }
+
+
         foreach ($this->data as $key => $value) {
             $user->$key = $value;
         }
@@ -52,6 +54,7 @@ class UserController extends Controller
         } else {
             $user->dad = 1;
             $user->id_users = 1;
+            $user->level = 1;
         }
 
         $user->created_at = date("Y-m-d H:i:s");
@@ -68,7 +71,7 @@ class UserController extends Controller
         return true;
     }
 
-    public function read($query, string $response): bool
+    public function read(array $query, string $response): bool
     {
         $this->setRequest($query);
         if (isset($this->query->search)) {
@@ -111,7 +114,7 @@ class UserController extends Controller
         return true;
     }
 
-    public function edit($query, string $response): bool
+    public function edit(array $query, string $response): bool
     {
         $this->setRequest($query);
 
@@ -127,7 +130,7 @@ class UserController extends Controller
             ->fetchReference(getColumns: $this->getColumns());
         $user = null;
 
-        if(!$dad){
+        if (!$dad) {
             $this->setResponse(401, "error", "this user does not exist", "edit");
             echo $this->translate->translator($this->getResponse(), "message")->json();
             return false;
@@ -206,7 +209,7 @@ class UserController extends Controller
         return true;
     }
 
-    public function destroy($query, string $response): bool
+    public function destroy(array $query, string $response): bool
     {
         $this->setRequest($query);
         if (!$this->permission()) {
@@ -255,8 +258,29 @@ class UserController extends Controller
         return true;
     }
 
-//    public function registration($query, string $response): bool
-//    {
-//
-//    }
+    public function recovery(array $query, string $response): bool
+    {
+        $this->setRequest($query);
+        if (!$this->validateEmail()) {
+            echo $this->translate->translator($this->getResponse(), "message")->json();
+            return false;
+        }
+        $users = new User();
+        $user = $users->find('id,email,recovery', 'email = :email',['email' => $this->data->email])->fetch();
+        if (!$user) {
+            echo $this->translate->translator($users->response(), "message")->$response();
+            return false;
+        }
+
+        $user->recovery = sha1($user->email . rand(000000,999999));
+        if (!$users->save()) {
+            $this->setResponse(401, "error", "error recovery", "recovery");
+            echo $this->translate->translator($this->getResponse(), "message")->json();
+            return false;
+        }
+        $this->setResponse(200, "success", "Your password recovery has been sent to your email", "recovery");
+        echo $this->translate->translator($this->getResponse(), "message")->json();
+        return true;
+    }
+
 }
