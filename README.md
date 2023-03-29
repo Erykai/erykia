@@ -39,6 +39,13 @@ docker compose logs php
 #### Open your browser and go to https://lvh.me or https://localhost
 ##### PMA http://lvh.me:8080
 
+### DATABASE
+      - HOST=mysql
+      - USER=root
+      - PASSWORD=root
+      - DATABASE=erykia
+      - DRIVER=mysql
+
 ### CREATE NEW MODULE EXAMPLE JSON
 Example streaming and category.
 ##### send post https://lvh.me/module or https://localhost/module raw json
