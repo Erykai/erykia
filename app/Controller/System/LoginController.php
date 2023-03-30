@@ -2,14 +2,11 @@
 
 namespace Source\Controller\System;
 
-use Source\Core\Auth;
 use Source\Core\Controller;
 use Source\Core\Response;
 
 class LoginController extends Controller
 {
-    use Auth;
-
     public function login(): bool
     {
         if($auth = $this->auth()){

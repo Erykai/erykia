@@ -4,7 +4,6 @@ namespace Source\Controller\System;
 
 use Source\Core\Controller;
 use Source\Core\Translate;
-use stdClass;
 
 class LanguageController extends Controller
 {

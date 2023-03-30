@@ -1,10 +1,8 @@
 <?php
 
-namespace Source\Controller\System;
+namespace Source\View\Web;
 
-use Source\Core\Controller;
-
-class WebController extends Controller
+class View
 {
     public function home(): void
     {

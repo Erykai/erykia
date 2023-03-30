@@ -187,17 +187,17 @@ trait Module
      */
     protected function createDir(): void
     {
-        $component = $this->data->component;
+        $component = ucfirst(strtolower($this->data->component));
         if (str_contains($this->data->component, "_")) {
             $component = explode("_", $component);
-            $component = $component[0] . ucfirst(strtolower($component[1]));
+            $component = ucfirst(strtolower($component[0])) . ucfirst(strtolower($component[1]));
         }
 
         $modulePath = dirname(__DIR__, 2) . '/modules/' . ucfirst(strtolower($this->data->namespace));
         $this->dir($modulePath);
         $controllerPath = $modulePath . '/Controller';
         $this->dir($controllerPath);
-        $controllerPathTraits = $modulePath . '/Controller/' . ucfirst(strtolower($component)) . 'Trait';
+        $controllerPathTraits = $modulePath . '/Controller/' . $component . 'Trait';
         $this->dir($controllerPathTraits);
         $modelPath = $modulePath . '/Model';
         $this->dir($modelPath);

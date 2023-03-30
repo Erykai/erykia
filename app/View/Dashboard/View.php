@@ -1,11 +1,11 @@
 <?php
 
-namespace Source\Controller\System;
+namespace Source\View\Dashboard;
 
 use Source\Core\Controller;
 use Source\Core\Template;
 
-class DashboardController extends Controller
+class View extends Controller
 {
     public function home()
     {
