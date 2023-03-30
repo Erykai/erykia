@@ -38,7 +38,7 @@ trait Module
         foreach ($this->files() as $file) {
             $isDatabase = false;
             $isModel = false;
-            if (str_contains($file, "database")) {
+            if (str_contains($file, "Database")) {
                 $isDatabase = true;
             }
             if (str_contains($file, "Model")) {
@@ -187,16 +187,17 @@ trait Module
      */
     protected function createDir(): void
     {
+        $component = $this->data->component;
         if (str_contains($this->data->component, "_")) {
-            $this->data->component = explode("_", $this->data->component);
-            $this->data->component = $this->data->component[0] . ucfirst(strtolower($this->data->component[1]));
+            $component = explode("_", $component);
+            $component = $component[0] . ucfirst(strtolower($component[1]));
         }
 
         $modulePath = dirname(__DIR__, 2) . '/modules/' . ucfirst(strtolower($this->data->namespace));
         $this->dir($modulePath);
         $controllerPath = $modulePath . '/Controller';
         $this->dir($controllerPath);
-        $controllerPathTraits = $modulePath . '/Controller/' . ucfirst(strtolower($this->data->component)) . 'Trait';
+        $controllerPathTraits = $modulePath . '/Controller/' . ucfirst(strtolower($component)) . 'Trait';
         $this->dir($controllerPathTraits);
         $modelPath = $modulePath . '/Model';
         $this->dir($modelPath);
@@ -208,6 +209,9 @@ trait Module
 
     private function dir($path): void
     {
+        if(is_dir($path)){
+            return;
+        }
         if (!is_dir($path) && !mkdir($path, 0755) && !is_dir($path)) {
             throw new RuntimeException(sprintf('Directory "%s" was not created', $path));
         }
