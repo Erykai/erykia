@@ -89,9 +89,24 @@ class Model extends Database
      */
     protected function migration(): void
     {
+
         $tableExists = $this->conn->query("SHOW TABLES LIKE '$this->table'")->rowCount() > 0;
         if (!$tableExists) {
-            require_once dirname(__DIR__, 2) . "/database/" . $this->table . ".php";
+            if(file_exists(dirname(__DIR__, 2) . "/database/" . $this->table . ".php")){
+                if(file_exists(dirname(__DIR__, 2) . "/database/" . $this->table . "_categories.php")){
+                    require_once dirname(__DIR__, 2) . "/database/" . $this->table . "_categories.php";
+                }
+                require_once dirname(__DIR__, 2) . "/database/" . $this->table . ".php";
+                return;
+            }
+            $namespace = get_class($this);
+            $namespace = explode("\\",$namespace);
+            if(file_exists(dirname(__DIR__, 2) . "/modules/" . $namespace[1] . "/database/" . $this->table . ".php")){
+                if(file_exists(dirname(__DIR__, 2) . "/modules/" . $namespace[1] . "/database/" . $this->table . "_categories.php")){
+                    require_once dirname(__DIR__, 2) . "/modules/" . $namespace[1] . "/database/" . $this->table . "_categories.php";
+                }
+                require_once dirname(__DIR__, 2) . "/modules/" . $namespace[1] . "/database/" . $this->table . ".php";
+            }
         }
 
     }

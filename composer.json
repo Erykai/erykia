@@ -14,17 +14,18 @@
   },
   "autoload": {
     "psr-4": {
-      "Source\\": "app/"
+      "Source\\": "app/",
+      "Modules\\": "modules/"
     },
     "files": [
       "config/_config.php"
     ]
   },
   "require": {
-    "erykai/routes": "v1.3.3",
+    "erykai/routes": "v1.3.4",
     "erykai/database": "v1.4.3",
-    "erykai/upload": "v1.4.1",
-    "erykai/request": "v1.3.0",
+    "erykai/upload": "v1.4.2",
+    "erykai/request": "v1.3.1",
     "erykai/response": "v1.1.0",
     "erykai/migration": "v1.2.0",
     "erykai/translate": "v2.2.1",

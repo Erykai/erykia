@@ -1,6 +1,7 @@
 <?php
 
 namespace Source\Core;
+
 use RuntimeException;
 
 /**
@@ -24,6 +25,7 @@ trait Module
      * @var array
      */
     private array $database;
+
     /**
      * start create module
      */
@@ -59,7 +61,8 @@ trait Module
      */
     protected function setComponent(string $file): void
     {
-        $Route = ucfirst(strtolower($this->data->namespace));
+
+        $Namespace = ucfirst(strtolower($this->data->namespace));
         $examples = (new Pluralize())->plural(strtolower($this->data->component));
         $Example = ucfirst(strtolower($this->data->component));
         if (str_contains($this->data->component, "_")) {
@@ -69,12 +72,13 @@ trait Module
             $Example = explode("_", $Example);
             $Example = $Example[0] . ucfirst(strtolower($Example[1]));
         }
+
         $this->component = str_replace([
-            "Route",
+            "Namespace",
             "Example",
             "examples"
         ], [
-            $Route,
+            $Namespace,
             $Example,
             $examples
         ], $file);
@@ -90,7 +94,7 @@ trait Module
         $this->data->file = file_get_contents(dirname(__DIR__, 2) . $this->path . $file);
         $this->setComponent($file);
         $this->createDir();
-        $this->setComponent(dirname(__DIR__, 2) . '/' . $this->getComponent());
+        $this->setComponent(dirname(__DIR__, 2) . '/modules/' . $this->getComponent());
         file_put_contents($this->getComponent(), $this->replace());
         if ($isDatabase) {
             $this->database();
@@ -149,8 +153,7 @@ trait Module
         if (isset($this->modelNotNull)) {
             $model = implode(PHP_EOL, $this->modelNotNull);
             $file = str_replace('/*#####*/', $model, file_get_contents($this->getComponent()));
-            if(file_put_contents($this->getComponent(), $file) === false)
-            {
+            if (file_put_contents($this->getComponent(), $file) === false) {
                 throw new RuntimeException("error creating " . $this->getComponent());
             }
             unset($this->modelNotNull);
@@ -184,17 +187,29 @@ trait Module
      */
     protected function createDir(): void
     {
-        if (str_contains($this->getComponent(), "app/Controller/")) {
-            $dirPath = dirname(__DIR__) . '/Controller/' . ucfirst(strtolower($this->data->namespace));
-            if (!is_dir($dirPath) && !mkdir($dirPath, 0755) && !is_dir($dirPath)) {
-                throw new RuntimeException(sprintf('Directory "%s" was not created', $dirPath));
-            }
+        if (str_contains($this->data->component, "_")) {
+            $this->data->component = explode("_", $this->data->component);
+            $this->data->component = $this->data->component[0] . ucfirst(strtolower($this->data->component[1]));
         }
-        if (str_contains($this->getComponent(), "routes/")) {
-            $dirPath = dirname(__DIR__, 2) . '/routes/' . ucfirst(strtolower($this->data->namespace));
-            if (!is_dir($dirPath) && !mkdir($dirPath, 0755) && !is_dir($dirPath)) {
-                throw new RuntimeException(sprintf('Directory "%s" was not created', $dirPath));
-            }
+
+        $modulePath = dirname(__DIR__, 2) . '/modules/' . ucfirst(strtolower($this->data->namespace));
+        $this->dir($modulePath);
+        $controllerPath = $modulePath . '/Controller';
+        $this->dir($controllerPath);
+        $controllerPathTraits = $modulePath . '/Controller/' . ucfirst(strtolower($this->data->component)) . 'Trait';
+        $this->dir($controllerPathTraits);
+        $modelPath = $modulePath . '/Model';
+        $this->dir($modelPath);
+        $databasePath = $modulePath . '/Database';
+        $this->dir($databasePath);
+        $routesPath = $modulePath . '/Routes';
+        $this->dir($routesPath);
+    }
+
+    private function dir($path): void
+    {
+        if (!is_dir($path) && !mkdir($path, 0755) && !is_dir($path)) {
+            throw new RuntimeException(sprintf('Directory "%s" was not created', $path));
         }
     }
 
@@ -234,10 +249,15 @@ trait Module
     {
         $this->path = "/modules/";
         return [
-            "app/Controller/Route/ExampleController.php",
-            "database/examples.php",
-            "app/Model/Example.php",
-            "routes/Route/ExampleController.php"
+            "Namespace/.env",
+            "Namespace/Routes/Example.php",
+            "Namespace/Model/Example.php",
+            "Namespace/Database/examples.php",
+            "Namespace/Controller/ExampleController.php",
+            "Namespace/Controller/ExampleTrait/Store.php",
+            "Namespace/Controller/ExampleTrait/Read.php",
+            "Namespace/Controller/ExampleTrait/Edit.php",
+            "Namespace/Controller/ExampleTrait/Destroy.php"
         ];
     }
 

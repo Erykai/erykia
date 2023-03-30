@@ -28,7 +28,7 @@ $configPaths = "$root/routes";
 //home
 $route->namespace('Source\Controller\System');
 $route->get('/','WebController@home',type: 'json');
-
+// route system
 $files = [];
 foreach (scandir($configPaths) as $configPath) {
     $dirPaths = $root . '/routes/' . $configPath;
@@ -52,6 +52,44 @@ foreach (scandir($configPaths) as $configPath) {
 foreach ($files as $file) {
     require $file;
 }
+//route modules
+$configPaths = "$root/modules";
+$files = [];
+foreach (scandir($configPaths) as $configPath) {
+    $dirPaths = $root . '/modules/' . $configPath;
+
+    if (is_dir($dirPaths)) {
+        // Loop through each folder and look for PHP files in "Routes" folder
+        foreach (scandir($dirPaths) as $folder) {
+            $routesFolder = $dirPaths . '/' . $folder . '/Routes';
+            if (is_dir($routesFolder)) {
+                foreach (scandir($routesFolder) as $configFile) {
+                    $file = $routesFolder . '/' . $configFile;
+                    if (is_file($file) && pathinfo($file, PATHINFO_EXTENSION) === 'php') {
+                        if (!str_contains($file, "/../")) {
+                            $files[] = $file;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Look for PHP files in the main folder (in case there are any)
+        foreach (scandir($dirPaths) as $configFile) {
+            $file = $dirPaths . '/' . $configFile;
+            if (is_file($file) && pathinfo($file, PATHINFO_EXTENSION) === 'php') {
+                if (!str_contains($file, "/../")) {
+                    $files[] = $file;
+                }
+            }
+        }
+    }
+}
+
+foreach ($files as $file) {
+    require $file;
+}
+
 
 $route->exec();
 

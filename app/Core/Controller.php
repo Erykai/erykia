@@ -364,4 +364,28 @@ class Controller
             }
         }
     }
+    public function setUpload($object)
+    {
+        $this->upload = new Upload();
+
+        if (isset($this->data->cover)) {
+            if (filter_var($this->data->cover, FILTER_VALIDATE_URL)) {
+                $this->upload = new Upload($this->data->cover, "cover");
+                unset($this->data->cover);
+            }
+        }
+
+
+        if ($this->upload->save()) {
+            if ($this->upload->response()->type === "error") {
+                echo $this->translate->translator($this->upload->response(), "message")->$response();
+                return false;
+            }
+            foreach ($this->upload->response()->data as $key => $value) {
+                $object->$key = $value;
+                $this->setIssetUpload(true);
+            }
+        }
+        return true;
+    }
 }
