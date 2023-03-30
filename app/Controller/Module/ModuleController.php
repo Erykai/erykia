@@ -3,7 +3,6 @@
 namespace Source\Controller\Module;
 
 use Source\Controller\Module\ModuleTrait\Store;
-use Source\Core\Module;
 
 
 /**
@@ -11,8 +10,5 @@ use Source\Core\Module;
  */
 class ModuleController extends Resource
 {
-    use Module;
     use Store;
-
-
 }
