@@ -9,10 +9,10 @@ class View extends Controller
 {
     public function home()
     {
-        $t= new Template(TEMPLATE_URL_DASHBOARD, "php");
+        $t= new Template(TEMPLATE_DASHBOARD, "php");
 
         if (!$this->permission()) {
-            $t->nav("login","pages/login");
+            $t->nav("login","pages/forgot-password");
             echo $t->getIndex();
             return false;
         }

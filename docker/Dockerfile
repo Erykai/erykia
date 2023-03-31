@@ -1,5 +1,5 @@
 FROM php:8.0-apache
-RUN apt-get update -y && apt-get install -y sendmail libpng-dev libzip-dev zip zlib1g-dev ghostscript
+RUN apt-get update -y && apt-get install -y sendmail libpng-dev libzip-dev zip zlib1g-dev ghostscript make
 RUN apt-get update && apt-get install -y libmagickwand-dev --no-install-recommends && rm -rf /var/lib/apt/lists/*
 
 RUN docker-php-ext-install mysqli
