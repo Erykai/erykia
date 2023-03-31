@@ -14,9 +14,12 @@ RUN chown -R root:www-data /var/www/html
 RUN chmod u+rwx,g+rx,o+rx /var/www/html
 RUN find /var/www/html -type d -exec chmod u+rwx,g+rx,o+rx {} +
 RUN find /var/www/html -type f -exec chmod u+rw,g+rw,o+r {} +
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
+RUN apt-get install -y nodejs
 WORKDIR /var/www/html
 RUN a2enmod rewrite
 RUN a2enmod ssl
 EXPOSE 80
 EXPOSE 443
 ENTRYPOINT ["./docker/entrypoint.sh"]
+
