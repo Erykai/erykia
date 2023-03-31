@@ -17,7 +17,6 @@ UP
 ```shell
 git clone https://github.com/Erykai/erykia.git
 cd erykia
-cd public/dashboard/assets && npm install && npm start && cd ../../
 docker compose up -d --build
 ```
 
