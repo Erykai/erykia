@@ -1,42 +1,40 @@
-<div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
-<div class="col-lg-6">
-    <div class="p-5">
-        <div class="text-center">
-            <h1 class="h4 text-gray-900 mb-4">{{Welcome Back}}!</h1>
-        </div>
-        <form class="user">
-            <div class="form-group">
-                <input type="email" class="form-control form-control-user"
-                       id="exampleInputEmail" aria-describedby="emailHelp"
-                       placeholder="{{Enter Email Address}}...">
-            </div>
-            <div class="form-group">
-                <input type="password" class="form-control form-control-user"
-                       id="exampleInputPassword" placeholder="{{Password}}">
-            </div>
-            <div class="form-group">
-                <div class="custom-control custom-checkbox small">
-                    <input type="checkbox" class="custom-control-input" id="customCheck">
-                    <label class="custom-control-label" for="customCheck">{{Remember Me}}</label>
+<div class="container-xl px-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-5">
+            <!-- Basic login form-->
+            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                <div class="card-header justify-content-center"><h3 class="fw-light my-4">{{Login}}</h3></div>
+                <div class="card-body">
+                    <!-- Login form-->
+                    <form>
+                        <!-- Form Group (email address)-->
+                        <div class="mb-3">
+                            <label class="small mb-1" for="inputEmailAddress">{{Email}}</label>
+                            <input class="form-control" id="inputEmailAddress" type="email" placeholder="{{Enter email address}}" />
+                        </div>
+                        <!-- Form Group (password)-->
+                        <div class="mb-3">
+                            <label class="small mb-1" for="inputPassword">{{Password}}</label>
+                            <input class="form-control" id="inputPassword" type="password" placeholder="{{Enter password}}" />
+                        </div>
+                        <!-- Form Group (remember password checkbox)-->
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" id="rememberPasswordCheck" type="checkbox" value="" />
+                                <label class="form-check-label" for="rememberPasswordCheck">{{Remember password}}</label>
+                            </div>
+                        </div>
+                        <!-- Form Group (login box)-->
+                        <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
+                            <a class="small" href="auth-password-basic.html">{{Forgot Password?}}</a>
+                            <a class="btn btn-primary" href="dashboard-1.html">{{Login}}</a>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center">
+                    <div class="small"><a href="auth-register-basic.html">{{Need an account? Sign up!}}</a></div>
                 </div>
             </div>
-            <a href="index.html" class="btn btn-primary btn-user btn-block">
-                {{Login}}
-            </a>
-            <hr>
-            <a href="index.html" class="btn btn-google btn-user btn-block">
-                <i class="fab fa-google fa-fw"></i> {{Login with Google}}
-            </a>
-            <a href="index.html" class="btn btn-facebook btn-user btn-block">
-                <i class="fab fa-facebook-f fa-fw"></i> {{Login with Facebook}}
-            </a>
-        </form>
-        <hr>
-        <div class="text-center">
-            <a class="small" href="forgot-password.html">{{Forgot Password}}?</a>
-        </div>
-        <div class="text-center">
-            <a class="small" href="register.html">{{Create an Account}}!</a>
         </div>
     </div>
 </div>
