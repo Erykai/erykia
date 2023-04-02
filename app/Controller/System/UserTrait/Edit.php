@@ -2,25 +2,24 @@
 
 namespace Source\Controller\System\UserTrait;
 
-use Source\Core\Upload;
 use Source\Model\User;
 
 trait Edit
 {
-    public function edit(array $query, string $response): bool
+    public function edit($query, string $response): bool
     {
         $this->setRequest($query);
-
         if (!$this->permission()) {
             echo $this->translate->translator($this->getResponse(), "message")->$response();
         }
 
         $login = $this->session->get()->login;
+
         $users = (new User());
         $dad = $users->find('users.dad',
             'users.id=:id',
             ['id' => $this->argument->id])
-            ->fetchReference(getColumns: $this->getColumns());
+            ->fetch();
         $user = null;
 
         if (!$dad) {
@@ -29,30 +28,29 @@ trait Edit
             return false;
         }
 
-
         if ($login->id !== $this->argument->id) {
             $dads = explode(",", $dad->dad);
             foreach ($dads as $dad) {
                 if ($dad === $login->id) {
-                    $user = $users->find('id,name,email,cover',
+                    $user = $users->find('*',
                         'users.id=:id',
                         ['id' => $this->argument->id])
-                        ->fetchReference(getColumns: $this->getColumns());
+                        ->fetch();
                 }
             }
         } else {
-            $user = $users->find('id,name,email,cover',
+            $user = $users->find('*',
                 'users.id=:id',
                 ['id' => $this->argument->id])
-                ->fetchReference(getColumns: $this->getColumns());
+                ->fetch();
         }
-
 
         if (!$user) {
             $this->setResponse(401, "error", "you do not have permission to make this edit", "edit");
             echo $this->translate->translator($this->getResponse(), "message")->json();
             return false;
         }
+
 
         foreach ($this->data as $key => $value) {
             if (
@@ -66,26 +64,18 @@ trait Edit
                 echo $this->translate->translator($this->getResponse(), "message")->json();
                 return false;
             }
-
             $user->$key = $this->data->$key;
         }
+
         if (isset($user->updated_at)) {
             $user->updated_at = date("Y-m-d H:i:s");
         }
 
-        $this->upload = new Upload();
-        if ($this->upload->response()->type === "error") {
-            echo $this->translate->translator($this->upload->response(), "message")->$response();
-            return false;
+        if(empty($this->data->password)){
+            unset($user->password);
         }
 
-        if ($this->upload->save()) {
-            foreach ($this->upload->response()->data as $key => $value) {
-                $user->$key = $value;
-                $this->setIssetUpload(true);
-            }
-        }
-
+        $this->setUpload($user);
         if (!$users->save()) {
             if ($this->isIssetUpload()) {
                 $this->upload->delete();

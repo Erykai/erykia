@@ -15,7 +15,6 @@ class LoginController extends Controller
             return true;
         }
         echo $this->translate->translator($this->getResponse(), "message")->json();
-
         return false;
     }
 

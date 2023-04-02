@@ -36,13 +36,6 @@ LOGS PHP
 docker compose logs php
 ```
 
-EDIT DASHBOARD
-To compress in css, js and scss dashboard, run the command below:
-```shell
-#IMPORTANT: to edit the css always edit the scss, because when running the command below it will compile the scss to css.
-docker exec srv-php80 make build
-```
-
 #### Open your browser and go to https://lvh.me or https://localhost
 ##### PMA http://lvh.me:8080
 

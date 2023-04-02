@@ -6,4 +6,4 @@ if(!isset($route)){
 $route->namespace("Source\Controller\System");
 //login
 $route->post((new Translate())->router('/login'),'LoginController@login', type: "json");
-$route->get((new Translate())->router('/logout'),'LoginController@logout',type: "json");
+$route->post((new Translate())->router('/logout'),'LoginController@logout',type: "json");

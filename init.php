@@ -12,7 +12,7 @@ if($_SERVER["REQUEST_METHOD"] !== "POST" && $_GET['route'] !== "ia" && !getenv("
 }else{
     if(getenv("CONN_USER")){
         $users = new User();
-        $user = $users->find('id', 'id=:id',['id'=>1])->fetch();
+        $user = $users->find('id')->fetch();
         if($_SERVER["REQUEST_METHOD"] !== "POST" && !$user && $_GET['route'] !== "ia"){
             header("Location: /ia");
         }

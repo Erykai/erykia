@@ -27,3 +27,10 @@ foreach (scandir($configPath) as $configFile) {
         require_once $file;
     }
 }
+function dd($data)
+{
+    echo '<pre>';
+    var_dump($data);
+    echo '</pre>';
+    die();
+}

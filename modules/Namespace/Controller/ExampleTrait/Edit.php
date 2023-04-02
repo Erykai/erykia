@@ -3,6 +3,7 @@
 namespace Modules\Namespace\Controller\ExampleTrait;
 
 use Modules\Namespace\Model\Example;
+use Source\Core\Cryption;
 
 trait Edit
 {
@@ -12,7 +13,8 @@ trait Edit
         if (!$this->permission()) {
             echo $this->translate->translator($this->getResponse(), "message")->$response();
         }
-
+        $Cryption = new Cryption();
+        $this->argument->id = $Cryption->decrypt($this->argument->id);
         $login = $this->session->get()->login;
         $examples = (new Example());
         $dad = $examples->find('examples.dad',
@@ -26,7 +28,7 @@ trait Edit
             echo $this->translate->translator($this->getResponse(), "message")->json();
             return false;
         }
-
+        $login->id = $Cryption->decrypt($login->id);
         if ($login->id !== $this->argument->id) {
             $dads = explode(",", $dad->dad);
             foreach ($dads as $dad) {
@@ -62,9 +64,6 @@ trait Edit
                 $this->setResponse(401, "error", "this email already exists", "edit");
                 echo $this->translate->translator($this->getResponse(), "message")->json();
                 return false;
-            }
-            if ($key === 'password') {
-                $this->data->$key = password_hash($value, PASSWORD_BCRYPT, ['cost' => 12]);
             }
             $example->$key = $this->data->$key;
         }

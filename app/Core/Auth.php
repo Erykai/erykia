@@ -20,7 +20,7 @@ trait Auth
         }
 
         $this->login = (new User())
-            ->find('id, id_users, name, email, password, level', 'email=:email',['email'=>$this->data->email])
+            ->find('id, id_users, name, email, password, cover, level', 'email=:email',['email'=>$this->data->email])
             ->fetch();
 
         if (!isset($this->login )) {
@@ -40,7 +40,6 @@ trait Auth
         unset($this->login->password);
 
         $middleware = new Middleware();
-
         $this->session->set('login', $this->login );
         return $middleware->create($this->login->email);
     }

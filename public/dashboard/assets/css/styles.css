@@ -21044,3 +21044,14 @@ pre[class*=language-] {
 .token.variable {
   color: #ff6666;
 }
+
+.img-account-profile {
+  object-fit: cover;
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+}
+
+.dropdown-user-img{
+  object-fit: cover;
+}
