@@ -18,7 +18,7 @@
 <!-- Main page content-->
 <div class="container-xl px-4 mt-n10">
     <div class="row">
-        <div class="col-xxl-4 col-xl-12 mb-4">
+        <div class="col-xl-12 mb-4">
             <div class="card h-100">
                 <div class="card-body h-100 p-5">
                     <div class="row align-items-center">
