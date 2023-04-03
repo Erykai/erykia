@@ -341,7 +341,7 @@ class Controller
     /**
      * @param string $search
      */
-    protected function setSearch(string $search): void
+    protected function setSearch(string $search, string $OrAnd = "AND"): void
     {
         $search = str_replace(["[", "]"], [""], $search);
 
@@ -378,8 +378,9 @@ class Controller
                     $params[$return[0]] = $return[1];
                 }
             }
+            //var_dump($find, $params);
             if (isset($find, $params)) {
-                $this->setFind(implode(" AND ", $find));
+                $this->setFind(implode(" ".$OrAnd." ", $find));
                 $this->setParams(array_filter($params));
             }
         }
@@ -440,16 +441,23 @@ class Controller
     protected function datatable(array $query): array
     {
         $columns = "";
+        $search = "";
         $per_page = $query['length'];
         $page = $query['start'];
         $sort = ($query['order'][0]['dir'] === 'asc' ? "+" : "-") . ($query['order'][0]['column'] !== '0' ? $query['order'][0]['column'] : 'id');
         foreach ($query['columns'] as $column) {
-            $columns .= $column['data'] . ",";
-            if(is_string($query['search']) && $column['searchable'] === 'true'){
-                $this->setSearch($column['data'] . "LIKE%" . $query['search'] . "%");
+            if($column['data'] !== ''){
+                $columns .= $column['data'] . ",";
+                if(is_string($query['search']) && $column['searchable'] === 'true'){
+                    $search .= $column['data'] . "LIKE%" . $query['search'] . "%,";
+                }
             }
         }
+        $search = substr($search, 0, -1);
         $columns = substr($columns, 0, -1);
+
+        $this->setSearch($search, "OR");
+
         return [
             'page' => $page,
             'per_page' => $per_page,

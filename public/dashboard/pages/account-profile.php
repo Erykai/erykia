@@ -72,7 +72,7 @@
 <script>
     const form = document.querySelector('#myForm');
     const submitButton = form.querySelector('button[type="submit"]');
-    const bearerErykia = localStorage.getItem('bearerErykia');
+
 
     // Function to handle image upload
     function handleImageUpload(event) {

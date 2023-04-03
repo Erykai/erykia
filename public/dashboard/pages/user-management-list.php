@@ -33,6 +33,7 @@
                 <tr>
                     <th>{{User}}</th>
                     <th>{{Email}}</th>
+                    <th>{{Action}}</th>
                 </tr>
                 </thead>
             </table>
@@ -40,66 +41,8 @@
     </div>
 </div>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        let table = new DataTable(document.querySelector('#datatables'), {
-            "ajax": {
-                "url": "{{TEMPLATE_URL}}{{#/users#}}",
-                "dataSrc": "data",
-                "data": function(d) {
-                    d.start = d.start || 0;
-                    d.length = d.length || 10;
-                },
-                "dataFilter": function(response) {
-                    let json = JSON.parse(response);
-                    json.recordsTotal = json.all || 0;
-                    json.recordsFiltered = json.all || 0;
-                    return JSON.stringify(json);
-                }
-            },
-            "columns": [
-                {
-                    "data": "name",
-                    "searchable": true
-                },
-                {
-                    "data": "email",
-                    "searchable": true
-                }
-            ],
-            "paging": true,
-            "pageLength": 10,
-            "searching": true,
-            "serverSide": true,
-            "language": {
-                "emptyTable": "{{No results found}}",
-                "info": "{{Showing}} _START_ {{to}} _END_ {{of}} _TOTAL_ {{entries}}",
-                "infoEmpty": "{{Showing 0 to 0 of 0 entries}}",
-                "infoFiltered": "({{filtered from}} _MAX_ {{total entries}})",
-                "lengthMenu": "{{Show}} _MENU_ {{entries}}",
-                "loadingRecords": "{{Loading...}}",
-                "processing": "{{Processing...}}",
-                "search": "{{Search}}:",
-                "zeroRecords": "{{No matching records found}}",
-                "paginate": {
-                    "first": "{{First}}",
-                    "last": "{{Last}}",
-                    "next": "{{Next}}",
-                    "previous": "{{Previous}}"
-                },
-                "aria": {
-                    "sortAscending": ": {{activate to sort column ascending}}",
-                    "sortDescending": ": {{activate to sort column descending}}"
-                }
-            }
-        });
 
-        // Add this event handler to update the search value before each AJAX request
-        table.on('preXhr.dt', function(e, settings, data) {
-            let searchInput = document.querySelector('input[type="search"]');
-            if (searchInput) {
-                data.search = searchInput.value;
-            }
-        });
-    });
+
+    createDataTable("{{TEMPLATE_URL}}{{#/users#}}", ["name", "email"])
 
 </script>

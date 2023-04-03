@@ -7,7 +7,8 @@
     <meta name="description" content=""/>
     <meta name="author" content=""/>
     <title>{{Dashboard}} - Erykia</title>
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.3/datatables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
     <link href="https://cdn.jsdelivr.net/npm/litepicker/dist/css/litepicker.css" rel="stylesheet"/>
     <link href="{{TEMPLATE_URL}}/public/{{TEMPLATE_DASHBOARD}}/assets/css/styles.css" rel="stylesheet"/>
     <link rel="icon" type="image/x-icon" href="{{TEMPLATE_URL}}/public/{{TEMPLATE_DASHBOARD}}/assets/img/favicon.png"/>
@@ -20,12 +21,128 @@
             crossorigin="anonymous"></script>
     <script src="{{TEMPLATE_URL}}/public/{{TEMPLATE_DASHBOARD}}/assets/js/scripts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" crossorigin="anonymous"></script>
-    <script src="{{TEMPLATE_URL}}/public/{{TEMPLATE_DASHBOARD}}/assets/demo/chart-area-demo.js"></script>
-    <script src="{{TEMPLATE_URL}}/public/{{TEMPLATE_DASHBOARD}}/assets/demo/chart-bar-demo.js"></script>
+<!--    <script src="{{TEMPLATE_URL}}/public/{{TEMPLATE_DASHBOARD}}/assets/demo/chart-area-demo.js"></script>-->
+<!--    <script src="{{TEMPLATE_URL}}/public/{{TEMPLATE_DASHBOARD}}/assets/demo/chart-bar-demo.js"></script>-->
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.3/datatables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/bundle.js" crossorigin="anonymous"></script>
     <script src="{{TEMPLATE_URL}}/public/{{TEMPLATE_DASHBOARD}}/assets/js/litepicker.js"></script>
+    <script>
+        const bearerErykia = localStorage.getItem('bearerErykia');
+        function createDataTable(endpoint, columnNames) {
+            const columns = columnNames.map(name => {
+                return {"data": name, "searchable": true};
+            });
+
+            document.addEventListener('DOMContentLoaded', function () {
+                let table = new DataTable(document.querySelector('#datatables'), {
+                    scrollX: '100%',
+                    dom: 'Bfrtip',
+                    buttons: [
+                        {
+                            extend: 'copy',
+                            text: '{{COPY}}',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        {
+                            extend: 'csv',
+                            text: 'CSV',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        {
+                            extend: 'excel',
+                            text: 'EXCEL',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        {
+                            extend: 'pdf',
+                            text: 'PDF',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        {
+                            extend: 'print',
+                            text: '{{PRINT}}',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        }
+                    ],
+                    "ajax": {
+                        "url": endpoint,
+                        "dataSrc": "data",
+                        "data": function (d) {
+                            d.start = d.start || 0;
+                            d.length = d.length || 10;
+                        },
+                        "dataFilter": function (response) {
+                            let json = JSON.parse(response);
+                            json.recordsTotal = json.all || 0;
+                            json.recordsFiltered = json.all || 0;
+                            return JSON.stringify(json);
+                        }
+                    },
+                    "columns": columns.concat({
+                        "title": "{{Action}}",
+                        "data": null,
+                        "render": function (data, type, row, meta) {
+                            let editBtn = `<a href="edit_endpoint?id=${row.id}" class="edit-btn" title="Editar"><i class="fas fa-edit"></i></a>`;
+                            let deleteBtn = `<a href="delete_endpoint?id=${row.id}" class="delete-btn" title="Deletar"><i class="fas fa-trash"></i></a>`;
+                            return editBtn + " " + deleteBtn;
+                        },
+                        "orderable": false,
+                        "searchable": false
+                    }),
+                    "paging": true,
+                    "pageLength": 10,
+                    "searching": true,
+                    "serverSide": true,
+                    "language": {
+                        "emptyTable": "{{No results found}}",
+                        "info": "{{Showing}} _START_ {{to}} _END_ {{of}} _TOTAL_ {{entries}}",
+                        "infoEmpty": "{{Showing 0 to 0 of 0 entries}}",
+                        "infoFiltered": "({{filtered from}} _MAX_ {{total entries}})",
+                        "lengthMenu": "{{Show}} _MENU_ {{entries}}",
+                        "loadingRecords": "{{Loading...}}",
+                        "processing": "{{Processing...}}",
+                        "search": "{{Search}}:",
+                        "zeroRecords": "{{No matching records found}}",
+                        "paginate": {
+                            "first": "{{First}}",
+                            "last": "{{Last}}",
+                            "next": "{{Next}}",
+                            "previous": "{{Previous}}"
+                        },
+                        "aria": {
+                            "sortAscending": ": {{activate to sort column ascending}}",
+                            "sortDescending": ": {{activate to sort column descending}}"
+                        }
+                    }
+                });
+
+                // Add this event handler to update the search value before each AJAX request
+                table.on('preXhr.dt', function (e, settings, data) {
+                    let searchInput = document.querySelector('input[type="search"]');
+                    if (searchInput) {
+                        data.search = searchInput.value;
+                    }
+                });
+            });
+        }
+    </script>
 </head>
 <body class="nav-fixed">
 <nav class="topnav navbar navbar-expand shadow justify-content-between justify-content-sm-start navbar-light bg-white"
@@ -165,6 +282,5 @@
             });
     });
 </script>
-
 </body>
 </html>
