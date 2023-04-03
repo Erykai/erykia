@@ -9,10 +9,15 @@ trait Read
 {
     public function read(array $query, string $response): bool
     {
+        //verify if draw is set datatable
+        if(isset($query['query']['draw'])){
+            $query['query'] = $this->datatable($query['query']);
+        }
         $this->setRequest($query);
         if (isset($this->query->search)) {
             $this->setSearch($this->query->search);
         }
+
         $users = new User();
         $arguments = (array)$this->argument;
 

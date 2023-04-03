@@ -437,4 +437,25 @@ class Controller
         return $output;
     }
 
+    protected function datatable(array $query): array
+    {
+        $columns = "";
+        $per_page = $query['length'];
+        $page = $query['start'];
+        $sort = ($query['order'][0]['dir'] === 'asc' ? "+" : "-") . ($query['order'][0]['column'] !== '0' ? $query['order'][0]['column'] : 'id');
+        foreach ($query['columns'] as $column) {
+            $columns .= $column['data'] . ",";
+            if(is_string($query['search']) && $column['searchable'] === 'true'){
+                $this->setSearch($column['data'] . "LIKE%" . $query['search'] . "%");
+            }
+        }
+        $columns = substr($columns, 0, -1);
+        return [
+            'page' => $page,
+            'per_page' => $per_page,
+            'columns' => $columns,
+            'sort' => $sort
+        ];
+    }
+
 }
