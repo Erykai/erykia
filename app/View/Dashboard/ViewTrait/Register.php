@@ -6,9 +6,7 @@ trait Register
 {
     public function register()
     {
-        if(!$this->loginPermission())
-            return false;
-        $this->template->nav("index","pages/home");
+        $this->template->nav("login","pages/register");
         $content = $this->template->getIndex();
         echo $this->render($content);
         return true;

@@ -6,9 +6,7 @@ trait ForgotPassword
 {
     public function forgotPassword()
     {
-        if(!$this->loginPermission())
-            return false;
-        $this->template->nav("index","pages/home");
+        $this->template->nav("login","pages/forgot-password");
         $content = $this->template->getIndex();
         echo $this->render($content);
         return true;
