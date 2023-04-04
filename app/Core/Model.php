@@ -3,7 +3,7 @@
 namespace Source\Core;
 
 use Erykai\Database\Database;
-use Source\Model\User;
+use Modules\User\Model\User;
 
 /**
  *
@@ -91,6 +91,7 @@ class Model extends Database
     {
 
         $tableExists = $this->conn->query("SHOW TABLES LIKE '$this->table'")->rowCount() > 0;
+
         if (!$tableExists) {
             if(file_exists(dirname(__DIR__, 2) . "/database/" . $this->table . ".php")){
                 if(file_exists(dirname(__DIR__, 2) . "/database/" . $this->table . "_categories.php")){

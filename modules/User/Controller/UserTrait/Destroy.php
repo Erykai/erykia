@@ -1,9 +1,9 @@
 <?php
 
-namespace Source\Controller\System\UserTrait;
+namespace Modules\User\Controller\UserTrait;
 
 use Source\Core\Cryption;
-use Source\Model\User;
+use Modules\User\Model\User;
 
 trait Destroy
 {

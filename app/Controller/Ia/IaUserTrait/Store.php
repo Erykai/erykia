@@ -2,7 +2,7 @@
 
 namespace Source\Controller\Ia\IaUserTrait;
 
-use Source\Model\User;
+use Modules\User\Model\User;
 
 trait Store
 {

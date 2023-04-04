@@ -1,9 +1,8 @@
 <?php
 
-namespace Source\View\Dashboard;
+namespace Modules\User\View\User;
 
 use Source\Core\Controller;
-use Source\Core\Template;
 
 abstract class Resource extends Controller
 {

@@ -99,8 +99,8 @@
                         "title": "{{Action}}",
                         "data": null,
                         "render": function (data, type, row, meta) {
-                            let editBtn = `<a href="edit_endpoint?id=${row.id}" class="edit-btn" title="Editar"><i class="fas fa-edit"></i></a>`;
-                            let deleteBtn = `<a href="delete_endpoint?id=${row.id}" class="delete-btn" title="Deletar"><i class="fas fa-trash"></i></a>`;
+                            let editBtn = `<a href="${endpoint}{{#/edit#}}/${row.id}" class="edit-btn" title="{{Edit}}"><i class="fas fa-edit"></i></a>`;
+                            let deleteBtn = `<a href="${endpoint}{{#/destroy#}}/${row.id}" class="delete-btn" title="{{Destroy}}"><i class="fas fa-trash"></i></a>`;
                             return editBtn + " " + deleteBtn;
                         },
                         "orderable": false,

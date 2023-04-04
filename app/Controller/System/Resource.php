@@ -3,7 +3,7 @@
 namespace Source\Controller\System;
 
 use Source\Core\Controller;
-use Source\Model\User;
+use Modules\User\Model\User;
 
 abstract class Resource extends Controller
 {

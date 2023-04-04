@@ -3,7 +3,7 @@
 namespace Source\Core;
 
 use Erykai\Routes\Middleware;
-use Source\Model\User;
+use Modules\User\Model\User;
 
 /**
  * @property Request $request

@@ -73,16 +73,18 @@ class Controller
      * @var Upload
      */
     protected Upload $upload;
+    protected Template $template;
 
     /**
      * Controller
      */
-    public function __construct()
+    public function __construct(string $template = TEMPLATE_DEFAULT, string $extension = "php")
     {
         $this->session = new Session();
         $this->translate = new Translate();
         $this->setFind(null);
         $this->setParams(null);
+        $this->template = new Template($template, $extension);
     }
     //SYSTEM
 
@@ -464,6 +466,20 @@ class Controller
             'columns' => $columns,
             'sort' => $sort
         ];
+    }
+
+    protected function loginPermission(){
+
+        if (!$this->permission()) {
+            $this->template->nav("login","pages/login");
+            $content = $this->template->getIndex();
+            echo $this->render($content);
+            return false;
+        }
+        if (empty($this->login->cover)) {
+            $this->login->cover = "public/".TEMPLATE_DASHBOARD."/assets/img/illustrations/profiles/profile-1.png";
+        }
+        return true;
     }
 
 }

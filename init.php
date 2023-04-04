@@ -1,95 +1,65 @@
 <?php
 
+use Modules\User\Model\User;
 use Source\Core\Route;
 use Source\Core\Translate;
-use Source\Model\User;
+
 $root = __DIR__;
 require "$root/vendor/autoload.php";
 $route = new Route();
 
-if($_SERVER["REQUEST_METHOD"] !== "POST" && $_GET['route'] !== "ia" && !getenv("CONN_USER")){
+if (shouldRedirectToIA()) {
     header("Location: /ia");
-}else{
-    if(getenv("CONN_USER")){
-        $users = new User();
-        $user = $users->find('id')->fetch();
-        if($_SERVER["REQUEST_METHOD"] !== "POST" && !$user && $_GET['route'] !== "ia"){
-            header("Location: /ia");
+}
+
+function shouldRedirectToIA(): bool
+{
+    if ($_SERVER["REQUEST_METHOD"] === "POST" || $_GET['route'] === "ia") {
+        return false;
+    }
+
+    if (!getenv("CONN_USER")) {
+        return true;
+    }
+
+    $users = new User();
+    $user = $users->find('id')->fetch();
+
+    return !$user;
+}
+
+function loadFilesFromFolders(array $folders): array
+{
+    $files = [];
+
+    foreach ($folders as $folder) {
+        $directoryIterator = new RecursiveDirectoryIterator($folder, RecursiveDirectoryIterator::SKIP_DOTS);
+        $iteratorIterator = new RecursiveIteratorIterator($directoryIterator);
+
+        foreach ($iteratorIterator as $file) {
+            $filePath = $file->getPathname();
+
+            if ($file->getExtension() === 'php' && !str_contains($filePath, "/../")) {
+                if (preg_match('/\/modules\/[^\/]+\/Database$/', $file->getPath())) {
+                    continue;
+                }
+                $files[] = $filePath;
+            }
         }
     }
 
+    return $files;
 }
 
-/**
- * AUTO INCLUDE
- */
-
-$configPaths = "$root/routes";
-//home
 $route->namespace('Source\View\Web');
-$route->get('/','View@home',type: 'json');
-// route system
-$files = [];
-foreach (scandir($configPaths) as $configPath) {
-    $dirPaths = $root . '/routes/' . $configPath;
-    if (is_file($dirPaths)) {
-        $file = $dirPaths;
-        $files[] = $file;
-    }
-    if (is_dir($dirPaths)) {
-        foreach (scandir($dirPaths) as $configFile) {
-            $file = $dirPaths . '/' . $configFile;
-            if (is_file($file) && pathinfo($file, PATHINFO_EXTENSION) === 'php') {
-                if (!str_contains($file, "/../")) {
-                    $files[] = $file;
-                }
+$route->get('/', 'View@home', type: 'json');
 
-            }
-        }
-    }
+$foldersToLoad = ["$root/routes", "$root/modules"];
+$filesToInclude = loadFilesFromFolders($foldersToLoad);
 
+foreach ($filesToInclude as $file) {
+    require_once $file;
 }
-foreach ($files as $file) {
-    require $file;
-}
-//route modules
-$configPaths = "$root/modules";
-$files = [];
-foreach (scandir($configPaths) as $configPath) {
-    $dirPaths = $root . '/modules/' . $configPath;
-
-    if (is_dir($dirPaths)) {
-        // Loop through each folder and look for PHP files in "Routes" folder
-        foreach (scandir($dirPaths) as $folder) {
-            $routesFolder = $dirPaths . '/' . $folder . '/Routes';
-            if (is_dir($routesFolder)) {
-                foreach (scandir($routesFolder) as $configFile) {
-                    $file = $routesFolder . '/' . $configFile;
-                    if (is_file($file) && pathinfo($file, PATHINFO_EXTENSION) === 'php') {
-                        if (!str_contains($file, "/../")) {
-                            $files[] = $file;
-                        }
-                    }
-                }
-            }
-        }
-
-        // Look for PHP files in the main folder (in case there are any)
-        foreach (scandir($dirPaths) as $configFile) {
-            $file = $dirPaths . '/' . $configFile;
-            if (is_file($file) && pathinfo($file, PATHINFO_EXTENSION) === 'php') {
-                if (!str_contains($file, "/../")) {
-                    $files[] = $file;
-                }
-            }
-        }
-    }
-}
-
-foreach ($files as $file) {
-    require $file;
-}
-
 
 $route->exec();
 

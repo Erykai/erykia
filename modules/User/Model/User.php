@@ -1,7 +1,6 @@
 <?php
 
-namespace Source\Model;
-
+namespace Modules\User\Model;
 use Source\Core\Model;
 
 /**
@@ -25,7 +24,7 @@ class User extends Model
                 'level'
             ]
         );
-        $this->migration();
+       // $this->migration();
 
     }
 
