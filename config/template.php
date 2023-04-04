@@ -1,5 +1,5 @@
 <?php
-$path = dirname(__DIR__, 1) . '/public';
+$path = dirname(__DIR__, 1);
 define('TEMPLATE_PATH', $path);
 const TEMPLATE_URL = 'https://lvh.me';
 const TEMPLATE_CLIENT = 'client';

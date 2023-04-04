@@ -8,7 +8,7 @@ trait Destroy
     {
         if (!$this->loginPermission())
             return false;
-        $this->template->nav("index", "pages/user-destroy");
+        $this->template->nav("index", "pages/destroy");
         $content = $this->template->getIndex();
         echo $this->render($content);
         return true;

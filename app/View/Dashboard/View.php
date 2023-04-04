@@ -9,5 +9,4 @@ class View extends Resource
     use ViewTrait\Register;
     use ViewTrait\AccountProfile;
     use ViewTrait\ForgotPassword;
-    use ViewTrait\UserManagementList;
 }

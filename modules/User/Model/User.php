@@ -24,7 +24,7 @@ class User extends Model
                 'level'
             ]
         );
-       // $this->migration();
+        $this->migration();
 
     }
 

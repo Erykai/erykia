@@ -225,7 +225,7 @@
                     <div class="collapse" id="appsCollapseUserManagement"
                          data-bs-parent="#accordionSidenavAppsMenu">
                         <nav class="sidenav-menu-nested nav">
-                            <a class="nav-link" href="{{TEMPLATE_URL}}{{#/dashboard/user-management-list#}}">{{Users List}}</a>
+                            <a class="nav-link" href="{{TEMPLATE_URL}}{{#/dashboard/users/all#}}">{{Users List}}</a>
                             <a class="nav-link" href="{{TEMPLATE_URL}}{{#/dashboard/user-management-add-user#}}">{{Add User}}</a>
                         </nav>
                     </div>

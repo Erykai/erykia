@@ -78,13 +78,13 @@ class Controller
     /**
      * Controller
      */
-    public function __construct(string $template = TEMPLATE_DEFAULT, string $extension = "php")
+    public function __construct(string $templateIndex, string $templatePage, string $extension = "php")
     {
         $this->session = new Session();
         $this->translate = new Translate();
         $this->setFind(null);
         $this->setParams(null);
-        $this->template = new Template($template, $extension);
+        $this->template = new Template($templateIndex, $templatePage, $extension);
     }
     //SYSTEM
 

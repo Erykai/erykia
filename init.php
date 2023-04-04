@@ -40,16 +40,16 @@ function loadFilesFromFolders(array $folders): array
             $filePath = $file->getPathname();
 
             if ($file->getExtension() === 'php' && !str_contains($filePath, "/../")) {
-                if (preg_match('/\/modules\/[^\/]+\/Database$/', $file->getPath())) {
-                    continue;
+                if (str_contains($filePath, "/Routes/") || preg_match('/\/routes\/[^\/]+\/[^\/]+\.php$/', $filePath)) {
+                    $files[] = $filePath;
                 }
-                $files[] = $filePath;
             }
         }
     }
 
     return $files;
 }
+
 
 $route->namespace('Source\View\Web');
 $route->get('/', 'View@home', type: 'json');

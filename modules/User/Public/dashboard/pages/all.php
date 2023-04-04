@@ -41,8 +41,5 @@
     </div>
 </div>
 <script>
-
-
     createDataTable("{{TEMPLATE_URL}}{{#/users#}}", ["name", "email"])
-
 </script>
