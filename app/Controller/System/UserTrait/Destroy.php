@@ -2,6 +2,7 @@
 
 namespace Source\Controller\System\UserTrait;
 
+use Source\Core\Cryption;
 use Source\Model\User;
 
 trait Destroy
@@ -13,6 +14,7 @@ trait Destroy
             echo $this->translate->translator($this->getResponse(), "message")->json();
             return false;
         }
+        $id = (new Cryption())->decrypt($this->argument->id);
         $login = $this->session->get()->login;
         if ($login->id === $this->argument->id) {
             $this->setResponse(401, "error", "you cannot delete your registration", "delete");
@@ -23,7 +25,7 @@ trait Destroy
         $users = (new User());
         $dad = $users->find('users.dad',
             'users.id=:id',
-            ['id' => $this->argument->id])
+            ['id' => $id])
             ->fetchReference(getColumns: $this->getColumns());
         $user = null;
 
@@ -38,7 +40,7 @@ trait Destroy
             if ($dad === $login->id) {
                 $user = $users->find('*',
                     'users.id=:id',
-                    ['id' => $this->argument->id])
+                    ['id' => $id])
                     ->fetchReference(getColumns: $this->getColumns());
             }
         }
@@ -49,7 +51,7 @@ trait Destroy
             return false;
         }
 
-        $users->delete($this->argument->id);
+        $users->delete($id);
         $this->setResponse(200, "success", "registration successfully deleted", "delete");
         echo $this->translate->translator($this->getResponse(), "message")->json();
         return true;
