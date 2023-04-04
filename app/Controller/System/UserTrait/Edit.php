@@ -2,6 +2,7 @@
 
 namespace Source\Controller\System\UserTrait;
 
+use Source\Core\Cryption;
 use Source\Model\User;
 
 trait Edit
@@ -12,13 +13,14 @@ trait Edit
         if (!$this->permission()) {
             echo $this->translate->translator($this->getResponse(), "message")->$response();
         }
+        $id = (new Cryption())->decrypt($this->argument->id);
 
         $login = $this->session->get()->login;
 
         $users = (new User());
         $dad = $users->find('users.dad',
             'users.id=:id',
-            ['id' => $this->argument->id])
+            ['id' => $id])
             ->fetch();
         $user = null;
 
@@ -34,14 +36,14 @@ trait Edit
                 if ($dad === $login->id) {
                     $user = $users->find('*',
                         'users.id=:id',
-                        ['id' => $this->argument->id])
+                        ['id' => $id])
                         ->fetch();
                 }
             }
         } else {
             $user = $users->find('*',
                 'users.id=:id',
-                ['id' => $this->argument->id])
+                ['id' => $id])
                 ->fetch();
         }
 
