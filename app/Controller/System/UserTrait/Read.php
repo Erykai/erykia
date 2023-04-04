@@ -2,6 +2,7 @@
 
 namespace Source\Controller\System\UserTrait;
 
+use Source\Core\Cryption;
 use Source\Core\Response;
 use Source\Model\User;
 
@@ -20,7 +21,9 @@ trait Read
 
         $users = new User();
         $arguments = (array)$this->argument;
-
+        if(isset($arguments['id'])){
+            $arguments['id'] = (new Cryption())->decrypt($arguments['id']);
+        }
         if ($arguments) {
             $find = null;
             foreach ($arguments as $key => $argument) {
@@ -28,11 +31,14 @@ trait Read
             }
             $find = substr(trim($find), 0, -4);
             $user = $users->find(condition: $find, params: $arguments)->fetchReference(getColumns: $this->getColumns());
+
             if (!$user) {
                 echo $this->translate->translator($users->response(), "message")->$response();
                 return false;
             }
-            echo (new Response())->data($user)->$response();
+            $this->setPaginator(1);
+            $this->paginator->data = $user;
+            echo (new Response())->data($this->getPaginator())->$response();
             return true;
         }
 

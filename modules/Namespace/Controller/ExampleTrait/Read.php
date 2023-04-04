@@ -27,7 +27,9 @@ trait Read
                 echo $this->translate->translator($examples->response(), "message")->$response();
                 return false;
             }
-            echo (new Response())->data($example)->$response();
+            $this->setPaginator(1);
+            $this->paginator->data = $example;
+            echo (new Response())->data($this->getPaginator())->$response();
             return true;
         }
 
