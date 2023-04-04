@@ -22,14 +22,14 @@
     ]
   },
   "require": {
-    "erykai/routes": "v1.3.4",
+    "erykai/routes": "v1.3.5",
     "erykai/database": "v1.4.4",
     "erykai/upload": "v1.4.2",
     "erykai/request": "v1.3.1",
     "erykai/response": "v1.1.0",
     "erykai/migration": "v1.2.0",
     "erykai/translate": "v2.2.1",
-    "erykai/template": "v1.0.1",
+    "erykai/template": "v1.1.0",
     "erykai/pluralize": "v1.1.0",
     "erykai/cryption": "v2.1.3",
     "erykai/compress": "v1.0.2",
