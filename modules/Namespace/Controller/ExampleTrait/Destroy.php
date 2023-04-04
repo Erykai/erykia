@@ -3,6 +3,7 @@
 namespace Modules\Namespace\Controller\ExampleTrait;
 
 use Modules\Namespace\Model\Example;
+use Source\Core\Cryption;
 
 trait Destroy
 {
@@ -13,12 +14,13 @@ trait Destroy
             echo $this->translate->translator($this->getResponse(), "message")->json();
             return false;
         }
+        $id = (new Cryption())->decrypt($this->argument->id);
         $login = $this->session->get()->login;
 
         $examples = (new Example());
         $dad = $examples->find('examples.dad',
             'examples.id=:id',
-            ['id' => $this->argument->id])
+            ['id' => $id])
             ->fetch();
         $example = null;
 
@@ -33,7 +35,7 @@ trait Destroy
             if ($dad === $login->id) {
                 $example = $examples->find('*',
                     'examples.id=:id',
-                    ['id' => $this->argument->id])
+                    ['id' => $id])
                     ->fetch();
             }
         }
@@ -44,7 +46,7 @@ trait Destroy
             return false;
         }
 
-        $examples->delete($this->argument->id);
+        $examples->delete($id);
         $this->setResponse(200, "success", "registration successfully deleted", "delete");
         echo $this->translate->translator($this->getResponse(), "message")->json();
         return true;

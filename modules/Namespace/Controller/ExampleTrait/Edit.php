@@ -13,13 +13,12 @@ trait Edit
         if (!$this->permission()) {
             echo $this->translate->translator($this->getResponse(), "message")->$response();
         }
-        $Cryption = new Cryption();
-        $this->argument->id = $Cryption->decrypt($this->argument->id);
+        $id = (new Cryption())->decrypt($this->argument->id);
         $login = $this->session->get()->login;
         $examples = (new Example());
         $dad = $examples->find('examples.dad',
             'examples.id=:id',
-            ['id' => $this->argument->id])
+            ['id' => $id])
             ->fetch();
         $example = null;
 
@@ -35,14 +34,14 @@ trait Edit
                 if ($dad === $login->id) {
                     $example = $examples->find('*',
                         'examples.id=:id',
-                        ['id' => $this->argument->id])
+                        ['id' => $id])
                         ->fetch();
                 }
             }
         } else {
             $example = $examples->find('*',
                 'examples.id=:id',
-                ['id' => $this->argument->id])
+                ['id' => $id])
                 ->fetch();
         }
 
