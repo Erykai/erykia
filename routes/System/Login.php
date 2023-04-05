@@ -3,7 +3,7 @@ use Source\Core\Translate;
 if(!isset($route)){
     return false;
 }
+$translate = Translate::getInstance();
 $route->namespace("Source\Controller\System");
-//login
-$route->post((new Translate())->router('/login'),'LoginController@login', type: "json");
-$route->post((new Translate())->router('/logout'),'LoginController@logout',type: "json");
+$route->post($translate->router('/login'),'LoginController@login', type: "json");
+$route->post($translate->router('/logout'),'LoginController@logout',type: "json");

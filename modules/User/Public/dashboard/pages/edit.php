@@ -1,2 +1,1 @@
-<?php
-echo "user edit";
+<h1>EDIT</h1>

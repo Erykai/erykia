@@ -81,7 +81,7 @@ class Controller
     public function __construct()
     {
         $this->session = new Session();
-        $this->translate = new Translate();
+        $this->translate = Translate::getInstance();
         $this->setFind(null);
         $this->setParams(null);
 

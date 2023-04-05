@@ -6,6 +6,20 @@ use stdClass;
 
 class Translate extends \Erykai\Translate\Translate
 {
+    private static ?Translate $instance = null;
+
+    private function __construct(string $path = null) {
+        parent::__construct($path);
+    }
+
+
+    public static function getInstance(string $path = null) {
+        if (self::$instance === null) {
+            self::$instance = new Translate($path);
+        }
+        return self::$instance;
+    }
+
     public function translatorString(string $message, string $file)
     {
         $response = new stdClass();

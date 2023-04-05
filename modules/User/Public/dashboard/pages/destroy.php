@@ -1,2 +1,1 @@
-<?php
-echo "user destroy";
+<h1>DESTROY</h1>
