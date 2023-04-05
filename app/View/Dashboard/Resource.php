@@ -10,6 +10,7 @@ abstract class Resource extends Controller
     public function __construct()
     {
         parent::__construct(TEMPLATE_DASHBOARD);
+        $this->template = new Template("public/".TEMPLATE_DASHBOARD,"public/".TEMPLATE_DASHBOARD,"php");
 
     }
 }

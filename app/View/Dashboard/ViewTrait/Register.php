@@ -2,6 +2,8 @@
 
 namespace Source\View\Dashboard\ViewTrait;
 
+use Source\Core\Template;
+
 trait Register
 {
     public function register()

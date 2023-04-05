@@ -3,6 +3,7 @@
 namespace Modules\User\View;
 
 use Source\Core\Controller;
+use Source\Core\Template;
 
 abstract class Resource extends Controller
 {
@@ -14,6 +15,7 @@ abstract class Resource extends Controller
 
         $templateIndex = "public/" . TEMPLATE_DASHBOARD;
         $templatePage = 'modules/'.$moduleName.'/Public/' . TEMPLATE_DASHBOARD;
-        parent::__construct($templateIndex, $templatePage);
+        $this->template = new Template($templateIndex, $templatePage, "php");
+        parent::__construct();
     }
 }

@@ -2,6 +2,8 @@
 
 namespace Source\View\Dashboard\ViewTrait;
 
+use Source\Core\Template;
+
 trait Home
 {
     public function home()

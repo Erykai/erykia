@@ -78,13 +78,13 @@ class Controller
     /**
      * Controller
      */
-    public function __construct(string $templateIndex, string $templatePage, string $extension = "php")
+    public function __construct()
     {
         $this->session = new Session();
         $this->translate = new Translate();
         $this->setFind(null);
         $this->setParams(null);
-        $this->template = new Template($templateIndex, $templatePage, $extension);
+
     }
     //SYSTEM
 
@@ -471,6 +471,7 @@ class Controller
     protected function loginPermission(){
 
         if (!$this->permission()) {
+            $this->template = new Template("public/".TEMPLATE_DASHBOARD,"public/".TEMPLATE_DASHBOARD,"php");
             $this->template->nav("login","pages/login");
             $content = $this->template->getIndex();
             echo $this->render($content);
