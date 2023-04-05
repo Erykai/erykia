@@ -5,18 +5,18 @@
       <sourceFolder url="file://$MODULE_DIR$/app" isTestSource="false" packagePrefix="Source\" />
       <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/erykai/upload" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/erykai/request" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/erykai/pluralize" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/erykai/routes" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/erykai/migration" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/erykai/response" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/erykai/compress" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/erykai/template" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/erykai/request" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/erykai/routes" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/erykai/translate" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/composer" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/erykai/cryption" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/erykai/response" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/erykai/pluralize" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/erykai/template" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/erykai/database" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/erykai/compress" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/erykai/cryption" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/composer" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/erykai/upload" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
