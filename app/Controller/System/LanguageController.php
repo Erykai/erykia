@@ -11,7 +11,7 @@ class LanguageController extends Controller
     {
         $this->setRequest($query);
         $dynamic = $this->data->dynamic ?? "";
-        $json = (new Translate())->translator($this->data, "component")->json();
+        $json = Translate::getInstance()->translator($this->data, "component")->json();
         echo str_replace("<#>", $dynamic, $json);
     }
 }

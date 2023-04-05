@@ -7,6 +7,7 @@ use Source\Core\Translate;
 $root = __DIR__;
 require "$root/vendor/autoload.php";
 $route = new Route();
+$translate = Translate::getInstance();
 
 if (shouldRedirectToIA()) {
     header("Location: /ia");
@@ -65,5 +66,5 @@ $route->exec();
 
 if ($route->response()->type === "error") {
     http_response_code($route->response()->code);
-    echo (new Translate())->translator($route->response(), "message")->json();
+    echo $translate->translator($route->response(), "message")->json();
 }
