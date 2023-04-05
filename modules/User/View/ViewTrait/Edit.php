@@ -8,7 +8,7 @@ trait Edit
     {
         if (!$this->loginPermission())
             return false;
-        $this->template->nav("index", "pages/edit");
+        $this->template->nav("index", "pages/edit", "User");
         $content = $this->template->getIndex();
         echo $this->render($content);
         return true;
