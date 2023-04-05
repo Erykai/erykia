@@ -41,5 +41,6 @@
     </div>
 </div>
 <script>
-    createDataTable("{{TEMPLATE_URL}}{{#/users#}}", ["name", "email"])
+    //precisa passar a busca de usuarios pela users e da view pela painel/users
+    createDataTable("{{TEMPLATE_URL}}{{#/users#}}","{{TEMPLATE_URL}}{{#/dashboard/users#}}", ["name", "email"])
 </script>

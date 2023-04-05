@@ -35,7 +35,7 @@
     <script src="{{TEMPLATE_URL}}/public/{{TEMPLATE_DASHBOARD}}/assets/js/litepicker.js"></script>
     <script>
         const bearerErykia = localStorage.getItem('bearerErykia');
-        function createDataTable(endpoint, columnNames) {
+        function createDataTable(endpointPost, endpointGet, columnNames) {
             const columns = columnNames.map(name => {
                 return {"data": name, "searchable": true};
             });
@@ -82,7 +82,7 @@
                         }
                     ],
                     "ajax": {
-                        "url": endpoint,
+                        "url": endpointPost,
                         "dataSrc": "data",
                         "data": function (d) {
                             d.start = d.start || 0;
@@ -99,8 +99,8 @@
                         "title": "{{Action}}",
                         "data": null,
                         "render": function (data, type, row, meta) {
-                            let editBtn = `<a href="${endpoint}{{#/edit#}}/${row.id}" class="edit-btn" title="{{Edit}}"><i class="fas fa-edit"></i></a>`;
-                            let deleteBtn = `<a href="${endpoint}{{#/destroy#}}/${row.id}" class="delete-btn" title="{{Destroy}}"><i class="fas fa-trash"></i></a>`;
+                            let editBtn = `<a href="${endpointGet}{{#/edit#}}/${row.id}" class="edit-btn" title="{{Edit}}"><i class="fas fa-edit"></i></a>`;
+                            let deleteBtn = `<a href="${endpointGet}{{#/destroy#}}/${row.id}" class="delete-btn" title="{{Destroy}}"><i class="fas fa-trash"></i></a>`;
                             return editBtn + " " + deleteBtn;
                         },
                         "orderable": false,
