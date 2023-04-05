@@ -34,8 +34,8 @@ trait Store
             "module",
             dynamic: $this->data->component
         );
-        $translate = new Translate();
-        echo $translate->translator($this->getResponse(), "message")->json();
+
+        echo $this->translate->translator($this->getResponse(), "message")->json();
         return true;
     }
 }

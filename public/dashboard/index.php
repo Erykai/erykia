@@ -83,6 +83,9 @@
                     ],
                     "ajax": {
                         "url": endpointPost,
+                        "headers": {
+                            "Authorization": "Bearer " + bearerErykia
+                        },
                         "dataSrc": "data",
                         "data": function (d) {
                             d.start = d.start || 0;

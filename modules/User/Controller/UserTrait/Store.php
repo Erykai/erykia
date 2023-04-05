@@ -2,6 +2,7 @@
 
 namespace Modules\User\Controller\UserTrait;
 
+use Source\Core\Cryption;
 use Source\Core\Upload;
 use Modules\User\Model\User;
 
@@ -41,11 +42,11 @@ trait Store
         }
         if ($this->validateLogin()) {
             $id = (int)$this->session->get()->login->id;
-            $user->id_users = $this->session->get()->login->id;
+            $user->id_users = (new Cryption())->decrypt($this->session->get()->login->id);
             $user->dad =
                 $id === 1
-                    ? $this->session->get()->login->id
-                    : $this->session->get()->login->id . "," . $this->session->get()->login->dad;
+                    ? (new Cryption())->decrypt($this->session->get()->login->id)
+                    : (new Cryption())->decrypt($this->session->get()->login->id) . "," . (new Cryption())->decrypt($this->session->get()->login->dad);
         } else {
             $user->dad = 1;
             $user->id_users = 1;
