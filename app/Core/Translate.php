@@ -32,7 +32,7 @@ class Translate extends \Erykai\Translate\Translate
         return $return;
     }
 
-    public function translator(object $response, string $nameDefault)
+    public function translator(object $response, string $nameDefault, string $module = null)
     {
         //validate return components ex response
         if (isset($response->message)) {
@@ -44,7 +44,7 @@ class Translate extends \Erykai\Translate\Translate
         }
         $return = new Response();
         $response->file = $nameDefault;
-        $return->data($this->data($response)->target()->response());
+        $return->data($this->data($response)->target(module:$module)->response());
         unset($return->object()->message, $return->object()->nameDefault);
         if ($nameDefault === 'message') {
             $response->text = $return->object()->translate;
@@ -55,14 +55,14 @@ class Translate extends \Erykai\Translate\Translate
 
     }
 
-    public function router(string $route, string $dynamic = null)
+    public function router(string $route, string $dynamic = null, string $module = null)
     {
         $routerTranslate = new stdClass();
         if ($dynamic) {
             $routerTranslate->dynamic = $dynamic;
         }
         $routerTranslate->text = $route;
-        $router = $this->translator($routerTranslate, "route")->object()->translate;
+        $router = $this->translator($routerTranslate, "route", $module)->object()->translate;
         if (strpos($router, "<&>")) {
             die($router . " in variable " . '$routeDefault and $routeTranslate');
         }
