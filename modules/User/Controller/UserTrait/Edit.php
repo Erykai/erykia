@@ -33,7 +33,7 @@ trait Edit
         if ($login->id !== $this->argument->id) {
             $dads = explode(",", $dad->dad);
             foreach ($dads as $dad) {
-                if ($dad === $login->id) {
+                if ($dad === (new Cryption())->decrypt($login->id)) {
                     $user = $users->find('*',
                         'users.id=:id',
                         ['id' => $id])
@@ -78,6 +78,7 @@ trait Edit
         }
 
         $this->setUpload($user);
+
         if (!$users->save()) {
             if ($this->isIssetUpload()) {
                 $this->upload->delete();
