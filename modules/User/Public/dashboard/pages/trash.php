@@ -9,18 +9,6 @@
                     </h1>
                     <p></p>
                 </div>
-                <div class="col-12 col-xl-auto mb-3">
-                    <a class="btn btn-sm btn-light text-primary"
-                       href="{{TEMPLATE_URL}}{{#/dashboard/user-management-groups-list#}}">
-                        <i class="me-1" data-feather="users"></i>
-                        {{Manage Groups}}
-                    </a>
-                    <a class="btn btn-sm btn-light text-primary"
-                       href="{{TEMPLATE_URL}}{{#/dashboard/user-management-add-user#}}">
-                        <i class="me-1" data-feather="user-plus"></i>
-                        {{Add New User}}
-                    </a>
-                </div>
             </div>
         </div>
     </div>

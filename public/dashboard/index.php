@@ -13,6 +13,32 @@
     <link href="https://cdn.jsdelivr.net/npm/litepicker/dist/css/litepicker.css" rel="stylesheet"/>
     <link href="{{TEMPLATE_URL}}/public/{{TEMPLATE_DASHBOARD}}/assets/css/styles.css" rel="stylesheet"/>
     <link rel="icon" type="image/x-icon" href="{{TEMPLATE_URL}}/public/{{TEMPLATE_DASHBOARD}}/assets/img/favicon.png"/>
+    <script>
+        const globalVariables = {
+            editBtnTemplate: '<a href="%endpointAction%{{#/edit#}}/%rowId%" class="edit-btn" title="{{Edit}}"><i class="fas fa-edit"></i></a>',
+            deleteBtnTemplate: '<a href="#" class="delete-btn" title="{{Destroy}}" %deleteBtnColor% onclick="handleDeleteBtnClick(event, \'%endpoint%/%rowId%\', \'%newTrashValue%\')"><i class="%deleteIcon%"></i></a>',
+            permanentDeleteBtnTemplate: '<a href="#" class="permanent-delete-btn" style="color: red;" title="{{Permanent Delete}}" onclick="handlePermanentDeleteBtnClick(event, \'%endpoint%/%rowId%\')"><i class="fas fa-times"></i></a>',
+            COPY: '{{COPY}}',
+            PRINT: '{{PRINT}}',
+            Action: '{{Action}}',
+            emptyTable: "{{No results found}}",
+            info: "{{Showing}} _START_ {{to}} _END_ {{of}} _TOTAL_ {{entries}}",
+            infoEmpty: "{{Showing 0 to 0 of 0 entries}}",
+            infoFiltered: "({{filtered from}} _MAX_ {{total entries}})",
+            lengthMenu: "{{Show}} _MENU_ {{entries}}",
+            loadingRecords: "{{Loading...}}",
+            processing: "{{Processing...}}",
+            search: "{{Search}}:",
+            zeroRecords: "{{No matching records found}}",
+            first: "{{First}}",
+            last: "{{Last}}",
+            next: "{{Next}}",
+            previous: "{{Previous}}",
+            sortAscending: ": {{activate to sort column ascending}}",
+            sortDescending: ": {{activate to sort column descending}}"
+        };
+        const bearerErykia = localStorage.getItem('bearerErykia');
+    </script>
     <script data-search-pseudo-elements defer
             src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/all.min.js"
             crossorigin="anonymous"></script>
@@ -34,174 +60,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/bundle.js" crossorigin="anonymous"></script>
     <script src="{{TEMPLATE_URL}}/public/{{TEMPLATE_DASHBOARD}}/assets/js/litepicker.js"></script>
-    <script>
-        const bearerErykia = localStorage.getItem('bearerErykia');
-
-        async function handleDeleteBtnClick(event, endpoint, newTrashValue) {
-            event.preventDefault();
-
-            const response = await fetch(endpoint, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + bearerErykia
-                },
-                body: JSON.stringify({ trash: newTrashValue })
-            });
-
-            const result = await response.json();
-            displayMessage(result.text, result.type);
-        }
-        async function handlePermanentDeleteBtnClick(event, endpoint) {
-            event.preventDefault();
-
-            const response = await fetch(endpoint, {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': 'Bearer ' + bearerErykia
-                }
-            });
-
-            const result = await response.json();
-            displayMessage(result.text, result.type);
-        }
-
-        function capitalizeFirstLetter(string) {
-            return string.charAt(0).toUpperCase() + string.slice(1);
-        }
-
-        function displayMessage(message, messageType) {
-            const returnMsgElement = document.querySelector('#return-msg');
-            returnMsgElement.textContent = capitalizeFirstLetter(message);
-            returnMsgElement.style.color = messageType === 'error' ? 'red' : 'green';
-
-            if (messageType === 'success') {
-                setTimeout(() => {
-                    window.location.reload();
-                }, 1000);
-            }
-        }
-
-        function createDataTable(endpoint, endpointAction, columnNames, trash) {
-            const columns = columnNames.map(name => {
-                return {"data": name, "searchable": true};
-            });
-
-            document.addEventListener('DOMContentLoaded', function () {
-                let table = new DataTable(document.querySelector('#datatables'), {
-                    scrollX: '100%',
-                    dom: 'Bfrtip',
-                    buttons: [
-                        {
-                            extend: 'copy',
-                            text: '{{COPY}}',
-                            exportOptions: {
-                                columns: ':visible'
-                            }
-                        },
-                        {
-                            extend: 'csv',
-                            text: 'CSV',
-                            exportOptions: {
-                                columns: ':visible'
-                            }
-                        },
-                        {
-                            extend: 'excel',
-                            text: 'EXCEL',
-                            exportOptions: {
-                                columns: ':visible'
-                            }
-                        },
-                        {
-                            extend: 'pdf',
-                            text: 'PDF',
-                            exportOptions: {
-                                columns: ':visible'
-                            }
-                        },
-                        {
-                            extend: 'print',
-                            text: '{{PRINT}}',
-                            exportOptions: {
-                                columns: ':visible'
-                            }
-                        }
-                    ],
-                    "ajax": {
-                        "url": endpoint + trash,
-                        "headers": {
-                            "Authorization": "Bearer " + bearerErykia
-                        },
-                        "dataSrc": "data",
-                        "data": function (d) {
-                            d.start = d.start || 0;
-                            d.length = d.length || 10;
-                        },
-                        "dataFilter": function (response) {
-                            let json = JSON.parse(response);
-                            json.recordsTotal = json.all || 0;
-                            json.recordsFiltered = json.all || 0;
-                            return JSON.stringify(json);
-                        }
-                    },
-                    "columns": columns.concat({
-                        "title": "{{Action}}",
-                        "data": null,
-                        "render": function (data, type, row, meta) {
-                            let editBtn = trash.endsWith('1') ? '' : `<a href="${endpointAction}{{#/edit#}}/${row.id}" class="edit-btn" title="{{Edit}}"><i class="fas fa-edit"></i></a>`;
-                            let deleteIcon = trash.endsWith('1') ? 'fas fa-undo' : 'fas fa-trash';
-                            let deleteBtnColor = trash.endsWith('1') ? 'style="color: green;"' : '';
-                            let newTrashValue = trash.endsWith('1') ? '0' : '1';
-                            let deleteBtn = `<a href="#" class="delete-btn" title="{{Destroy}}" ${deleteBtnColor} onclick="handleDeleteBtnClick(event, '${endpoint}/${row.id}', '${newTrashValue}')"><i class="${deleteIcon}"></i></a>`;
-
-                            let permanentDeleteBtn = '';
-                            if (trash.endsWith('1')) {
-                                permanentDeleteBtn = `<a href="#" class="permanent-delete-btn" style="color: red;" title="{{Permanent Delete}}" onclick="handlePermanentDeleteBtnClick(event, '${endpoint}/${row.id}')"><i class="fas fa-times"></i></a>`;
-                            }
-
-                            return editBtn + " " + deleteBtn + " " + permanentDeleteBtn;
-                        },
-                        "orderable": false,
-                        "searchable": false
-                    }),
-                    "paging": true,
-                    "pageLength": 10,
-                    "searching": true,
-                    "serverSide": true,
-                    "language": {
-                        "emptyTable": "{{No results found}}",
-                        "info": "{{Showing}} _START_ {{to}} _END_ {{of}} _TOTAL_ {{entries}}",
-                        "infoEmpty": "{{Showing 0 to 0 of 0 entries}}",
-                        "infoFiltered": "({{filtered from}} _MAX_ {{total entries}})",
-                        "lengthMenu": "{{Show}} _MENU_ {{entries}}",
-                        "loadingRecords": "{{Loading...}}",
-                        "processing": "{{Processing...}}",
-                        "search": "{{Search}}:",
-                        "zeroRecords": "{{No matching records found}}",
-                        "paginate": {
-                            "first": "{{First}}",
-                            "last": "{{Last}}",
-                            "next": "{{Next}}",
-                            "previous": "{{Previous}}"
-                        },
-                        "aria": {
-                            "sortAscending": ": {{activate to sort column ascending}}",
-                            "sortDescending": ": {{activate to sort column descending}}"
-                        }
-                    }
-                });
-
-                // Add this event handler to update the search value before each AJAX request
-                table.on('preXhr.dt', function (e, settings, data) {
-                    let searchInput = document.querySelector('input[type="search"]');
-                    if (searchInput) {
-                        data.search = searchInput.value;
-                    }
-                });
-            });
-        }
-    </script>
+    <script src="{{TEMPLATE_URL}}/public/{{TEMPLATE_DASHBOARD}}/assets/js/datatable.js"></script>
 </head>
 <body class="nav-fixed">
 <nav class="topnav navbar navbar-expand shadow justify-content-between justify-content-sm-start navbar-light bg-white"
