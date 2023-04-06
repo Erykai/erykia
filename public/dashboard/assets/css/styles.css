@@ -20820,16 +20820,16 @@ table.dataTable tfoot th {
 table.dataTable tbody td {
   white-space: nowrap;
 }
-.edit-btn, .delete-btn {
+/* Edit Button */
+.edit-btn {
   color: #333;
-  margin: 0 5px;
-  text-decoration: none;
 }
 
-.edit-btn:hover, .delete-btn:hover {
+.edit-btn:hover {
   color: #007bff;
 }
 
+/* Delete Button */
 .delete-btn {
   color: #dc3545;
 }
@@ -20837,15 +20837,50 @@ table.dataTable tbody td {
 .delete-btn:hover {
   color: #c82333;
 }
+
+/* Create Button */
+.create-btn {
+  color: #28a745;
+}
+
+.create-btn:hover {
+  color: #218838;
+}
+
+/* Read Button */
+.read-btn {
+  color: #ffc107;
+}
+
+.read-btn:hover {
+  color: #e0a800;
+}
+
+/* Update Button */
+.update-btn {
+  color: #17a2b8;
+}
+
+.update-btn:hover {
+  color: #138496;
+}
+
+/* General Button Styles */
 .edit-btn,
-.delete-btn {
+.delete-btn,
+.create-btn,
+.read-btn,
+.update-btn {
   display: inline-block;
   margin-right: 5px;
   text-decoration: none;
 }
 
 .edit-btn:last-child,
-.delete-btn:last-child {
+.delete-btn:last-child,
+.create-btn:last-child,
+.read-btn:last-child,
+.update-btn:last-child {
   margin-right: 0;
 }
 .sbp-dropdown-example .dropdown-menu {

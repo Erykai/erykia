@@ -21,8 +21,7 @@ class User extends Model
                 'name',
                 'email',
                 'password',
-                'level',
-                'trash'
+                'level'
             ]
         );
         $this->migration();

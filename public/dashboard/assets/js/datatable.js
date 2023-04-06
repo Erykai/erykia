@@ -108,6 +108,7 @@ function createDataTable(endpoint, endpointAction, columnNames, trash) {
                 "title": globalVariables.Action,
                 "data": null,
                 "render": function (data, type, row, meta) {
+                    let readBtn = trash.endsWith('1') ? '' : globalVariables.readBtnTemplate.replace('%rowId%', row.id).replace('%endpointAction%', endpointAction);
                     let editBtn = trash.endsWith('1') ? '' : globalVariables.editBtnTemplate.replace('%rowId%', row.id).replace('%endpointAction%', endpointAction);
                     let deleteIcon = trash.endsWith('1') ? 'fas fa-undo' : 'fas fa-trash';
                     let deleteBtnColor = trash.endsWith('1') ? 'style="color: green;"' : '';
@@ -119,7 +120,7 @@ function createDataTable(endpoint, endpointAction, columnNames, trash) {
                         permanentDeleteBtn = globalVariables.permanentDeleteBtnTemplate.replace('%rowId%', row.id).replace('%endpoint%', endpoint);
                     }
 
-                    return editBtn + " " + deleteBtn + " " + permanentDeleteBtn;
+                    return `${readBtn} ${editBtn} ${deleteBtn} ${permanentDeleteBtn}`
                 },
                 "orderable": false,
                 "searchable": false

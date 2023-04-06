@@ -1,4 +1,5 @@
 import {Attribute} from "../Core/Attribute.js";
+import {Element} from "../Core/Element.js";
 import {Chat} from "../Component/Chat/Chat.js";
 
 export class User {
@@ -13,8 +14,12 @@ export class User {
     }
 
     static login() {
-        Chat.translate("Ready now just program!")
+        let  url = `${window.location.href.replace("/ia", "")}`
+        Chat.translate(`Ready now just program! access:  <a style="color: #fff" target="_blank" href="${url}/dashboard  ">Dashboard</a>`,
+            `<a style="color: #fff" target="_blank" href="${url}/`
+        )
         Element.getId('send').remove()
         Element.getId('response').remove()
+
     }
 }

@@ -8,7 +8,10 @@ export class Login
 
     // IN DEVELOPER
      static login() {
-         Chat.translate("Ready now just program!")
+         let  url = `${window.location.href.replace("/ia", "")}`
+         Chat.translate(`Ready now just program! access:  <a style="color: #fff" target="_blank" href="${url}/dashboard  ">Dashboard</a>`,
+             `<a style="color: #fff" target="_blank" href="${url}/`
+         )
          Element.getId('send').remove()
          Element.getId('response').remove()
          Element.getId('load-chat').setAttribute('style','display: none')
