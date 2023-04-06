@@ -35,7 +35,7 @@
     <script src="{{TEMPLATE_URL}}/public/{{TEMPLATE_DASHBOARD}}/assets/js/litepicker.js"></script>
     <script>
         const bearerErykia = localStorage.getItem('bearerErykia');
-        function createDataTable(endpointPost, endpointGet, columnNames) {
+        function createDataTable(endpoint, endpointAction, columnNames) {
             const columns = columnNames.map(name => {
                 return {"data": name, "searchable": true};
             });
@@ -82,7 +82,7 @@
                         }
                     ],
                     "ajax": {
-                        "url": endpointPost,
+                        "url": endpoint,
                         "headers": {
                             "Authorization": "Bearer " + bearerErykia
                         },
@@ -102,8 +102,8 @@
                         "title": "{{Action}}",
                         "data": null,
                         "render": function (data, type, row, meta) {
-                            let editBtn = `<a href="${endpointGet}{{#/edit#}}/${row.id}" class="edit-btn" title="{{Edit}}"><i class="fas fa-edit"></i></a>`;
-                            let deleteBtn = `<a href="${endpointGet}{{#/destroy#}}/${row.id}" class="delete-btn" title="{{Destroy}}"><i class="fas fa-trash"></i></a>`;
+                            let editBtn = `<a href="${endpointAction}{{#/edit#}}/${row.id}" class="edit-btn" title="{{Edit}}"><i class="fas fa-edit"></i></a>`;
+                            let deleteBtn = `<a href="${endpointAction}{{#/destroy#}}/${row.id}" class="delete-btn" title="{{Destroy}}"><i class="fas fa-trash"></i></a>`;
                             return editBtn + " " + deleteBtn;
                         },
                         "orderable": false,
@@ -229,7 +229,8 @@
                          data-bs-parent="#accordionSidenavAppsMenu">
                         <nav class="sidenav-menu-nested nav">
                             <a class="nav-link" href="{{TEMPLATE_URL}}{{#/dashboard/users/all#}}">{{Users List}}</a>
-                            <a class="nav-link" href="{{TEMPLATE_URL}}{{#/dashboard/user-management-add-user#}}">{{Add User}}</a>
+                            <a class="nav-link" href="{{TEMPLATE_URL}}{{#/dashboard/users/store#}}">{{Add User}}</a>
+                            <a class="nav-link" href="{{TEMPLATE_URL}}{{#/dashboard/users/trash#}}">{{Trash}}</a>
                         </nav>
                     </div>
 

@@ -5,8 +5,9 @@
                 <div class="col-auto mb-3">
                     <h1 class="page-header-title">
                         <div class="page-header-icon"><i data-feather="user"></i></div>
-                        {{Users List}}
+                        {{List of users in the trash}}
                     </h1>
+                    <p></p>
                 </div>
                 <div class="col-12 col-xl-auto mb-3">
                     <a class="btn btn-sm btn-light text-primary"
@@ -43,7 +44,7 @@
 <script>
     //precisa passar a busca de usuarios pela users e da view pela painel/users
     createDataTable(
-        "{{TEMPLATE_URL}}{{#/users/all#}}/0",
+        "{{TEMPLATE_URL}}{{#/users/all#}}/1",
         "{{TEMPLATE_URL}}{{#/dashboard/users#}}",
         [
             "name",

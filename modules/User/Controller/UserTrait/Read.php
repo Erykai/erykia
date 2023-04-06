@@ -20,6 +20,7 @@ trait Read
         }
 
         $users = new User();
+
         $arguments = (array)$this->argument;
         if(isset($arguments['id'])){
             $arguments['id'] = (new Cryption())->decrypt($arguments['id']);
@@ -30,7 +31,7 @@ trait Read
                 $find .= "$key = :$key AND ";
             }
             $find = substr(trim($find), 0, -4);
-            $user = $users->find(condition: $find, params: $arguments)->fetchReference(getColumns: $this->getColumns());
+            $user = $users->find(condition: $find, params: $arguments)->fetchReference(all: true, getColumns: $this->getColumns());
 
             if (!$user) {
                 echo $this->translate->translator($users->response(), "message")->$response();
