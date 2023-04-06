@@ -27,6 +27,9 @@
 <!-- Main page content-->
 <div class="container-fluid px-4">
     <div class="card">
+        <div class="card-header">
+            <div id="return-msg"></div>
+        </div>
         <div class="card-body">
             <table id="datatables">
                 <thead>
@@ -43,11 +46,12 @@
 <script>
     //precisa passar a busca de usuarios pela users e da view pela painel/users
     createDataTable(
-        "{{TEMPLATE_URL}}{{#/users/all#}}/0",
+        "{{TEMPLATE_URL}}{{#/users#}}",
         "{{TEMPLATE_URL}}{{#/dashboard/users#}}",
         [
             "name",
             "email"
-        ]
+        ],
+        "{{#/all#}}/0"
     )
 </script>

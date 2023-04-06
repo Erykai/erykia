@@ -37,7 +37,7 @@ trait Destroy
 
         $dads = explode(",", $dad->dad);
         foreach ($dads as $dad) {
-            if ($dad === $login->id) {
+            if ($dad === (new Cryption())->decrypt($login->id)) {
                 $user = $users->find('*',
                     'users.id=:id',
                     ['id' => $id])

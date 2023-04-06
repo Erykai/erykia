@@ -8,7 +8,8 @@
     <meta name="author" content=""/>
     <title>{{Dashboard}} - Erykia</title>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css"/>
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
     <link href="https://cdn.jsdelivr.net/npm/litepicker/dist/css/litepicker.css" rel="stylesheet"/>
     <link href="{{TEMPLATE_URL}}/public/{{TEMPLATE_DASHBOARD}}/assets/css/styles.css" rel="stylesheet"/>
     <link rel="icon" type="image/x-icon" href="{{TEMPLATE_URL}}/public/{{TEMPLATE_DASHBOARD}}/assets/img/favicon.png"/>
@@ -21,8 +22,8 @@
             crossorigin="anonymous"></script>
     <script src="{{TEMPLATE_URL}}/public/{{TEMPLATE_DASHBOARD}}/assets/js/scripts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" crossorigin="anonymous"></script>
-<!--    <script src="{{TEMPLATE_URL}}/public/{{TEMPLATE_DASHBOARD}}/assets/demo/chart-area-demo.js"></script>-->
-<!--    <script src="{{TEMPLATE_URL}}/public/{{TEMPLATE_DASHBOARD}}/assets/demo/chart-bar-demo.js"></script>-->
+    <!--    <script src="{{TEMPLATE_URL}}/public/{{TEMPLATE_DASHBOARD}}/assets/demo/chart-area-demo.js"></script>-->
+    <!--    <script src="{{TEMPLATE_URL}}/public/{{TEMPLATE_DASHBOARD}}/assets/demo/chart-bar-demo.js"></script>-->
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
@@ -35,7 +36,53 @@
     <script src="{{TEMPLATE_URL}}/public/{{TEMPLATE_DASHBOARD}}/assets/js/litepicker.js"></script>
     <script>
         const bearerErykia = localStorage.getItem('bearerErykia');
-        function createDataTable(endpoint, endpointAction, columnNames) {
+
+        async function handleDeleteBtnClick(event, endpoint, newTrashValue) {
+            event.preventDefault();
+
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + bearerErykia
+                },
+                body: JSON.stringify({ trash: newTrashValue })
+            });
+
+            const result = await response.json();
+            displayMessage(result.text, result.type);
+        }
+        async function handlePermanentDeleteBtnClick(event, endpoint) {
+            event.preventDefault();
+
+            const response = await fetch(endpoint, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': 'Bearer ' + bearerErykia
+                }
+            });
+
+            const result = await response.json();
+            displayMessage(result.text, result.type);
+        }
+
+        function capitalizeFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+
+        function displayMessage(message, messageType) {
+            const returnMsgElement = document.querySelector('#return-msg');
+            returnMsgElement.textContent = capitalizeFirstLetter(message);
+            returnMsgElement.style.color = messageType === 'error' ? 'red' : 'green';
+
+            if (messageType === 'success') {
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
+            }
+        }
+
+        function createDataTable(endpoint, endpointAction, columnNames, trash) {
             const columns = columnNames.map(name => {
                 return {"data": name, "searchable": true};
             });
@@ -82,7 +129,7 @@
                         }
                     ],
                     "ajax": {
-                        "url": endpoint,
+                        "url": endpoint + trash,
                         "headers": {
                             "Authorization": "Bearer " + bearerErykia
                         },
@@ -102,9 +149,18 @@
                         "title": "{{Action}}",
                         "data": null,
                         "render": function (data, type, row, meta) {
-                            let editBtn = `<a href="${endpointAction}{{#/edit#}}/${row.id}" class="edit-btn" title="{{Edit}}"><i class="fas fa-edit"></i></a>`;
-                            let deleteBtn = `<a href="${endpointAction}{{#/destroy#}}/${row.id}" class="delete-btn" title="{{Destroy}}"><i class="fas fa-trash"></i></a>`;
-                            return editBtn + " " + deleteBtn;
+                            let editBtn = trash.endsWith('1') ? '' : `<a href="${endpointAction}{{#/edit#}}/${row.id}" class="edit-btn" title="{{Edit}}"><i class="fas fa-edit"></i></a>`;
+                            let deleteIcon = trash.endsWith('1') ? 'fas fa-undo' : 'fas fa-trash';
+                            let deleteBtnColor = trash.endsWith('1') ? 'style="color: green;"' : '';
+                            let newTrashValue = trash.endsWith('1') ? '0' : '1';
+                            let deleteBtn = `<a href="#" class="delete-btn" title="{{Destroy}}" ${deleteBtnColor} onclick="handleDeleteBtnClick(event, '${endpoint}/${row.id}', '${newTrashValue}')"><i class="${deleteIcon}"></i></a>`;
+
+                            let permanentDeleteBtn = '';
+                            if (trash.endsWith('1')) {
+                                permanentDeleteBtn = `<a href="#" class="permanent-delete-btn" style="color: red;" title="{{Permanent Delete}}" onclick="handlePermanentDeleteBtnClick(event, '${endpoint}/${row.id}')"><i class="fas fa-times"></i></a>`;
+                            }
+
+                            return editBtn + " " + deleteBtn + " " + permanentDeleteBtn;
                         },
                         "orderable": false,
                         "searchable": false
@@ -280,7 +336,8 @@
             .then(data => {
                 if (data.type === 'success') {
                     window.location.href = '{{TEMPLATE_URL}}{{#/dashboard#}}';
-                }})
+                }
+            })
             .catch(error => {
                 alert("error");
             });
