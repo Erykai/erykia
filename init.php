@@ -52,8 +52,7 @@ function loadFilesFromFolders(array $folders): array
 }
 
 
-$route->namespace('Source\View\Web');
-$route->get('/', 'View@home', type: 'json');
+require "$root/routes/View/Web.php";
 
 $foldersToLoad = ["$root/routes", "$root/modules"];
 $filesToInclude = loadFilesFromFolders($foldersToLoad);

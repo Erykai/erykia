@@ -6,7 +6,7 @@ use Source\Core\Template;
 
 trait Home
 {
-    public function home()
+    public function home(): bool
     {
         if (!$this->loginPermission())
             return false;

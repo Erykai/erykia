@@ -2,10 +2,12 @@
 
 namespace Source\View\Web;
 
-class View
+class View extends Resource
 {
-    public function home(): void
-    {
-        require dirname(__DIR__, 3) . "/public/".THEME_DEFAULT."/index.php";
-    }
+    use ViewTrait\Home;
+    use ViewTrait\BedRoom;
+    use ViewTrait\Blog;
+    use ViewTrait\Booking;
+    use ViewTrait\Contact;
+    use ViewTrait\Galery;
 }
