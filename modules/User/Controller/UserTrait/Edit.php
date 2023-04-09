@@ -29,8 +29,7 @@ trait Edit
             echo $this->translate->translator($this->getResponse(), "message")->json();
             return false;
         }
-
-        if ($login->id !== $this->argument->id) {
+        if ((new Cryption())->decrypt($login->id) !== (new Cryption())->decrypt($this->argument->id)) {
             $dads = explode(",", $dad->dad);
             foreach ($dads as $dad) {
                 if ($dad === (new Cryption())->decrypt($login->id)) {

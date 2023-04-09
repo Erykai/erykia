@@ -15,7 +15,6 @@ abstract class Resource extends Controller
 
         $templateIndex = "public/" . TEMPLATE_DASHBOARD;
         $templatePage = 'modules/'.$moduleName.'/Public/' . TEMPLATE_DASHBOARD;
-        $this->template = new Template($templateIndex, $templatePage, "php");
-        parent::__construct();
+        parent::__construct(TEMPLATE_DASHBOARD, $templateIndex, $templatePage, "php");
     }
 }

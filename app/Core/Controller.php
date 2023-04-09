@@ -74,17 +74,23 @@ class Controller
      */
     protected Upload $upload;
     protected Template $template;
-
+    public string $menu;
     /**
      * Controller
      */
-    public function __construct()
+    public function __construct(
+        $template = TEMPLATE_DASHBOARD,
+        $themeIndex = "public/".TEMPLATE_DASHBOARD,
+        $themePage = "public/".TEMPLATE_DASHBOARD,
+        $ext = "php"
+    )
     {
         $this->session = new Session();
         $this->translate = Translate::getInstance();
         $this->setFind(null);
         $this->setParams(null);
-
+        $this->setMenu($template);
+        $this->template = new Template($themeIndex,$themePage,$ext, $this->menu);
     }
     //SYSTEM
 
@@ -411,6 +417,19 @@ class Controller
             }
         }
         return true;
+    }
+
+    protected function setMenu($template)
+    {
+        $module_directories = glob(dirname(__DIR__, 2) . '/modules/*', GLOB_ONLYDIR);
+        $this->menu = "";
+
+        foreach ($module_directories as $directory) {
+            $menu_file = $directory . '/Public/'.$template.'/menu.php';
+            if (file_exists($menu_file)) {
+                $this->menu .= file_get_contents($menu_file);
+            }
+        }
     }
 
     /**

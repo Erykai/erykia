@@ -62,6 +62,7 @@
     <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/bundle.js" crossorigin="anonymous"></script>
     <script src="{{TEMPLATE_URL}}/public/{{TEMPLATE_DASHBOARD}}/assets/js/litepicker.js"></script>
     <script src="{{TEMPLATE_URL}}/public/{{TEMPLATE_DASHBOARD}}/assets/js/datatable.js"></script>
+    <script src="{{TEMPLATE_URL}}/public/{{TEMPLATE_DASHBOARD}}/assets/js/fixedmenu.js"></script>
 </head>
 <body class="nav-fixed">
 <nav class="topnav navbar navbar-expand shadow justify-content-between justify-content-sm-start navbar-light bg-white"
@@ -128,7 +129,7 @@
                     <!-- Sidenav Menu Heading (Core)-->
                     <div class="sidenav-menu-heading">{{Core}}</div>
                     <!-- Sidenav Accordion (Dashboard)-->
-                    <a class="nav-link" href="{{TEMPLATE_URL}}{{#/dashboard#}}">
+                    <a class="nav-link" data-menu-id="dashboard-management"  href="{{TEMPLATE_URL}}{{#/dashboard#}}">
                         <div class="nav-link-icon"><i data-feather="activity"></i></div>
                         {{Dashboard}}
                     </a>
@@ -165,6 +166,9 @@
     </div>
 </div>
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        initializeMenu('dashboard-management', false);
+    });
     const logoutLink = document.querySelector('#logout');
     logoutLink.addEventListener('click', (event) => {
         event.preventDefault();
