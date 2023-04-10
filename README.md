@@ -52,7 +52,6 @@ Example streaming and category.
 ```json
 {
   "component": "streaming",
-  "namespace": "stream",
   "database": {
     "id_streamings_categories":{
       "type": "int(11)"
