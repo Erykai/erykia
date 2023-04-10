@@ -74,7 +74,7 @@ class Controller
      */
     protected Upload $upload;
     protected Template $template;
-    public string $menu;
+    public ?string $menu;
     /**
      * Controller
      */

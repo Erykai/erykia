@@ -270,20 +270,28 @@ abstract class Resource extends Controller
         return [
             "Example/Routes/Controller/Example.php",
             "Example/Routes/View/Example.php",
-            "Example/Model/Example.php",
-            "Example/Database/examples.php",
             "Example/Controller/ExampleController.php",
             "Example/Controller/ExampleTrait/Store.php",
             "Example/Controller/ExampleTrait/Read.php",
             "Example/Controller/ExampleTrait/Edit.php",
             "Example/Controller/ExampleTrait/Destroy.php",
-            "Example/Public/dashboard/example.php",
-            "Example/Public/dashboard/example/all.php",
-            "Example/Public/dashboard/example/destroy.php",
-            "Example/Public/dashboard/example/edit.php",
-            "Example/Public/dashboard/example/read.php",
-            "Example/Public/dashboard/example/store.php",
-            "Example/Public/dashboard/example/trash.php"
+            "Example/View/Resource.php",
+            "Example/View/View.php",
+            "Example/View/ViewTrait/All.php",
+            "Example/View/ViewTrait/Destroy.php",
+            "Example/View/ViewTrait/Edit.php",
+            "Example/View/ViewTrait/Read.php",
+            "Example/View/ViewTrait/Store.php",
+            "Example/View/ViewTrait/Trash.php",
+            "Example/Model/Example.php",
+            "Example/Database/examples.php",
+            "Example/Public/dashboard/menu.php",
+            "Example/Public/dashboard/pages/all.php",
+            "Example/Public/dashboard/pages/destroy.php",
+            "Example/Public/dashboard/pages/edit.php",
+            "Example/Public/dashboard/pages/read.php",
+            "Example/Public/dashboard/pages/store.php",
+            "Example/Public/dashboard/pages/trash.php"
         ];
     }
 

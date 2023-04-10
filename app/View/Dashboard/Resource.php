@@ -6,8 +6,6 @@ use Source\Core\Controller;
 
 abstract class Resource extends Controller
 {
-    public string $menu;
-
     public function __construct()
     {
         $themeIndex = "public/" . TEMPLATE_DASHBOARD;

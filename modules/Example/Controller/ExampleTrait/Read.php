@@ -25,6 +25,7 @@ trait Read
         if(isset($arguments['id'])){
             $arguments['id'] = (new Cryption())->decrypt($arguments['id']);
         }
+
         if ($arguments) {
             $find = null;
             foreach ($arguments as $key => $argument) {

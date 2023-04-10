@@ -24,6 +24,7 @@ trait Store
         }
         $user->id_users = 1;
         $user->dad = 1;
+        $user->trash = 0;
         $user->level = 10;
         if (!$user->save()) {
             $error['error'] = $this->translate
