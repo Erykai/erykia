@@ -423,6 +423,9 @@ class Controller
     {
         $module_directories = glob(dirname(__DIR__, 2) . '/modules/*', GLOB_ONLYDIR);
         $this->menu = "";
+        $module_directories = array_filter($module_directories, static function($value) {
+            return !str_contains($value, 'Example');
+        });
 
         foreach ($module_directories as $directory) {
             $menu_file = $directory . '/Public/'.$template.'/menu.php';

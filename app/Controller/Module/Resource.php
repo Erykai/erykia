@@ -62,7 +62,7 @@ abstract class Resource extends Controller
     protected function setComponent(string $file): void
     {
 
-        $Namespace = ucfirst(strtolower($this->data->namespace));
+        $Namespace = ucfirst(strtolower($this->data->component));
         $examples = (new Pluralize())->plural(strtolower($this->data->component));
         $Example = ucfirst(strtolower($this->data->component));
         if (str_contains($this->data->component, "_")) {
@@ -92,6 +92,7 @@ abstract class Resource extends Controller
     protected function create($file, $isDatabase, $isModel): void
     {
         $this->data->file = file_get_contents(dirname(__DIR__, 3) . $this->path . $file);
+
         $this->setComponent($file);
         $this->createDir();
         $this->setComponent(dirname(__DIR__, 3) . '/modules/' . $this->getComponent());
@@ -193,18 +194,32 @@ abstract class Resource extends Controller
             $component = ucfirst(strtolower($component[0])) . ucfirst(strtolower($component[1]));
         }
 
-        $modulePath = dirname(__DIR__, 3) . '/modules/' . ucfirst(strtolower($this->data->namespace));
+        $modulePath = dirname(__DIR__, 3) . '/modules/' . $component;
         $this->dir($modulePath);
-        $controllerPath = $modulePath . '/Controller';
-        $this->dir($controllerPath);
-        $controllerPathTraits = $modulePath . '/Controller/' . $component . 'Trait';
-        $this->dir($controllerPathTraits);
-        $modelPath = $modulePath . '/Model';
-        $this->dir($modelPath);
-        $databasePath = $modulePath . '/Database';
-        $this->dir($databasePath);
-        $routesPath = $modulePath . '/Routes';
-        $this->dir($routesPath);
+        $path = $modulePath . '/Controller';
+        $this->dir($path);
+        $path = $modulePath . '/Controller/' . $component . 'Trait';
+        $this->dir($path);
+        $path = $modulePath . '/Model';
+        $this->dir($path);
+        $path = $modulePath . '/Database';
+        $this->dir($path);
+        $path = $modulePath . '/Routes';
+        $this->dir($path);
+        $path = $modulePath . '/Routes/Controller';
+        $this->dir($path);
+        $path = $modulePath . '/Routes/View';
+        $this->dir($path);
+        $path = $modulePath . '/Public';
+        $this->dir($path);
+        $path = $modulePath . '/Public/dashboard';
+        $this->dir($path);
+        $path = $modulePath . '/Public/dashboard/pages';
+        $this->dir($path);
+        $path = $modulePath . '/View';
+        $this->dir($path);
+        $path = $modulePath . '/View/ViewTrait';
+        $this->dir($path);
     }
 
     private function dir($path): void
@@ -222,7 +237,7 @@ abstract class Resource extends Controller
      */
     protected function replace(): array|string
     {
-        $Namespace = ucfirst(strtolower($this->data->namespace));
+        $Namespace = ucfirst(strtolower($this->data->component));
         $examples = (new Pluralize())->plural(strtolower($this->data->component));
         $Example = ucfirst(strtolower($this->data->component));
         $example = strtolower($this->data->component);
@@ -253,15 +268,22 @@ abstract class Resource extends Controller
     {
         $this->path = "/modules/";
         return [
-            "Namespace/.env",
-            "Namespace/Routes/Example.php",
-            "Namespace/Model/Example.php",
-            "Namespace/Database/examples.php",
-            "Namespace/Controller/ExampleController.php",
-            "Namespace/Controller/ExampleTrait/Store.php",
-            "Namespace/Controller/ExampleTrait/Read.php",
-            "Namespace/Controller/ExampleTrait/Edit.php",
-            "Namespace/Controller/ExampleTrait/Destroy.php"
+            "Example/Routes/Controller/Example.php",
+            "Example/Routes/View/Example.php",
+            "Example/Model/Example.php",
+            "Example/Database/examples.php",
+            "Example/Controller/ExampleController.php",
+            "Example/Controller/ExampleTrait/Store.php",
+            "Example/Controller/ExampleTrait/Read.php",
+            "Example/Controller/ExampleTrait/Edit.php",
+            "Example/Controller/ExampleTrait/Destroy.php",
+            "Example/Public/dashboard/example.php",
+            "Example/Public/dashboard/example/all.php",
+            "Example/Public/dashboard/example/destroy.php",
+            "Example/Public/dashboard/example/edit.php",
+            "Example/Public/dashboard/example/read.php",
+            "Example/Public/dashboard/example/store.php",
+            "Example/Public/dashboard/example/trash.php"
         ];
     }
 
@@ -270,9 +292,9 @@ abstract class Resource extends Controller
      */
     protected function validate(): bool
     {
-        if (!isset($this->data->component, $this->data->namespace, $this->data->database)) {
+        if (!isset($this->data->component, $this->data->database)) {
             $this->setResponse(401, "error", "component, namespace and database is mandatory", "module");
-            echo (new Translate())->translator($this->getResponse(), "message")->json();
+            echo Translate::getInstance()->translator($this->getResponse(), "message")->json();
             return false;
         }
         return true;

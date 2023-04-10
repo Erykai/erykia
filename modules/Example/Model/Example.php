@@ -18,4 +18,3 @@ class Example extends Model
         $this->migration();
     }
 }
-

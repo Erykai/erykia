@@ -1,13 +1,13 @@
 <?php
 
-namespace Modules\Namespace\Controller\ExampleTrait;
+namespace Modules\Example\Controller\ExampleTrait;
 
-use Modules\Namespace\Model\Example;
 use Source\Core\Cryption;
+use Modules\Example\Model\Example;
 
 trait Destroy
 {
-    public function destroy($query, string $response): bool
+    public function destroy(array $query, string $response): bool
     {
         $this->setRequest($query);
         if (!$this->permission()) {
@@ -16,12 +16,17 @@ trait Destroy
         }
         $id = (new Cryption())->decrypt($this->argument->id);
         $login = $this->session->get()->login;
+        if ($login->id === $this->argument->id) {
+            $this->setResponse(401, "error", "you cannot delete your registration", "delete");
+            echo $this->translate->translator($this->getResponse(), "message")->json();
+            return false;
+        }
 
         $examples = (new Example());
         $dad = $examples->find('examples.dad',
             'examples.id=:id',
             ['id' => $id])
-            ->fetch();
+            ->fetchReference(getColumns: $this->getColumns());
         $example = null;
 
         if (!$dad) {
@@ -32,11 +37,11 @@ trait Destroy
 
         $dads = explode(",", $dad->dad);
         foreach ($dads as $dad) {
-            if ($dad === $login->id) {
+            if ($dad === (new Cryption())->decrypt($login->id)) {
                 $example = $examples->find('*',
                     'examples.id=:id',
                     ['id' => $id])
-                    ->fetch();
+                    ->fetchReference(getColumns: $this->getColumns());
             }
         }
 

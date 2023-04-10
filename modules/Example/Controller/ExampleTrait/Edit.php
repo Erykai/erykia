@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Namespace\Controller\ExampleTrait;
+namespace Modules\Example\Controller\ExampleTrait;
 
-use Modules\Namespace\Model\Example;
 use Source\Core\Cryption;
+use Modules\Example\Model\Example;
 
 trait Edit
 {
@@ -14,7 +14,9 @@ trait Edit
             echo $this->translate->translator($this->getResponse(), "message")->$response();
         }
         $id = (new Cryption())->decrypt($this->argument->id);
+
         $login = $this->session->get()->login;
+
         $examples = (new Example());
         $dad = $examples->find('examples.dad',
             'examples.id=:id',
@@ -27,11 +29,10 @@ trait Edit
             echo $this->translate->translator($this->getResponse(), "message")->json();
             return false;
         }
-        $login->id = $Cryption->decrypt($login->id);
-        if ($login->id !== $this->argument->id) {
+        if ((new Cryption())->decrypt($login->id) !== (new Cryption())->decrypt($this->argument->id)) {
             $dads = explode(",", $dad->dad);
             foreach ($dads as $dad) {
-                if ($dad === $login->id) {
+                if ($dad === (new Cryption())->decrypt($login->id)) {
                     $example = $examples->find('*',
                         'examples.id=:id',
                         ['id' => $id])
@@ -45,12 +46,12 @@ trait Edit
                 ->fetch();
         }
 
-
         if (!$example) {
             $this->setResponse(401, "error", "you do not have permission to make this edit", "edit");
             echo $this->translate->translator($this->getResponse(), "message")->json();
             return false;
         }
+
 
         foreach ($this->data as $key => $value) {
             if (
@@ -66,11 +67,17 @@ trait Edit
             }
             $example->$key = $this->data->$key;
         }
+
         if (isset($example->updated_at)) {
             $example->updated_at = date("Y-m-d H:i:s");
         }
 
+        if(empty($this->data->password)){
+            unset($example->password);
+        }
+
         $this->setUpload($example);
+
         if (!$examples->save()) {
             if ($this->isIssetUpload()) {
                 $this->upload->delete();
