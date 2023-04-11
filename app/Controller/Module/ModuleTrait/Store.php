@@ -2,7 +2,6 @@
 
 namespace Source\Controller\Module\ModuleTrait;
 
-use Source\Core\Translate;
 trait Store
 {
     /**

@@ -3,11 +3,12 @@
 namespace Modules\User\View;
 
 use Source\Core\Controller;
-use Source\Core\Template;
 
 abstract class Resource extends Controller
 {
-    public function __construct()
+    private static array $instances = [];
+
+    protected function __construct()
     {
         $directoryPath = dirname(__FILE__);
         $directoryPath = dirname($directoryPath);
@@ -16,5 +17,15 @@ abstract class Resource extends Controller
         $templateIndex = "public/" . TEMPLATE_DASHBOARD;
         $templatePage = 'modules/'.$moduleName.'/Public/' . TEMPLATE_DASHBOARD;
         parent::__construct(TEMPLATE_DASHBOARD, $templateIndex, $templatePage, "php");
+    }
+
+    public static function getInstance()
+    {
+        $class = get_called_class();
+        if (!isset(self::$instances[$class])) {
+            self::$instances[$class] = new $class();
+        }
+
+        return self::$instances[$class];
     }
 }

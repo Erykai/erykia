@@ -54,32 +54,41 @@ Example streaming and category.
   "component": "streaming",
   "database": {
     "id_streamings_categories":{
-      "type": "int(11)"
+      "type": "int(11)",
+      "input": "select"
     },
     "id_countries":{
-      "type": "int(11)"
+      "type": "int(11)",
+      "input": "select"
     },
     "id_states":{
-      "type": "int(11)"
+      "type": "int(11)",
+      "input": "select"
     },
     "id_cities":{
-      "type": "int(11)"
+      "type": "int(11)",
+      "input": "select"
     },
     "name":{
-      "type": "varchar(255)"
+      "type": "varchar(255)",
+      "input": "text"
     },
     "subtitle":{
-      "type": "text"
+      "type": "text",
+      "input": "textarea"
     },
     "description":{
-      "type": "text"
+      "type": "text",
+      "input": "textarea"
     },
     "tag":{
       "type": "text",
-      "null": true
+      "null": true,
+      "input": "text"
     },
     "url":{
-      "type": "varchar(255)"
+      "type": "varchar(255)",
+      "input": "text"
     },
     "like":{
       "type": "int(11)",
@@ -90,23 +99,28 @@ Example streaming and category.
       "null": true
     },
     "slug":{
-      "type": "text"
+      "type": "text",
+      "input": "text"
     },
     "cover":{
       "type": "text",
-      "null": true
+      "null": true,
+      "input": "upload"
     }
   },
   "category": {
     "name": {
-      "type": "varchar(255)"
+      "type": "varchar(255)",
+      "input": "text"
     },
     "slug": {
-      "type": "text"
-    },
-    "icon": {
       "type": "text",
-      "null": true
+      "input": "text"
+    },
+    "cover": {
+      "type": "text",
+      "null": true,
+      "upload": "text"
     }
   }
 }

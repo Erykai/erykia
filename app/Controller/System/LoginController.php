@@ -7,6 +7,22 @@ use Source\Core\Response;
 
 class LoginController extends Controller
 {
+    private static $instance;
+
+    protected function __construct()
+    {
+        parent::__construct();
+    }
+
+    public static function getInstance(): LoginController
+    {
+        if (!self::$instance) {
+            self::$instance = new LoginController();
+        }
+
+        return self::$instance;
+    }
+
     public function login(): bool
     {
         if($auth = $this->auth()){
