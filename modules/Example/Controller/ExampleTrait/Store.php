@@ -42,11 +42,11 @@ trait Store
         }
         if ($this->validateLogin()) {
             $id = (int)$this->session->get()->login->id;
-            $example->id_examples = (new Cryption())->decrypt($this->session->get()->login->id);
+            $example->id_examples = Cryption::getInstance()->decrypt($this->session->get()->login->id);
             $example->dad =
                 $id === 1
-                    ? (new Cryption())->decrypt($this->session->get()->login->id)
-                    : (new Cryption())->decrypt($this->session->get()->login->id) . "," . (new Cryption())->decrypt($this->session->get()->login->dad);
+                    ? Cryption::getInstance()->decrypt($this->session->get()->login->id)
+                    : Cryption::getInstance()->decrypt($this->session->get()->login->id) . "," . Cryption::getInstance()->decrypt($this->session->get()->login->dad);
         } else {
             $example->dad = 1;
             $example->id_examples = 1;

@@ -1,4 +1,4 @@
-<header class="READ page-header page-header-compact page-header-light border-bottom bg-white mb-4">
+<header class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
     <div class="container-xl px-4">
         <div class="page-header-content">
             <div class="row align-items-center justify-content-between pt-3">
@@ -40,15 +40,7 @@
                 </div>
                 <div class="card-body">
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item">
-                            <b>{{Name}}:</b> {{ $this->example->name }}
-                        </li>
-                        <li class="list-group-item">
-                            <b>{{Email}}:</b> {{ $this->example->email }}
-                        </li>
-                        <li class="list-group-item">
-                            <b>{{Local}}:</b> <span id="localLabel"></span>
-                        </li>
+                        /*#read-li#*/
                     </ul>
 
                 </div>

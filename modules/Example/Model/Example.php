@@ -11,7 +11,7 @@ class Example extends Model
         parent::__construct(
             'examples',
             [
-                'id_users',
+                'id_examples',
                 /*#####*/
             ]
         );

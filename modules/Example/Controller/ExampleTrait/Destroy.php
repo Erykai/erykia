@@ -14,7 +14,7 @@ trait Destroy
             echo $this->translate->translator($this->getResponse(), "message")->json();
             return false;
         }
-        $id = (new Cryption())->decrypt($this->argument->id);
+        $id = Cryption::getInstance()->decrypt($this->argument->id);
         $login = $this->session->get()->login;
         if ($login->id === $this->argument->id) {
             $this->setResponse(401, "error", "you cannot delete your registration", "delete");
@@ -37,7 +37,7 @@ trait Destroy
 
         $dads = explode(",", $dad->dad);
         foreach ($dads as $dad) {
-            if ($dad === (new Cryption())->decrypt($login->id)) {
+            if ($dad === Cryption::getInstance()->decrypt($login->id)) {
                 $example = $examples->find('*',
                     'examples.id=:id',
                     ['id' => $id])

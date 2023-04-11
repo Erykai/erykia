@@ -1,4 +1,4 @@
-<header class="ALL page-header page-header-compact page-header-light border-bottom bg-white mb-4">
+<header class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
     <div class="container-fluid px-4">
         <div class="page-header-content">
             <div class="row align-items-center justify-content-between pt-3">
@@ -9,11 +9,6 @@
                     </h1>
                 </div>
                 <div class="col-12 col-xl-auto mb-3">
-                    <a class="btn btn-sm btn-light text-primary"
-                       href="{{TEMPLATE_URL}}{{#/dashboard/example-management-groups-list#}}">
-                        <i class="me-1" data-feather="examples"></i>
-                        {{Manage Groups}}
-                    </a>
                     <a class="btn btn-sm btn-light text-primary"
                        href="{{TEMPLATE_URL}}{{#/dashboard/example-management-add-example#}}">
                         <i class="me-1" data-feather="example-plus"></i>
@@ -34,8 +29,7 @@
             <table id="datatables">
                 <thead>
                 <tr>
-                    <th>{{Example}}</th>
-                    <th>{{Email}}</th>
+                    /*#all-th#*/
                     <th>{{Action}}</th>
                 </tr>
                 </thead>
@@ -48,10 +42,7 @@
     createDataTable(
         "{{TEMPLATE_URL}}{{#/examples#}}",
         "{{TEMPLATE_URL}}{{#/dashboard/examples#}}",
-        [
-            "name",
-            "email"
-        ],
+        /*#all-datatable#*/,
         "{{#/all#}}/0"
     )
 </script>

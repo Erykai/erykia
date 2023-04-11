@@ -13,9 +13,9 @@ trait Read
         if (!$this->loginPermission())
             return false;
         $this->setRequest($query);
-        $id = (new Cryption())->decrypt($this->argument->id);
+        $id = Cryption::getInstance()->decrypt($this->argument->id);
         $this->user = (new User())->find("*","id = :id", ["id" => $id])->fetch();
-        $this->user->id = (new Cryption())->encrypt($this->user->id);
+        $this->user->id = Cryption::getInstance()->encrypt($this->user->id);
         if (empty($this->user->cover)) {
             $this->user->cover = "public/".TEMPLATE_DASHBOARD."/assets/img/illustrations/profiles/profile-1.png";
         }
