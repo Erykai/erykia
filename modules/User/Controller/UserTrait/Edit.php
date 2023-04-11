@@ -13,7 +13,7 @@ trait Edit
         if (!$this->permission()) {
             echo $this->translate->translator($this->getResponse(), "message")->$response();
         }
-        $id = (new Cryption())->decrypt($this->argument->id);
+        $id = Cryption::getInstance()->decrypt($this->argument->id);
 
         $login = $this->session->get()->login;
 
@@ -29,10 +29,10 @@ trait Edit
             echo $this->translate->translator($this->getResponse(), "message")->json();
             return false;
         }
-        if ((new Cryption())->decrypt($login->id) !== (new Cryption())->decrypt($this->argument->id)) {
+        if (Cryption::getInstance()->decrypt($login->id) !== Cryption::getInstance()->decrypt($this->argument->id)) {
             $dads = explode(",", $dad->dad);
             foreach ($dads as $dad) {
-                if ($dad === (new Cryption())->decrypt($login->id)) {
+                if ($dad === Cryption::getInstance()->decrypt($login->id)) {
                     $user = $users->find('*',
                         'users.id=:id',
                         ['id' => $id])

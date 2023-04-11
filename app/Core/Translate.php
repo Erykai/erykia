@@ -23,7 +23,7 @@ class Translate extends \Erykai\Translate\Translate
     public function translatorString(string $message, string $file)
     {
         $response = new stdClass();
-        $return = new Response();
+        $return = Response::getInstance();
         $response->file = $file;
         $response->text = $message;
         $return->data($this->data($response)->target()->response());
@@ -42,7 +42,7 @@ class Translate extends \Erykai\Translate\Translate
         if (!isset($response->text)) {
             die('to use the Translate component send an object that contains the example attribute $data->text = "route";');
         }
-        $return = new Response();
+        $return = Response::getInstance();
         $response->file = $nameDefault;
         $return->data($this->data($response)->target(module:$module)->response());
         unset($return->object()->message, $return->object()->nameDefault);

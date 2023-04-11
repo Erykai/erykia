@@ -2,16 +2,30 @@
 
 namespace Source\Core;
 
-
 class Response extends \Erykai\Response\Response
 {
+    private static $instance = null;
+
+    private function __construct()
+    {
+    }
+
+    public static function getInstance(): Response
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
+
     public function json(): string
     {
         if (isset($this->getResponse()->data)) {
-            $Cription = new Cryption();
+            $Cription = Cryption::getInstance();
             if (is_array($this->getResponse()->data)) {
                 foreach ($this->getResponse()->data as $key => $value) {
-                    $Cription = new Cryption();
+                    $Cription = Cryption::getInstance();
                     $this->getResponse()->data[$key]->id = $Cription->encrypt($this->getResponse()->data[$key]->id);
                 }
             } else {

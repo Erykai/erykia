@@ -23,7 +23,7 @@ trait Read
 
         $arguments = (array)$this->argument;
         if(isset($arguments['id'])){
-            $arguments['id'] = (new Cryption())->decrypt($arguments['id']);
+            $arguments['id'] = Cryption::getInstance()->decrypt($arguments['id']);
         }
 
         if ($arguments) {
@@ -40,7 +40,7 @@ trait Read
             }
             $this->setPaginator(1);
             $this->paginator->data = $user;
-            echo (new Response())->data($this->getPaginator())->$response();
+            echo Response::getInstance()->data($this->getPaginator())->$response();
             return true;
         }
 
@@ -59,7 +59,7 @@ trait Read
             return false;
         }
         $this->paginator->data = $user;
-        echo (new Response())->data($this->getPaginator())->$response();
+        echo Response::getInstance()->data($this->getPaginator())->$response();
         return true;
     }
 }
