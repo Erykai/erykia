@@ -13,6 +13,6 @@ trait PublicDashboard
 
     protected function public(): void
     {
-        var_dump($this);
+      //  var_dump($this);
     }
 }

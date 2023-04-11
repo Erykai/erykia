@@ -22,7 +22,7 @@ class ModuleController extends Resource
     use PublicDashboard;
     use Database;
 
-    private static ModuleController $instance;
+    private static ?ModuleController $instance = null;
 
     private function __construct()
     {

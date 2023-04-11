@@ -42,7 +42,9 @@ function loadFilesFromFolders(array $folders): array
 
             if ($file->getExtension() === 'php' && !str_contains($filePath, "/../")) {
                 if (str_contains($filePath, "/Routes/") || preg_match('/\/routes\/[^\/]+\/[^\/]+\.php$/', $filePath)) {
-                    $files[] = $filePath;
+                    if(!str_contains($filePath, "/Example/")){
+                        $files[] = $filePath;
+                    }
                 }
             }
         }
