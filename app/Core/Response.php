@@ -26,10 +26,14 @@ class Response extends \Erykai\Response\Response
             if (is_array($this->getResponse()->data)) {
                 foreach ($this->getResponse()->data as $key => $value) {
                     $Cription = Cryption::getInstance();
-                    $this->getResponse()->data[$key]->id = $Cription->encrypt($this->getResponse()->data[$key]->id);
+                    if(isset($this->getResponse()->data[$key]->id)) {
+                        $this->getResponse()->data[$key]->id = $Cription->encrypt($this->getResponse()->data[$key]->id);
+                    }
                 }
             } else {
-                $this->getResponse()->data->id = $Cription->encrypt($this->getResponse()->data->id);
+                if(isset($this->getResponse()->data->id)) {
+                    $this->getResponse()->data->id = $Cription->encrypt($this->getResponse()->data->id);
+                }
             }
         }
 

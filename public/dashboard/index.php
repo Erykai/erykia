@@ -15,8 +15,8 @@
     <link rel="icon" type="image/x-icon" href="{{TEMPLATE_URL}}/public/{{TEMPLATE_DASHBOARD}}/assets/img/favicon.png"/>
     <script>
         const globalVariables = {
-            readBtnTemplate: '<a href="%endpointAction%{{#/read#}}/%rowId%" class="read-btn" title="{{Read}}"><i class="fas fa-eye"></i></a>',
-            editBtnTemplate: '<a href="%endpointAction%{{#/edit#}}/%rowId%" class="edit-btn" title="{{Edit}}"><i class="fas fa-edit"></i></a>',
+            readBtnTemplate: '<a href="%endpointActionRead%/%rowId%" class="read-btn" title="{{Read}}"><i class="fas fa-eye"></i></a>',
+            editBtnTemplate: '<a href="%endpointActionEdit%/%rowId%" class="edit-btn" title="{{Edit}}"><i class="fas fa-edit"></i></a>',
             deleteBtnTemplate: '<a href="#" class="delete-btn" title="{{Destroy}}" %deleteBtnColor% onclick="handleDeleteBtnClick(event, \'%endpoint%/%rowId%\', \'%newTrashValue%\')"><i class="%deleteIcon%"></i></a>',
             permanentDeleteBtnTemplate: '<a href="#" class="permanent-delete-btn" style="color: red;" title="{{Permanent Delete}}" onclick="handlePermanentDeleteBtnClick(event, \'%endpoint%/%rowId%\')"><i class="fas fa-times"></i></a>',
             COPY: '{{COPY}}',

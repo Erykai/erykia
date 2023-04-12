@@ -29,6 +29,7 @@
             <table id="datatables">
                 <thead>
                 <tr>
+                    <th>{{Id}}</th>
                     /*#all-th#*/
                     <th>{{Action}}</th>
                 </tr>
@@ -41,8 +42,10 @@
     //precisa passar a busca de usuarios pela examples e da view pela painel/examples
     createDataTable(
         "{{TEMPLATE_URL}}{{#/examples#}}",
-        "{{TEMPLATE_URL}}{{#/dashboard/examples#}}",
+        "{{TEMPLATE_URL}}{{#/examples/all#}}/0",
+        "{{TEMPLATE_URL}}{{#/dashboard/examples/read#}}",
+        "{{TEMPLATE_URL}}{{#/dashboard/examples/edit#}}",
         /*#all-datatable#*/,
-        "{{#/all#}}/0"
+        "0"
     )
 </script>

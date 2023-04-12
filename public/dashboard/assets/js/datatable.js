@@ -41,9 +41,13 @@ function displayMessage(message, messageType) {
         }, 1000);
     }
 }
-function createDataTable(endpoint, endpointAction, columnNames, trash) {
+function createDataTable(endpoint, endpointActionTrash, endpointActionRead, endpointActionEdit, columnNames, trash) {
     const columns = columnNames.map(name => {
-        return {"data": name, "searchable": true};
+        return {
+            "data": name,
+            "searchable": true,
+            "visible": name !== "id"
+        };
     });
 
     document.addEventListener('DOMContentLoaded', function () {
@@ -88,7 +92,7 @@ function createDataTable(endpoint, endpointAction, columnNames, trash) {
                 }
             ],
             "ajax": {
-                "url": endpoint + trash,
+                "url": endpointActionTrash,
                 "headers": {
                     "Authorization": "Bearer " + bearerErykia
                 },
@@ -108,8 +112,9 @@ function createDataTable(endpoint, endpointAction, columnNames, trash) {
                 "title": globalVariables.Action,
                 "data": null,
                 "render": function (data, type, row, meta) {
-                    let readBtn = trash.endsWith('1') ? '' : globalVariables.readBtnTemplate.replace('%rowId%', row.id).replace('%endpointAction%', endpointAction);
-                    let editBtn = trash.endsWith('1') ? '' : globalVariables.editBtnTemplate.replace('%rowId%', row.id).replace('%endpointAction%', endpointAction);
+                    console.log(row);
+                    let readBtn = trash.endsWith('1') ? '' : globalVariables.readBtnTemplate.replace('%rowId%', row.id).replace('%endpointActionRead%', endpointActionRead);
+                    let editBtn = trash.endsWith('1') ? '' : globalVariables.editBtnTemplate.replace('%rowId%', row.id).replace('%endpointActionEdit%', endpointActionEdit);
                     let deleteIcon = trash.endsWith('1') ? 'fas fa-undo' : 'fas fa-trash';
                     let deleteBtnColor = trash.endsWith('1') ? 'style="color: green;"' : '';
                     let newTrashValue = trash.endsWith('1') ? '0' : '1';

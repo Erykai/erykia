@@ -6,6 +6,7 @@ $migration->column("id")->type("int(11)")->default();
 $migration->column("id_examples")->type("int(11)")->default();
 $migration->column("dad")->type("varchar(255)")->default();
 /*###*/
+$migration->column("trash")->type("boolean")->default();
 $migration->column('created_at')->type('timestamp')->default("current_timestamp()");
 $migration->column('updated_at')->type('timestamp')->default("current_timestamp() ON UPDATE current_timestamp()");
 $migration->save();

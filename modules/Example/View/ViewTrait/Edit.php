@@ -4,6 +4,7 @@ namespace Modules\Example\View\ViewTrait;
 
 use Modules\Example\Model\Example;
 use Source\Core\Cryption;
+use Source\Core\Service;
 
 trait Edit
 {
@@ -13,9 +14,8 @@ trait Edit
         if (!$this->loginPermission())
             return false;
         $this->setRequest($query);
-        $id = (new Cryption())->decrypt($this->argument->id);
-        $this->example = (new Example())->find("*","id = :id", ["id" => $id])->fetch();
-        $this->example->id = (new Cryption())->encrypt($this->example->id);
+        $endpoint = TEMPLATE_URL . "/examples/" . $this->argument->id;
+        $this->example = Service::getInstance()->get($endpoint);
         if (empty($this->example->cover)) {
             $this->example->cover = "public/".TEMPLATE_DASHBOARD."/assets/img/illustrations/profiles/profile-1.png";
         }

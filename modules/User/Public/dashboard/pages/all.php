@@ -34,6 +34,7 @@
             <table id="datatables">
                 <thead>
                 <tr>
+                    <th>{{Id}}</th>
                     <th>{{User}}</th>
                     <th>{{Email}}</th>
                     <th>{{Action}}</th>
@@ -47,11 +48,10 @@
     //precisa passar a busca de usuarios pela users e da view pela painel/users
     createDataTable(
         "{{TEMPLATE_URL}}{{#/users#}}",
-        "{{TEMPLATE_URL}}{{#/dashboard/users#}}",
-        [
-            "name",
-            "email"
-        ],
-        "{{#/all#}}/0"
+        "{{TEMPLATE_URL}}{{#/users/all#}}/0",
+        "{{TEMPLATE_URL}}{{#/dashboard/users/read#}}",
+        "{{TEMPLATE_URL}}{{#/dashboard/users/edit#}}",
+        ["id","name","email"],
+        "0"
     )
 </script>

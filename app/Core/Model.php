@@ -93,20 +93,17 @@ class Model extends Database
         $tableExists = $this->conn->query("SHOW TABLES LIKE '$this->table'")->rowCount() > 0;
 
         if (!$tableExists) {
-            if(file_exists(dirname(__DIR__, 2) . "/database/" . $this->table . ".php")){
-                if(file_exists(dirname(__DIR__, 2) . "/database/" . $this->table . "_categories.php")){
-                    require_once dirname(__DIR__, 2) . "/database/" . $this->table . "_categories.php";
-                }
-                require_once dirname(__DIR__, 2) . "/database/" . $this->table . ".php";
-                return;
-            }
             $namespace = get_class($this);
             $namespace = explode("\\",$namespace);
-            if(file_exists(dirname(__DIR__, 2) . "/modules/" . $namespace[1] . "/database/" . $this->table . ".php")){
-                if(file_exists(dirname(__DIR__, 2) . "/modules/" . $namespace[1] . "/database/" . $this->table . "_categories.php")){
-                    require_once dirname(__DIR__, 2) . "/modules/" . $namespace[1] . "/database/" . $this->table . "_categories.php";
+            if(file_exists(dirname(__DIR__, 2) . "/modules/" . $namespace[1] . "/Database/" . $this->table . ".php")){
+                if(file_exists(dirname(__DIR__, 2) . "/modules/" . $namespace[1] . "Category/Database/" . $this->table . "_categories.php")){
+                    $table = $this->table . "_categories";
+                    $tableExistsCategories = $this->conn->query("SHOW TABLES LIKE '$table'")->rowCount() > 0;
+                    if (!$tableExistsCategories) {
+                        require_once dirname(__DIR__, 2) . "/modules/" . $namespace[1] . "Category/Database/" . $this->table . "_categories.php";
+                    }
                 }
-                require_once dirname(__DIR__, 2) . "/modules/" . $namespace[1] . "/database/" . $this->table . ".php";
+                require_once dirname(__DIR__, 2) . "/modules/" . $namespace[1] . "/Database/" . $this->table . ".php";
             }
         }
 
@@ -125,7 +122,7 @@ class Model extends Database
         $returnColumns = null;
         $relationships = Helper::relationship($columns, $this->table);
 
-
+        /*
         if (!empty($getColumns)) {
             $getColumns = explode(",", $getColumns);
             $key = array_search("id", $getColumns);
@@ -139,11 +136,20 @@ class Model extends Database
             }
 
             $key = array_search("name", $getColumns, true);
+
             if ($key) {
                 $getColumns[$key] = $this->table . "." . $getColumns[$key];
             }
         }
+        */
 
+        if (!empty($getColumns)) {
+            $getColumns = explode(",", $getColumns);
+            foreach ($getColumns as $key => $Column) {
+                $getColumns[$key] = $this->table . "." . $getColumns[$key];
+            }
+
+        }
         if (isset($relationships->relationship)) {
             foreach ($relationships->relationship as $key => $relationship) {
                 if (isset($this->params)) {

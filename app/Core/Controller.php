@@ -339,6 +339,7 @@ class Controller
         $this->query = $this->request->response()->data->query;
         if (isset($this->request->response()->data->query->columns)) {
             $this->columns = $this->request->response()->data->query->columns;
+
         }
         if (empty($this->query)) {
             $this->query = new stdClass();

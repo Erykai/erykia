@@ -44,7 +44,9 @@
                     <form method="post" id="myForm">
                         <!-- Form Group (username)-->
                         <div class="mb-3">
-                            <label class="small mb-1" for="inputUsername">
+                            <label
+                                    class="small mb-1"
+                                    for="inputUsername">
                                 {{Username (how your name will appear to other users on the site)}}
                             </label>
                             <input name="name" class="form-control" id="inputUsername" type="text"

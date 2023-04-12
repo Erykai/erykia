@@ -4,6 +4,7 @@ namespace Modules\User\View\ViewTrait;
 
 use Modules\User\Model\User;
 use Source\Core\Cryption;
+use Source\Core\Service;
 
 trait Edit
 {
@@ -13,9 +14,8 @@ trait Edit
         if (!$this->loginPermission())
             return false;
         $this->setRequest($query);
-        $id = (new Cryption())->decrypt($this->argument->id);
-        $this->user = (new User())->find("*","id = :id", ["id" => $id])->fetch();
-        $this->user->id = (new Cryption())->encrypt($this->user->id);
+        $endpoint = TEMPLATE_URL . "/users/" . $this->argument->id;
+        $this->user = Service::getInstance()->get($endpoint);
         if (empty($this->user->cover)) {
             $this->user->cover = "public/".TEMPLATE_DASHBOARD."/assets/img/illustrations/profiles/profile-1.png";
         }

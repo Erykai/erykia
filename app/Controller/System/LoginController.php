@@ -27,7 +27,7 @@ class LoginController extends Controller
     {
         if($auth = $this->auth()){
             $this->setResponse(200, "success", $auth, "bearerToken", $this->login);
-            echo (new Response())->data($this->getResponse())->json();
+            echo Response::getInstance()->data($this->getResponse())->json();
             return true;
         }
         echo $this->translate->translator($this->getResponse(), "message")->json();

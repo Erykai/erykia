@@ -43,25 +43,7 @@
                 <div class="card-body">
                     <form method="post" id="myForm">
                         <!-- Form Group (examplename)-->
-                        <div class="mb-3">
-                            <label class="small mb-1" for="inputExamplename">
-                                {{Examplename (how your name will appear to other examples on the site)}}
-                            </label>
-                            <input name="name" class="form-control" id="inputExamplename" type="text"
-                                   placeholder="{{Enter your name}}" value="{{ $this->example->name }}"/>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="small mb-1" for="inputCurrentPassword">{{Password}}</label>
-                            <input name="password" class="form-control" id="inputCurrentPassword" type="password"
-                                   placeholder="{{Enter a password to change the current one}}"/>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="small mb-1" for="inputEmailAddress">{{Email address}}</label>
-                            <input name="email" class="form-control" id="inputEmailAddress" type="email"
-                                   placeholder="Enter your email address" value="{{ $this->example->email }}"/>
-                        </div>
+                        /*#edit-input#*/
                         <button class="btn btn-primary" type="submit">{{Save changes}}</button>
                     </form>
                 </div>

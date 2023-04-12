@@ -43,31 +43,8 @@
                 <div class="card-body">
                     <form method="post" id="myForm">
                         <!-- Form Group (examplename)-->
-                        <div class="mb-3">
-                            <label class="small mb-1" for="inputExamplename">
-                                {{Examplename (how your name will appear to other examples on the site)}}
-                            </label>
-                            <input name="name" class="form-control" id="inputExamplename" type="text"
-                                   placeholder="{{Name}}" value=""/>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="small mb-1" for="inputCurrentPassword">{{Password}}</label>
-                            <input name="password" class="form-control" id="inputCurrentPassword" type="password"
-                                   placeholder="{{Password}}"/>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="small mb-1" for="inputCurrentLevel">{{Level}}</label>
-                            <input name="level" class="form-control" id="inputCurrentLevel" type="text"
-                                   placeholder="{{Level}}"/>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="small mb-1" for="inputEmailAddress">{{Email address}}</label>
-                            <input name="email" class="form-control" id="inputEmailAddress" type="email"
-                                   placeholder="Email" value=""/>
-                        </div>
+                        /*#store-input#*/
+                        <input type="hidden" name="trash" value="0">
                         <button class="btn btn-primary" type="submit">{{Save}}</button>
                     </form>
                 </div>
