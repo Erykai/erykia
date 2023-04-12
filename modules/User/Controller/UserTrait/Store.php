@@ -22,6 +22,7 @@ trait Store
             return false;
         }
         $user = new User();
+
         $this->upload = new Upload();
         if (isset($this->data->cover)) {
             if ($this->upload->response()->type === "error") {
@@ -52,7 +53,7 @@ trait Store
             $user->id_users = 1;
             $user->level = 1;
         }
-
+        $user->trash = 0;
         $user->created_at = date("Y-m-d H:i:s");
         $user->updated_at = date("Y-m-d H:i:s");
 

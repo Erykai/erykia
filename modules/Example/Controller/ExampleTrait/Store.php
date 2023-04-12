@@ -52,7 +52,7 @@ trait Store
             $example->id_examples = 1;
             $example->level = 1;
         }
-
+        $user->trash = 0;
         $example->created_at = date("Y-m-d H:i:s");
         $example->updated_at = date("Y-m-d H:i:s");
 

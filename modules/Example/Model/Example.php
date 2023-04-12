@@ -12,6 +12,7 @@ class Example extends Model
             'examples',
             [
                 'id_examples',
+                'trash',
                 /*#####*/
             ]
         );

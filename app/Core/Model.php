@@ -122,27 +122,6 @@ class Model extends Database
         $returnColumns = null;
         $relationships = Helper::relationship($columns, $this->table);
 
-        /*
-        if (!empty($getColumns)) {
-            $getColumns = explode(",", $getColumns);
-            $key = array_search("id", $getColumns);
-            $issetId = false;
-            if ($key !== false) {
-                $getColumns[$key] = $this->table . '.id';
-                $issetId = true;
-            }
-            if (!$issetId) {
-                $getColumns[] = $this->table . '.id';
-            }
-
-            $key = array_search("name", $getColumns, true);
-
-            if ($key) {
-                $getColumns[$key] = $this->table . "." . $getColumns[$key];
-            }
-        }
-        */
-
         if (!empty($getColumns)) {
             $getColumns = explode(",", $getColumns);
             foreach ($getColumns as $key => $Column) {

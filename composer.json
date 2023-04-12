@@ -23,7 +23,7 @@
   },
   "require": {
     "erykai/routes": "v1.3.5",
-    "erykai/database": "v1.4.6",
+    "erykai/database": "v1.4.7",
     "erykai/upload": "v1.4.2",
     "erykai/request": "v1.3.1",
     "erykai/response": "v1.1.0",
