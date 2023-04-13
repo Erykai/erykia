@@ -299,7 +299,7 @@ Example city.
   "component": "city",
   "database": {
     "id_countries":{
-      "type": "int(11)",
+      "type": "int(11)default(1)",
       "input": "text"
     },
     "id_states":{
@@ -330,8 +330,10 @@ Example city.
       "input": "text"
     },
     "flag":{
-      "type": "tinyint(1)",
-      "input": "text"
+      "schema": {
+        "type": "tinyint(1)",
+        "default": "1"
+      }
     },
     "wikiDataId":{
       "type": "varchar(255)",
