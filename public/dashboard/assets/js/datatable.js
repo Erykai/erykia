@@ -41,6 +41,7 @@ function displayMessage(message, messageType) {
         }, 1000);
     }
 }
+
 function createDataTable(endpoint, endpointActionTrash, endpointActionRead, endpointActionEdit, columnNames, trash) {
     const columns = columnNames.map(name => {
         return {
@@ -112,7 +113,6 @@ function createDataTable(endpoint, endpointActionTrash, endpointActionRead, endp
                 "title": globalVariables.Action,
                 "data": null,
                 "render": function (data, type, row, meta) {
-                    console.log(row);
                     let readBtn = trash.endsWith('1') ? '' : globalVariables.readBtnTemplate.replace('%rowId%', row.id).replace('%endpointActionRead%', endpointActionRead);
                     let editBtn = trash.endsWith('1') ? '' : globalVariables.editBtnTemplate.replace('%rowId%', row.id).replace('%endpointActionEdit%', endpointActionEdit);
                     let deleteIcon = trash.endsWith('1') ? 'fas fa-undo' : 'fas fa-trash';
@@ -159,8 +159,9 @@ function createDataTable(endpoint, endpointActionTrash, endpointActionRead, endp
             }
         });
 
-        // Add this event handler to update the search value before each AJAX request
+
         table.on('preXhr.dt', function (e, settings, data) {
+
             let searchInput = document.querySelector('input[type="search"]');
             if (searchInput) {
                 data.search = searchInput.value;
