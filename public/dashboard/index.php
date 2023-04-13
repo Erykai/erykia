@@ -11,6 +11,8 @@
     <link rel="stylesheet" type="text/css"
           href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
     <link href="https://cdn.jsdelivr.net/npm/litepicker/dist/css/litepicker.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@1.5.2/dist/select2-bootstrap4.min.css" rel="stylesheet" />
     <link href="{{TEMPLATE_URL}}/public/{{TEMPLATE_DASHBOARD}}/assets/css/styles.css" rel="stylesheet"/>
     <link rel="icon" type="image/x-icon" href="{{TEMPLATE_URL}}/public/{{TEMPLATE_DASHBOARD}}/assets/img/favicon.png"/>
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -18,6 +20,7 @@
     <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         const globalVariables = {
             readBtnTemplate: '<a href="%endpointActionRead%/%rowId%" class="read-btn" title="{{Read}}"><i class="fas fa-eye"></i></a>',

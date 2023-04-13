@@ -38,21 +38,25 @@ trait Store
 
 
         foreach ($this->data as $key => $value) {
+            if(str_contains($key, "id_")){
+                $value = Cryption::getInstance()->decrypt($value);
+            }
             $example->$key = $value;
         }
         if ($this->validateLogin()) {
-            $id = (int)$this->session->get()->login->id;
+            $id = (int) Cryption::getInstance()->decrypt($this->session->get()->login->id);
             $example->id_examples = Cryption::getInstance()->decrypt($this->session->get()->login->id);
-            $example->dad =
-                $id === 1
-                    ? Cryption::getInstance()->decrypt($this->session->get()->login->id)
-                    : Cryption::getInstance()->decrypt($this->session->get()->login->id) . "," . Cryption::getInstance()->decrypt($this->session->get()->login->dad);
+            if($id === 1) {
+                $example->dad = 1;
+            }else{
+                $example->dad = $this->session->get()->login->dad . "," . Cryption::getInstance()->decrypt($this->session->get()->login->id);
+            }
         } else {
             $example->dad = 1;
             $example->id_examples = 1;
             $example->level = 1;
         }
-        $user->trash = 0;
+        $example->trash = 0;
         $example->created_at = date("Y-m-d H:i:s");
         $example->updated_at = date("Y-m-d H:i:s");
 

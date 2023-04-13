@@ -116,18 +116,13 @@ trait PublicDashboard
                     $Field = str_replace("id_", "", $item->Field);
                     $labelField = str_replace("_", " ", $Field);
                     $input .= '<div class="mb-3">
-                               <label 
-                                  class="small mb-1" 
-                                  for="input' . ucfirst($component) . ucfirst($Field) . '">{{' . ucfirst($labelField) . '}}
-                               </label>
-                               <select class="form-control" name="'.$item->Field.'" id="input' . ucfirst($component) . ucfirst($Field) . '">
-                                 <option>1</option>
-                                 <option>2</option>
-                                 <option>3</option>
-                                 <option>4</option>
-                                 <option>5</option>
-                               </select>
-                               </div>';
+                             <label class="small mb-1" for="input' . ucfirst($component) . ucfirst($Field) . '">{{' . ucfirst($labelField) . '}}</label>
+                            <select 
+                            class="form-control select2-field" 
+                            name="' . $item->Field . '" 
+                            id="input' . ucfirst($component) . ucfirst($Field) . '" 
+                            data-search-endpoint="{{#/'.$Field.'#}}"></select>
+                        </div>';
                 }else{
                     $input .= '<div class="mb-3">
                               <label 

@@ -125,4 +125,65 @@
             });
     });
 </script>
+<script>
+    const select2Translations = {
+        "{{LANG}}": {
+            errorLoading: function () {
+                return '{{Results could not be loaded}}.';
+            },
+            inputTooLong: function (args) {
+                const overChars = args.input.length - args.maximum;
+                return '{{Erase}} ' + overChars + ' {{characters}}';
+            },
+            inputTooShort: function (args) {
+                const remainingChars = args.minimum - args.input.length;
+                return '{{Enter}} ' + remainingChars + ' {{or more characters}}';
+            },
+            loadingMore: function () {
+                return '{{Loading more results}}...';
+            },
+            noResults: function () {
+                return '{{No results found}}';
+            },
+            searching: function () {
+                return '{{Seeking out}}...';
+            },
+            removeAllItems: function () {
+                return '{{Remove all items}}';
+            }
+        }
+    };
+</script>
+<script>
+    $(".select2-field").each(function() {
+        const $this = $(this);
 
+        // Use data attributes para armazenar informações específicas para cada campo
+        const searchEndpoint = $this.data("search-endpoint");
+
+        $this.select2({
+            width: "100%",
+            language: select2Translations["{{LANG}}"],
+            placeholder: "{{Type to search}}",
+            minimumInputLength: 3,
+            theme: "bootstrap4",
+            ajax: {
+                url: function(params) {
+                    return `{{TEMPLATE_URL}}${searchEndpoint}?search=[nameLIKE%${params.term}%]`;
+                },
+                dataType: "json",
+                headers: {
+                    Authorization: "Bearer " + bearerErykia
+                },
+                processResults: function(data) {
+                    return {
+                        results: data.data.map(item => ({
+                            id: item.id,
+                            text: item.name
+                        }))
+                    };
+                }
+            }
+        });
+    });
+</script>
