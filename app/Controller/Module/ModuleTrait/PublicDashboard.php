@@ -3,6 +3,7 @@
 namespace Source\Controller\Module\ModuleTrait;
 
 use RuntimeException;
+use Source\Core\Pluralize;
 
 trait PublicDashboard
 {
@@ -82,10 +83,18 @@ trait PublicDashboard
         }
         $li = "";
         foreach ($data as $key =>$item) {
+
             if(!isset($item->Field)){
                 $item->Field = $key;
             }
-            $li .= '<li class="list-group-item"><b>{{' . ucfirst($item->Field) . '}}:</b> {{ $this->' . $component . '->' . $item->Field . ' }}</li>';
+            if(str_contains($item->Field, "id_")) {
+                $Field = str_replace("id_", "", $item->Field);
+                $labelField = str_replace("_", " ", $Field);
+                $li .= '<li class="list-group-item"><b>{{' . ucfirst((new Pluralize())->singular($labelField)) . '}}:</b> {{ $this->' . $component . '->' . $Field . ' }}</li>';
+            }else{
+                $li .= '<li class="list-group-item"><b>{{' . ucfirst(str_replace("_", " ", (new Pluralize())->singular($item->Field))) . '}}:</b> {{ $this->' . $component . '->' . $item->Field . ' }}</li>';
+            }
+
         }
         $readLi = '/*#read-li#*/';
         $file = str_replace($readLi, $li, file_get_contents($this->getComponent()));
@@ -166,25 +175,80 @@ trait PublicDashboard
                 $item->Field = $key;
             }
             if (!str_contains($item->Field, "cover")) {
-                $input .= '<div class="mb-3">
+                if(str_contains($item->Field, "id_")){
+                    $Field = str_replace("id_", "", $item->Field);
+                    $labelField = str_replace("_", " ", $Field);
+                    $input .= '<div class="mb-3">
+                             <label class="small mb-1" for="input' . ucfirst($component) . ucfirst($Field) . '">{{' . ucfirst((new Pluralize())->singular($labelField)) . '}}</label>
+                            <select 
+                            class="form-control select2-field" 
+                            name="' . $item->Field . '" 
+                            id="input' . ucfirst($component) . ucfirst($Field) . '" 
+                            data-search-endpoint="{{#/'.$Field.'#}}"
+                            data-selected-id="{{ $this->'.$component.'->'.$item->Field.' }}"
+                            ></select>
+                        </div>';
+                }else{
+                    $input .= '<div class="mb-3">
                               <label 
                               class="small mb-1" 
-                              for="input{{' . $component . ucfirst($item->Field) . '}}">{{' . ucfirst($item->Field) . '}}
+                              for="input' . ucfirst($component) . ucfirst($item->Field) . '">{{' . ucfirst(str_replace("_", " ", $item->Field)) . '}}
                               </label>
                               <input 
                               name="' . $item->Field . '" 
                               class="form-control" 
-                              id="input{{' . $component . ucfirst($item->Field) . '}}" 
+                              id="input' . ucfirst($component) . ucfirst($item->Field) . '" 
                               type="text"
-                              placeholder="{{' . ucfirst($item->Field) . '}}" value="{{ $this->'.$component.'->'.$item->Field.' }}"/>
+                              placeholder="{{' . ucfirst($item->Field) . '}}"
+                              value="{{ $this->'.$component.'->'.$item->Field.' }}"
+                              />
                         </div>';
+                }
+
             }
 
         }
-        $editInput = '/*#edit-input#*/';
-        $file = str_replace($editInput, $input, file_get_contents($this->getComponent()));
+        $readInput = '/*#edit-input#*/';
+        $file = str_replace($readInput, $input, file_get_contents($this->getComponent()));
         if (file_put_contents($this->getComponent(), $file) === false) {
             throw new RuntimeException("error creating " . $this->getComponent());
         }
+//
+//        if (str_contains($this->getComponent(), "Category")) {
+//            foreach ($this->data->category as $key => $item) {
+//                $item->Field = $key;
+//                $data[] = $item;
+//                $component = $this->data->component;
+//            }
+//        } else {
+//            $data = $this->data->database;
+//            $component = $this->data->component;
+//        }
+//        $input = "";
+//        foreach ($data as $key => $item) {
+//            if(!isset($item->Field)){
+//                $item->Field = $key;
+//            }
+//            if (!str_contains($item->Field, "cover")) {
+//                $input .= '<div class="mb-3">
+//                              <label
+//                              class="small mb-1"
+//                              for="input{{' . $component . ucfirst($item->Field) . '}}">{{' . ucfirst($item->Field) . '}}
+//                              </label>
+//                              <input
+//                              name="' . $item->Field . '"
+//                              class="form-control"
+//                              id="input{{' . $component . ucfirst($item->Field) . '}}"
+//                              type="text"
+//                              placeholder="{{' . ucfirst($item->Field) . '}}" value="{{ $this->'.$component.'->'.$item->Field.' }}"/>
+//                        </div>';
+//            }
+//
+//        }
+//        $editInput = '/*#edit-input#*/';
+//        $file = str_replace($editInput, $input, file_get_contents($this->getComponent()));
+//        if (file_put_contents($this->getComponent(), $file) === false) {
+//            throw new RuntimeException("error creating " . $this->getComponent());
+//        }
     }
 }

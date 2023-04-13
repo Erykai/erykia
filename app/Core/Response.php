@@ -22,17 +22,20 @@ class Response extends \Erykai\Response\Response
     public function json(): string
     {
         if (isset($this->getResponse()->data)) {
-            $Cription = Cryption::getInstance();
             if (is_array($this->getResponse()->data)) {
                 foreach ($this->getResponse()->data as $key => $value) {
-                    $Cription = Cryption::getInstance();
-                    if(isset($this->getResponse()->data[$key]->id)) {
-                        $this->getResponse()->data[$key]->id = $Cription->encrypt($this->getResponse()->data[$key]->id);
+                    foreach ($this->getResponse()->data[$key] as $newkey => $item) {
+                        if (strpos($newkey, 'id_') !== false) {
+                            $this->getResponse()->data[$key]->$newkey = Cryption::getInstance()->encrypt($this->getResponse()->data[$key]->$newkey);
+                        }
+                    }
+                    if (isset($this->getResponse()->data[$key]->id)) {
+                        $this->getResponse()->data[$key]->id = Cryption::getInstance()->encrypt($this->getResponse()->data[$key]->id);
                     }
                 }
             } else {
-                if(isset($this->getResponse()->data->id)) {
-                    $this->getResponse()->data->id = $Cription->encrypt($this->getResponse()->data->id);
+                if (isset($this->getResponse()->data->id)) {
+                    $this->getResponse()->data->id = Cryption::getInstance()->encrypt($this->getResponse()->data->id);
                 }
             }
         }

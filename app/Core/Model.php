@@ -133,7 +133,9 @@ class Model extends Database
         if (isset($relationships->relationship)) {
             foreach ($relationships->relationship as $key => $relationship) {
                 if (isset($this->params)) {
+
                     $keyParam = array_search($relationship, array_keys($this->params), true);
+
                     if ($keyParam !== false) {
                         $params[] = $relationship . '.name';
                         $paramsReplace[] = " $relationship ";
@@ -145,11 +147,13 @@ class Model extends Database
                         $getColumns[$keyColumns] = $relationship . '.name' . " $relationship";
                     }
                 }
+
                 if ($relationship !== $this->table) {
                     $inner .= "INNER JOIN $relationship ON $this->table.$key = $relationship.id ";
                 }
-                $returnColumns .= "$relationship.name $relationship,";
+                $returnColumns .= "$relationship.name $relationship, $relationship.$key,";
             }
+
 
         }
 
@@ -203,6 +207,7 @@ class Model extends Database
             $newQuery = $where[0] . "WHERE " . $newQuery;
             $this->query = $newQuery;
         }
+
         if ($count) {
             return $this->count();
         }

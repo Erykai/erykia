@@ -124,4 +124,91 @@
             });
     });
 </script>
+<script>
+    const select2Translations = {
+        "{{LANG}}": {
+            errorLoading: function () {
+                return '{{Results could not be loaded}}.';
+            },
+            inputTooLong: function (args) {
+                const overChars = args.input.length - args.maximum;
+                return '{{Erase}} ' + overChars + ' {{characters}}';
+            },
+            inputTooShort: function (args) {
+                const remainingChars = args.minimum - args.input.length;
+                return '{{Enter}} ' + remainingChars + ' {{or more characters}}';
+            },
+            loadingMore: function () {
+                return '{{Loading more results}}...';
+            },
+            noResults: function () {
+                return '{{No results found}}';
+            },
+            searching: function () {
+                return '{{Seeking out}}...';
+            },
+            removeAllItems: function () {
+                return '{{Remove all items}}';
+            }
+        }
+    };
+    $(document).ready(function () {
+        $('.select2-field').each(function () {
+            const selectElement = $(this);
+            const selectedId = selectElement.data('selected-id');
 
+            if (selectedId) {
+                const searchEndpoint = selectElement.data('search-endpoint');
+                const requestUrl = `{{TEMPLATE_URL}}${searchEndpoint}/${selectedId}`;
+
+
+
+                fetch(requestUrl, {
+                    headers: {
+                        "Authorization": "Bearer " + bearerErykia
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        const selectedOption = new Option(data.data[0].name, data.data[0].id, true, true);
+                        selectElement.append(selectedOption).trigger('change');
+                        initializeSelect2(selectElement);
+                    });
+
+            } else {
+                initializeSelect2(selectElement);
+            }
+        });
+    });
+
+    function initializeSelect2(selectElement) {
+        selectElement.select2({
+            width: "100%",
+            language: select2Translations["{{LANG}}"],
+            placeholder: "{{Type to search}}",
+            minimumInputLength: 3,
+            theme: "bootstrap4",
+            ajax: {
+                url: function (params) {
+                    const searchEndpoint = selectElement.data('search-endpoint');
+                    return `${searchEndpoint}?search=[nameLIKE%${params.term}%]`;
+                },
+                dataType: "json",
+                headers: {
+                    "Authorization": "Bearer " + bearerErykia
+                },
+                processResults: function (data) {
+                    return {
+                        results: data.data.map(item => ({
+                            id: item.id,
+                            text: item.name
+                        }))
+                    };
+                }
+            }
+        }).on('select2:open', function () {
+            $('.select2-results:not(:has(a))').append('<a href="{{TEMPLATE_URL}}${searchEndpoint}{{#/store#}}" style="display:block;padding: 6px;border-top: 1px solid #ddd;">{{Add new country}}</a>');
+        });
+    }
+
+</script>
