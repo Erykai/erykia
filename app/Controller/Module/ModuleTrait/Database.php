@@ -19,7 +19,14 @@ trait Database
         }
 
         foreach ($data as $key => $column) {
-            $this->database[] = '$migration->column("' . $key . '")->type("' . $column->type . '")->default()' . (isset($column->null) ? '->null()' : '') . ';';
+            $column->default = null;
+            if(isset($column->schema->type)){
+                $column->type = $column->schema->type;
+            }
+            if(isset($column->schema->default)){
+                $column->default = $column->schema->default;
+            }
+            $this->database[] = '$migration->column("' . $key . '")->type("' . $column->type . '")->default('.$column->default.')' . (isset($column->null) ? '->null()' : '') . ';';
             if (!isset($column->null)) {
                 $this->modelNotNull[] = "'" . $key . "',";
             }
