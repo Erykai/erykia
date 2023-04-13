@@ -117,6 +117,7 @@ class Model extends Database
      */
     public function fetchReference(bool $all = false, ?string $getColumns = "", $count = false)
     {
+
         $columns = $this->conn->query("SHOW COLUMNS FROM $this->table")->fetchAll();
         $inner = null;
         $returnColumns = null;
@@ -161,6 +162,7 @@ class Model extends Database
             }
             $returnColumns = substr($returnColumns, 0, -1);
         }
+
         $select = explode("SELECT", $this->query)[1];
         $columnsRequest = explode("FROM", $select)[0];
 
@@ -184,6 +186,9 @@ class Model extends Database
         $where = explode("WHERE", $this->query);
         if (isset($where[1])) {
             $whereColumns = explode("AND", $where[1]);
+            $whereColumns = array_filter($whereColumns, function ($value) {
+                return trim($value) !== '';
+            });
             foreach ($whereColumns as $key => $value) {
                 if (isset($params[$key])) {
                     $returnParams[] = str_replace($paramsReplace[$key], " " . $params[$key] . " ", $value);
@@ -198,7 +203,6 @@ class Model extends Database
             $newQuery = $where[0] . "WHERE " . $newQuery;
             $this->query = $newQuery;
         }
-
         if ($count) {
             return $this->count();
         }

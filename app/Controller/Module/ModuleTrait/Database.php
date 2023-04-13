@@ -27,31 +27,24 @@ trait Database
         $database = implode(PHP_EOL, $this->database);
         $file = str_replace('/*###*/', $database, file_get_contents($this->getComponent()));
         file_put_contents($this->getComponent(), $file);
-
-
-        if (!empty($this->data->category)) {
-            unset($this->database);
-            $this->databaseCategories();
-            unset($this->database);
+        foreach ($data as $key => $column) {
+            if (str_contains($key, 'id_')) {
+                unset($this->database);
+                $this->addKeyRelations();
+            }
         }
-
     }
-    /**
-     *
-     */
-    protected function databaseCategories(): void
+
+    protected function addKeyRelations(): void
     {
         $relationships = Helper::relationship((array)$this->data->database, $this->data->component);
         if (isset($relationships->relationship)) {
-            if (!str_contains($this->getComponent(), "categories")) {
-                foreach ($relationships->relationship as $key => $relationship) {
-                    $this->database[] = '$migration->addKey("' . (new Pluralize())->plural(strtolower($this->data->component)) . '_' . $relationship . '", "' . $key . '", "' . $relationship . '", "id");';
-                }
-                $database = implode(PHP_EOL, $this->database);
-                $file = str_replace('/*####*/', $database, file_get_contents($this->getComponent()));
-                file_put_contents($this->getComponent(), $file);
+            foreach ($relationships->relationship as $key => $relationship) {
+                $this->database[] = '$migration->addKey("' . (new Pluralize())->plural(strtolower($this->data->component)) . '_' . $relationship . '", "' . $key . '", "' . $relationship . '", "id");';
             }
-
+            $database = implode(PHP_EOL, $this->database);
+            $file = str_replace('/*####*/', $database, file_get_contents($this->getComponent()));
+            file_put_contents($this->getComponent(), $file);
         }
 
 

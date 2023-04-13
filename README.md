@@ -125,3 +125,219 @@ Example streaming and category.
   }
 }
 ```
+Example country.
+##### send post https://lvh.me/module or https://localhost/module raw json
+```json
+{
+  "component": "country",
+  "database": {
+    "name":{
+      "type": "varchar(100)",
+      "input": "text"
+    },
+    "iso3":{
+      "type": "char(3)",
+      "null": true,
+      "input": "text"
+    },
+    "numeric_code":{
+      "type": "char(3)",
+      "null": true,
+      "input": "text"
+    },
+    "iso2":{
+      "type": "char(2)",
+      "null": true,
+      "input": "text"
+    },
+    "phonecode":{
+      "type": "varchar(255)",
+      "null": true,
+      "input": "text"
+    },
+    "capital":{
+      "type": "varchar(255)",
+      "null": true,
+      "input": "text"
+    },
+    "currency":{
+      "type": "varchar(255)",
+      "null": true,
+      "input": "text"
+    },
+    "currency_name":{
+      "type": "varchar(255)",
+      "null": true,
+      "input": "text"
+    },
+    "currency_symbol":{
+      "type": "varchar(255)",
+      "null": true,
+      "input": "text"
+    },
+    "tld":{
+      "type": "varchar(255)",
+      "null": true,
+      "input": "text"
+    },
+    "native":{
+      "type": "varchar(255)",
+      "null": true,
+      "input": "text"
+    },
+    "region":{
+      "type": "varchar(255)",
+      "null": true,
+      "input": "text"
+    },
+    "subregion":{
+      "type": "varchar(255)",
+      "null": true,
+      "input": "text"
+    },
+    "timezones":{
+      "type": "text",
+      "null": true,
+      "input": "text"
+    },
+    "translations":{
+      "type": "varchar(255)",
+      "null": true,
+      "input": "text"
+    },
+    "latitude":{
+      "type": "decimal(10,8)",
+      "null": true,
+      "input": "text"
+    },
+    "longitude":{
+      "type": "decimal(11,8)",
+      "null": true,
+      "input": "text"
+    },
+    "emoji":{
+      "type": "varchar(191)",
+      "null": true,
+      "input": "text"
+    },
+    "emojiU":{
+      "type": "varchar(191)",
+      "null": true,
+      "input": "text"
+    },
+    "flag":{
+      "type": "tinyint(1)",
+      "input": "text"
+    },
+    "wikiDataId":{
+      "type": "varchar(255)",
+      "null": true,
+      "input": "text"
+    }
+  }
+}
+```
+Example state.
+##### send post https://lvh.me/module or https://localhost/module raw json
+```json
+{
+  "component": "state",
+  "database": {
+    "id_countries":{
+      "type": "int(11)",
+      "input": "text"
+    },
+    "name":{
+      "type": "varchar(100)",
+      "input": "text"
+    },
+    "country_code":{
+      "type": "char(2)",
+      "input": "text"
+    },
+    "fips_code":{
+      "type": "varchar(255)",
+      "null": true,
+      "input": "text"
+    },
+    "iso2":{
+      "type": "varchar(255)",
+      "null": true,
+      "input": "text"
+    },
+    "type":{
+      "type": "varchar(191)",
+      "null": true,
+      "input": "text"
+    },
+    "latitude":{
+      "type": "decimal(10,8)",
+      "null": true,
+      "input": "text"
+    },
+    "longitude":{
+      "type": "decimal(11,8)",
+      "null": true,
+      "input": "text"
+    },
+    "flag":{
+      "type": "tinyint(1)",
+      "input": "text"
+    },
+    "wikiDataId":{
+      "type": "varchar(255)",
+      "null": true,
+      "input": "text"
+    }
+  }
+}
+```
+Example city.
+##### send post https://lvh.me/module or https://localhost/module raw json
+```json
+{
+  "component": "city",
+  "database": {
+    "id_countries":{
+      "type": "int(11)",
+      "input": "text"
+    },
+    "id_states":{
+      "type": "int(11)",
+      "input": "text"
+    },
+    "name":{
+      "type": "varchar(100)",
+      "input": "text"
+    },
+    "country_code":{
+      "type": "char(2)",
+      "input": "text"
+    },
+    "state_code":{
+      "type": "varchar(255)",
+      "null": true,
+      "input": "text"
+    },
+    "latitude":{
+      "type": "decimal(10,8)",
+      "null": true,
+      "input": "text"
+    },
+    "longitude":{
+      "type": "decimal(11,8)",
+      "null": true,
+      "input": "text"
+    },
+    "flag":{
+      "type": "tinyint(1)",
+      "input": "text"
+    },
+    "wikiDataId":{
+      "type": "varchar(255)",
+      "null": true,
+      "input": "text"
+    }
+  }
+}
+```

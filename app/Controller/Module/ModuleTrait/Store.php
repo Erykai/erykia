@@ -20,7 +20,7 @@ trait Store
             return false;
         }
 
-        if ($this->data->category) {
+        if (isset($this->data->category)) {
             $this->data->component .= "_category";
             $this->start();
         }

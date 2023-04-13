@@ -349,8 +349,10 @@ class Controller
 
     /**
      * @param string $search
+     * @param string $OrAnd
+     * @param string $table
      */
-    protected function setSearch(string $search, string $OrAnd = "AND"): void
+    protected function setSearch(string $search, string $table, string $OrAnd = "AND"): void
     {
         $search = str_replace(["[", "]"], [""], $search);
 
@@ -359,37 +361,37 @@ class Controller
             foreach ($search as $key => $value) {
                 if (str_contains($value, "LIKE")) {
                     $return = explode("LIKE", $value);
-                    $find[$key] = "$return[0] LIKE :$return[0]";
+                    $find[$key] = "$table.$return[0] LIKE :$return[0]";
                     $params[$return[0]] = $return[1];
                     continue;
                 }
                 if (str_contains($value, "!=")) {
                     $return = explode("!=", $value);
-                    $find[$key] = "$return[0] != :$return[0]";
+                    $find[$key] = "$table.$return[0] != :$return[0]";
                     $params[$return[0]] = $return[1];
                     continue;
                 }
                 if (str_contains($value, ">")) {
                     $return = explode(">", $value);
-                    $find[$key] = "$return[0] > :$return[0]";
+                    $find[$key] = "$table.$return[0] > :$return[0]";
                     $params[$return[0]] = $return[1];
                     continue;
                 }
                 if (str_contains($value, "<")) {
                     $return = explode("<", $value);
-                    $find[$key] = "$return[0] < :$return[0]";
+                    $find[$key] = "$table.$return[0] < :$return[0]";
                     $params[$return[0]] = $return[1];
                     continue;
                 }
                 if (str_contains($value, "=")) {
                     $return = explode("=", $value);
-                    $find[$key] = "$return[0] = :$return[0]";
+                    $find[$key] = "$table.$return[0] = :$return[0]";
                     $params[$return[0]] = $return[1];
                 }
             }
-            //var_dump($find, $params);
             if (isset($find, $params)) {
                 $this->setFind(implode(" ".$OrAnd." ", $find));
+                $this->setFind("(" . $this->getFind() . ")");
                 $this->setParams(array_filter($params));
             }
         }
@@ -463,7 +465,7 @@ class Controller
         return $output;
     }
 
-    protected function datatable(array $query): array
+    protected function datatable(array $query, string $table): array
     {
         $columns = "";
         $search = "";
@@ -479,9 +481,10 @@ class Controller
             }
         }
         $search = substr($search, 0, -1);
+
         $columns = substr($columns, 0, -1);
 
-        $this->setSearch($search, "OR");
+        $this->setSearch($search, $table, "OR");
 
         return [
             'page' => $page,

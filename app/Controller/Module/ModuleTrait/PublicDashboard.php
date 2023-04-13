@@ -34,7 +34,10 @@ trait PublicDashboard
         $th = "";
         $datatable = '"id",';
         $i = 0;
-        foreach ($data as $item) {
+        foreach ($data as $key => $item) {
+            if(!isset($item->Field)){
+                $item->Field = $key;
+            }
             if (
                 !str_contains($item->Field, "id_") &&
                 !str_contains($item->Field, "dad") &&
@@ -78,8 +81,10 @@ trait PublicDashboard
             $component = $this->data->component;
         }
         $li = "";
-        foreach ($data as $item) {
-
+        foreach ($data as $key =>$item) {
+            if(!isset($item->Field)){
+                $item->Field = $key;
+            }
             $li .= '<li class="list-group-item"><b>{{' . ucfirst($item->Field) . '}}:</b> {{ $this->' . $component . '->' . $item->Field . ' }}</li>';
         }
         $readLi = '/*#read-li#*/';
@@ -102,20 +107,42 @@ trait PublicDashboard
             $component = $this->data->component;
         }
         $input = "";
-        foreach ($data as $item) {
+        foreach ($data as $key => $item) {
+            if(!isset($item->Field)){
+                $item->Field = $key;
+            }
             if (!str_contains($item->Field, "cover")) {
-                $input .= '<div class="mb-3">
+                if(str_contains($item->Field, "id_")){
+                    $Field = str_replace("id_", "", $item->Field);
+                    $labelField = str_replace("_", " ", $Field);
+                    $input .= '<div class="mb-3">
+                               <label 
+                                  class="small mb-1" 
+                                  for="input' . ucfirst($component) . ucfirst($Field) . '">{{' . ucfirst($labelField) . '}}
+                               </label>
+                               <select class="form-control" name="'.$item->Field.'" id="input' . ucfirst($component) . ucfirst($Field) . '">
+                                 <option>1</option>
+                                 <option>2</option>
+                                 <option>3</option>
+                                 <option>4</option>
+                                 <option>5</option>
+                               </select>
+                               </div>';
+                }else{
+                    $input .= '<div class="mb-3">
                               <label 
                               class="small mb-1" 
-                              for="input{{' . $component . ucfirst($item->Field) . '}}">{{' . ucfirst($item->Field) . '}}
+                              for="input' . ucfirst($component) . ucfirst($item->Field) . '">{{' . ucfirst($item->Field) . '}}
                               </label>
                               <input 
                               name="' . $item->Field . '" 
                               class="form-control" 
-                              id="input{{' . $component . ucfirst($item->Field) . '}}" 
+                              id="input' . ucfirst($component) . ucfirst($item->Field) . '" 
                               type="text"
                               placeholder="{{' . ucfirst($item->Field) . '}}"/>
                         </div>';
+                }
+
             }
 
         }
@@ -139,7 +166,10 @@ trait PublicDashboard
             $component = $this->data->component;
         }
         $input = "";
-        foreach ($data as $item) {
+        foreach ($data as $key => $item) {
+            if(!isset($item->Field)){
+                $item->Field = $key;
+            }
             if (!str_contains($item->Field, "cover")) {
                 $input .= '<div class="mb-3">
                               <label 
