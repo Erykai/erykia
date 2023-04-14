@@ -6,7 +6,7 @@ use RuntimeException;
 use Source\Core\Pluralize;
 use stdClass;
 
-trait PublicDashboard
+trait Component
 {
     private string $all;
     private string $destroy;
@@ -15,15 +15,14 @@ trait PublicDashboard
     private string $store;
     private string $trash;
 
-    protected function public(): void
+    protected function component(): void
     {
-        $this->allPublic();
-        $this->readPublic();
-        $this->storePublic();
-        $this->editPublic();
+        $this->allComponent();
+        $this->readComponent();
+        $this->storeComponent();
+        $this->editComponent();
     }
-
-    protected function allPublic(): void
+    protected function allComponent(): void
     {
         if (str_contains($this->getComponent(), "Category")) {
             foreach ($this->data->category as $key => $item) {
@@ -69,26 +68,22 @@ trait PublicDashboard
             throw new RuntimeException("error creating " . $this->getComponent());
         }
     }
-
-    protected function readPublic(): void
+    protected function readComponent(): void
     {
         $replace = '/*#read-li#*/';
         $this->populate($replace, "output", "li");
 
     }
-
-    protected function storePublic(): void
+    protected function storeComponent(): void
     {
         $replace = '/*#store-input#*/';
         $this->populate($replace, "input");
     }
-
-    protected function editPublic(): void
+    protected function editComponent(): void
     {
         $replace = '/*#edit-input#*/';
         $this->populate($replace, "input");
     }
-
     private function populate($replace, $ioFolder, $ioFile = null): void
     {
 
@@ -145,7 +140,4 @@ trait PublicDashboard
             throw new RuntimeException("error creating " . $this->getComponent());
         }
     }
-
-
-
 }

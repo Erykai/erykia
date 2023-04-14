@@ -66,7 +66,7 @@ abstract class Resource extends Controller
                 $this->model();
                 break;
             case 'public':
-                $this->public();
+                $this->component();
                 break;
             default:
                 // Nenhuma ação para tipos desconhecidos
