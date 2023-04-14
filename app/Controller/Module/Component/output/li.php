@@ -1,0 +1,1 @@
+<li class="list-group-item"><b>{{$this->replace->label}}:</b> {{ $this->replace->value }}</li>

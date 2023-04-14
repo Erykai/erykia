@@ -8,6 +8,7 @@ use Source\Controller\Module\ModuleTrait\Files;
 use Source\Controller\Module\ModuleTrait\Model;
 use Source\Controller\Module\ModuleTrait\PublicDashboard;
 use Source\Controller\Module\ModuleTrait\Store;
+use stdClass;
 
 
 /**
@@ -23,6 +24,7 @@ class ModuleController extends Resource
     use Database;
 
     private static ?ModuleController $instance = null;
+    private stdClass $replace;
 
     private function __construct()
     {
