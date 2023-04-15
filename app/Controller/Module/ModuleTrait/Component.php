@@ -8,13 +8,6 @@ use stdClass;
 
 trait Component
 {
-    private string $all;
-    private string $destroy;
-    private string $edit;
-    private string $read;
-    private string $store;
-    private string $trash;
-
     protected function component(): void
     {
         $this->allComponent();
@@ -22,31 +15,15 @@ trait Component
         $this->storeComponent();
         $this->editComponent();
     }
+
     protected function allComponent(): void
     {
-        if (str_contains($this->getComponent(), "Category")) {
-            foreach ($this->data->category as $key => $item) {
-                $item->Field = $key;
-                $data[] = $item;
-            }
-        } else {
-            $data = $this->data->database;
-        }
         $th = "";
         $datatable = '"id",';
         $i = 0;
-        foreach ($data as $key => $item) {
-            if (!isset($item->Field)) {
-                $item->Field = $key;
-            }
-            if (
-                !str_contains($item->Field, "id_") &&
-                !str_contains($item->Field, "dad") &&
-                !str_contains($item->Field, "cover") &&
-                !str_contains($item->Field, "slug") &&
-                !str_contains($item->Field, "created_at") &&
-                !str_contains($item->Field, "updated_at")
-            ) {
+        foreach ($this->dataComponent() as $key => $item) {
+            $item = $this->ensureFieldIsSet($item, $key);
+            if ($this->isValidField($item->Field)) {
                 $i++;
                 if ($i <= 2) {
                     $th .= "<th>{{" . ucfirst($item->Field) . "}}</th>";
@@ -54,90 +31,120 @@ trait Component
                 }
             }
         }
-        $datatable = substr($datatable, 0, -1);
-        $datatable = '[' . $datatable . ']';
-        $allTh = '/*#all-th#*/';
-        $allDatable = '/*#all-datatable#*/';
-        $file = str_replace($allTh, $th, file_get_contents($this->getComponent()));
-        if (file_put_contents($this->getComponent(), $file) === false) {
-            throw new RuntimeException("error creating " . $this->getComponent());
-        }
-
-        $file = str_replace($allDatable, $datatable, file_get_contents($this->getComponent()));
-        if (file_put_contents($this->getComponent(), $file) === false) {
-            throw new RuntimeException("error creating " . $this->getComponent());
-        }
+        $datatable = '[' . rtrim($datatable, ',') . ']';
+        $this->replaceComponent('/*#all-th#*/', $th);
+        $this->replaceComponent('/*#all-datatable#*/', $datatable);
     }
+
     protected function readComponent(): void
     {
-        $replace = '/*#read-li#*/';
-        $this->populate($replace, "output", "li");
-
+        $this->populate('/*#read-li#*/', "output", "li");
     }
+
     protected function storeComponent(): void
     {
-        $replace = '/*#store-input#*/';
-        $this->populate($replace, "input");
+        $this->populate('/*#store-input#*/', "input");
     }
+
     protected function editComponent(): void
     {
-        $replace = '/*#edit-input#*/';
-        $this->populate($replace, "input");
+        $this->populate('/*#edit-input#*/', "input");
     }
-    private function populate($replace, $ioFolder, $ioFile = null): void
-    {
 
+    private function populate(string $replace, string $ioFolder, string $ioFile = null): void
+    {
+        $input = "";
+
+        foreach ($this->dataComponent() as $key => $item) {
+            $item = $this->ensureFieldIsSet($item, $key);
+            if (!str_contains($item->Field, "cover")) {
+                $this->populateInput($item, $ioFolder, $ioFile, $input);
+            }
+        }
+        $this->replaceComponent($replace, $input);
+    }
+
+    private function ensureFieldIsSet(stdClass $item, string $key): stdClass
+    {
+        if (!isset($item->Field)) {
+            $item->Field = $key;
+        }
+        return $item;
+    }
+
+    private function isValidField(string $field): bool
+    {
+        $invalidFields = [
+            "id_", "dad", "cover", "slug", "created_at", "updated_at"
+        ];
+
+        foreach ($invalidFields as $invalidField) {
+            if (str_contains($field, $invalidField)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private function populateInput(stdClass $item, string $ioFolder, ?string $ioFile, string &$input): void
+    {
+        $Field = $this->processFieldName($item->Field);
+        $labelField = str_replace("_", " ", $Field);
+        $this->initializeReplace($labelField, $Field, $item->Field);
+
+        if ($ioFolder === "output" && $ioFile !== null) {
+            $selectContent = file_get_contents(dirname(__DIR__, 1) . "/Component/" . $ioFolder . "/" . $ioFile . ".php");
+        } else {
+            $selectContent = file_get_contents(dirname(__DIR__, 1) . "/Component/" . $ioFolder . "/" . $item->input . ".php");
+        }
+
+        foreach ($this->replace as $keyR => $value) {
+            $search = "\$this->replace->$keyR";
+            $selectContent = str_replace($search, $value, $selectContent);
+        }
+
+        $input .= $selectContent;
+    }
+
+    private function processFieldName(string $field): string
+    {
+        if (str_contains($field, "id_")) {
+            return str_replace("id_", "", $field);
+        }
+        return $field;
+    }
+
+    private function initializeReplace(string $labelField, string $Field, string $itemField): void
+    {
+        $this->replace = new stdClass();
+        $this->replace->label = ucfirst((new Pluralize())->singular($labelField));
+        $this->replace->id = ucfirst($this->data->component) . ucfirst($Field);
+        $this->replace->relation = '$this->' . $this->data->component . '->' . $itemField;
+        $this->replace->name = $itemField;
+        $this->replace->route = $Field;
+        $this->replace->value = '$this->' . $this->data->component . '->' . $Field;
+    }
+
+    private function replaceComponent(string $search, string $replace): void
+    {
+        $file = str_replace($search, $replace, file_get_contents($this->getComponent()));
+        if (file_put_contents($this->getComponent(), $file) === false) {
+            throw new RuntimeException("error creating " . $this->getComponent());
+        }
+    }
+
+    private function dataComponent(): array|object
+    {
+        $data = [];
         if (str_contains($this->getComponent(), "Category")) {
-            foreach ($this->data->category as $key => $item) {
-                $item->Field = $key;
+            foreach ($this->data->category as $item) {
                 $data[] = $item;
-                $component = $this->data->component;
             }
         } else {
             $data = $this->data->database;
-            $component = $this->data->component;
         }
-        $input = "";
-
-        foreach ($data as $key => $item) {
-            if (!isset($item->Field)) {
-                $item->Field = $key;
-            }
-            if (!str_contains($item->Field, "cover")) {
-                $Field = $item->Field;
-                if (str_contains($item->Field, "id_")) {
-                    $Field = str_replace("id_", "", $item->Field);
-                }
-
-                $labelField = str_replace("_", " ", $Field);
-                $this->replace = new stdClass();
-                $this->replace->label = ucfirst((new Pluralize())->singular($labelField));
-                $this->replace->id = ucfirst($component) . ucfirst($Field);
-                $this->replace->relation = '$this->' . $component . '->' . $item->Field;
-
-                $this->replace->name = $item->Field;
-                $this->replace->route = $Field;
-                $this->replace->value = '$this->' . $component . '->' . $Field;
-
-                if($ioFolder === "output" && $ioFile !== null){
-                    $selectContent = file_get_contents(dirname(__DIR__, 1) . "/Component/".$ioFolder."/".$ioFile.".php");
-                }else{
-                    $selectContent = file_get_contents(dirname(__DIR__, 1) . "/Component/".$ioFolder."/".$item->input.".php");
-                }
-
-
-                foreach ($this->replace as $key => $value) {
-                    $search = "\$this->replace->{$key}";
-                    $selectContent = str_replace($search, $value, $selectContent);
-                }
-
-                $input .= $selectContent;
-            }
-        }
-
-        $file = str_replace($replace, $input, file_get_contents($this->getComponent()));
-        if (file_put_contents($this->getComponent(), $file) === false) {
-            throw new RuntimeException("error creating " . $this->getComponent());
-        }
+        return $data;
     }
+
 }
