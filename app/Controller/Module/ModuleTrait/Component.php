@@ -6,17 +6,27 @@ use RuntimeException;
 use Source\Core\Pluralize;
 use stdClass;
 
+/**
+ * Class Component
+ * @package Source\Controller\Module\ModuleTrait
+ */
 trait Component
 {
+    /**
+     * @return void
+     */
     protected function component(): void
     {
-        $this->allComponent();
+        $this->readAllComponent();
         $this->readComponent();
         $this->storeComponent();
         $this->editComponent();
     }
 
-    protected function allComponent(): void
+    /**
+     * @return void
+     */
+    protected function readAllComponent(): void
     {
         $th = "";
         $datatable = '"id",';
@@ -36,21 +46,36 @@ trait Component
         $this->replaceComponent('/*#all-datatable#*/', $datatable);
     }
 
+    /**
+     * @return void
+     */
     protected function readComponent(): void
     {
         $this->populate('/*#read-li#*/', "output", "li");
     }
 
+    /**
+     * @return void
+     */
     protected function storeComponent(): void
     {
         $this->populate('/*#store-input#*/', "input");
     }
 
+    /**
+     * @return void
+     */
     protected function editComponent(): void
     {
         $this->populate('/*#edit-input#*/', "input");
     }
 
+    /**
+     * @param string $replace
+     * @param string $ioFolder
+     * @param string|null $ioFile
+     * @return void
+     */
     private function populate(string $replace, string $ioFolder, string $ioFile = null): void
     {
         $input = "";
@@ -64,6 +89,11 @@ trait Component
         $this->replaceComponent($replace, $input);
     }
 
+    /**
+     * @param stdClass $item
+     * @param string $key
+     * @return stdClass
+     */
     private function ensureFieldIsSet(stdClass $item, string $key): stdClass
     {
         if (!isset($item->Field)) {
@@ -72,6 +102,10 @@ trait Component
         return $item;
     }
 
+    /**
+     * @param string $field
+     * @return bool
+     */
     private function isValidField(string $field): bool
     {
         $invalidFields = [
@@ -87,6 +121,13 @@ trait Component
         return true;
     }
 
+    /**
+     * @param stdClass $item
+     * @param string $ioFolder
+     * @param string|null $ioFile
+     * @param string $input
+     * @return void
+     */
     private function populateInput(stdClass $item, string $ioFolder, ?string $ioFile, string &$input): void
     {
         $Field = $this->processFieldName($item->Field);
@@ -107,6 +148,10 @@ trait Component
         $input .= $selectContent;
     }
 
+    /**
+     * @param string $field
+     * @return string
+     */
     private function processFieldName(string $field): string
     {
         if (str_contains($field, "id_")) {
@@ -115,6 +160,12 @@ trait Component
         return $field;
     }
 
+    /**
+     * @param string $labelField
+     * @param string $Field
+     * @param string $itemField
+     * @return void
+     */
     private function initializeReplace(string $labelField, string $Field, string $itemField): void
     {
         $this->replace = new stdClass();
@@ -126,6 +177,11 @@ trait Component
         $this->replace->value = '$this->' . $this->data->component . '->' . $Field;
     }
 
+    /**
+     * @param string $search
+     * @param string $replace
+     * @return void
+     */
     private function replaceComponent(string $search, string $replace): void
     {
         $file = str_replace($search, $replace, file_get_contents($this->getComponent()));
@@ -134,6 +190,9 @@ trait Component
         }
     }
 
+    /**
+     * @return array|object
+     */
     private function dataComponent(): array|object
     {
         $data = [];

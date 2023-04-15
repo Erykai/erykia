@@ -92,11 +92,13 @@ Example streaming and category.
     },
     "like":{
       "type": "int(11)",
-      "null": true
+      "null": true,
+      "input": "text"
     },
     "dislike":{
       "type": "int(11)",
-      "null": true
+      "null": true,
+      "input": "text"
     },
     "slug":{
       "type": "text",
@@ -120,7 +122,7 @@ Example streaming and category.
     "cover": {
       "type": "text",
       "null": true,
-      "upload": "text"
+      "input": "upload"
     }
   }
 }
@@ -330,6 +332,7 @@ Example city.
       "input": "text"
     },
     "flag":{
+      "input": "text",
       "schema": {
         "type": "tinyint(1)",
         "default": "1"
