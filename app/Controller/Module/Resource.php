@@ -68,9 +68,6 @@ abstract class Resource extends Controller
             case 'public':
                 $this->component();
                 break;
-            default:
-                // Nenhuma ação para tipos desconhecidos
-                break;
         }
     }
     /**

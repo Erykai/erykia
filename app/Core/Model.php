@@ -94,9 +94,9 @@ class Model extends Database
 
         if (!$tableExists) {
             $namespace = get_class($this);
-            $namespace = explode("\\",$namespace);
-            if(file_exists(dirname(__DIR__, 2) . "/modules/" . $namespace[1] . "/Database/" . $this->table . ".php")){
-                if(file_exists(dirname(__DIR__, 2) . "/modules/" . $namespace[1] . "Category/Database/" . $this->table . "_categories.php")){
+            $namespace = explode("\\", $namespace);
+            if (file_exists(dirname(__DIR__, 2) . "/modules/" . $namespace[1] . "/Database/" . $this->table . ".php")) {
+                if (file_exists(dirname(__DIR__, 2) . "/modules/" . $namespace[1] . "Category/Database/" . $this->table . "_categories.php")) {
                     $table = $this->table . "_categories";
                     $tableExistsCategories = $this->conn->query("SHOW TABLES LIKE '$table'")->rowCount() > 0;
                     if (!$tableExistsCategories) {
@@ -117,7 +117,6 @@ class Model extends Database
      */
     public function fetchReference(bool $all = false, ?string $getColumns = "", $count = false)
     {
-
         $columns = $this->conn->query("SHOW COLUMNS FROM $this->table")->fetchAll();
         $inner = null;
         $returnColumns = null;
@@ -125,24 +124,33 @@ class Model extends Database
 
         if (!empty($getColumns)) {
             $getColumns = explode(",", $getColumns);
+            $relationshipFlipped = array_flip($relationships->relationship);
+
+            foreach ($getColumns as $key => $value) {
+                if (array_key_exists($value, $relationshipFlipped)) {
+                    $getColumns[$key] = $relationshipFlipped[$value];
+                }
+            }
+
             foreach ($getColumns as $key => $Column) {
                 $getColumns[$key] = $this->table . "." . $getColumns[$key];
             }
 
         }
+
         if (isset($relationships->relationship)) {
             foreach ($relationships->relationship as $key => $relationship) {
                 if (isset($this->params)) {
-
                     $keyParam = array_search($relationship, array_keys($this->params), true);
-
                     if ($keyParam !== false) {
                         $params[] = $relationship . '.name';
                         $paramsReplace[] = " $relationship ";
                     }
                 }
+
                 if (!empty($getColumns)) {
-                    $keyColumns = array_search($relationship, $getColumns, true);
+
+                    $keyColumns = array_search($this->table . ".id_" . $relationship, $getColumns, true);
                     if ($keyColumns !== false) {
                         $getColumns[$keyColumns] = $relationship . '.name' . " $relationship";
                     }
@@ -153,8 +161,6 @@ class Model extends Database
                 }
                 $returnColumns .= "$relationship.name $relationship, $relationship.$key,";
             }
-
-
         }
 
         if (isset($relationships->tables)) {
@@ -178,6 +184,7 @@ class Model extends Database
             }
             $this->inner($inner);
         }
+
         if (!empty($getColumns)) {
             $getColumns = implode(",", $getColumns);
             $this->query = str_replace($columnsRequest, " $getColumns ", $this->query);

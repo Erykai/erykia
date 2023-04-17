@@ -36,8 +36,8 @@ trait Component
             if ($this->isValidField($item->Field)) {
                 $i++;
                 if ($i <= 2) {
-                    $th .= "<th>{{" . ucfirst($item->Field) . "}}</th>";
-                    $datatable .= '"' . $item->Field . '",';
+                    $th .= "<th>{{" . ucfirst(str_replace(["id_", "_"], [""," "], $item->Field)) . "}}</th>";
+                    $datatable .= '"' . str_replace("id_", "", $item->Field) . '",';
                 }
             }
         }
@@ -109,7 +109,7 @@ trait Component
     private function isValidField(string $field): bool
     {
         $invalidFields = [
-            "id_", "dad", "cover", "slug", "created_at", "updated_at"
+            "dad", "cover", "slug", "created_at", "updated_at"
         ];
 
         foreach ($invalidFields as $invalidField) {
@@ -191,15 +191,12 @@ trait Component
     }
 
     /**
-     * @return array|object
+     * @return object
      */
-    private function dataComponent(): array|object
+    private function dataComponent(): object
     {
-        $data = [];
         if (str_contains($this->getComponent(), "Category")) {
-            foreach ($this->data->category as $item) {
-                $data[] = $item;
-            }
+            $data = $this->data->category;
         } else {
             $data = $this->data->database;
         }

@@ -41,6 +41,7 @@ class Helper
                 $return['tables'][$column->Field] = $column->Field;
             }
         }
+
         return (object)$return;
     }
 

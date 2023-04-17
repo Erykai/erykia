@@ -42,8 +42,6 @@ trait Database
         }
         if (!empty($this->data->category)) {
             unset($this->database);
-            $this->addKeyRelations();
-            unset($this->database);
         }
 
     }

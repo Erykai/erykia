@@ -1,1 +1,1 @@
-<?php
+<h1>MODULE COMPONENT UPLOAD</h1>

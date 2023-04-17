@@ -1,1 +1,2 @@
-<?php
+<h1>MODULE COMPONENT TEXTAREA</h1>
+
