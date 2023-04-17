@@ -221,6 +221,7 @@ class Model extends Database
         if ($count) {
             return $this->count();
         }
+
         return $this->fetch($all);
     }
 
