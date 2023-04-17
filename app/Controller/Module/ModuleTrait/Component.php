@@ -35,7 +35,7 @@ trait Component
             $item = $this->ensureFieldIsSet($item, $key);
             if ($this->isValidField($item->Field)) {
                 $i++;
-                if ($i <= 2) {
+                if ($i <= 6) {
                     $th .= "<th>{{" . ucfirst(str_replace(["id_", "_"], [""," "], $item->Field)) . "}}</th>";
                     $datatable .= '"' . str_replace("id_", "", $item->Field) . '",';
                 }

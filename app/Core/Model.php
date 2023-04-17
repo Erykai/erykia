@@ -124,13 +124,16 @@ class Model extends Database
 
         if (!empty($getColumns)) {
             $getColumns = explode(",", $getColumns);
-            $relationshipFlipped = array_flip($relationships->relationship);
+            if(isset($relationships->relationship)){
+                $relationshipFlipped = array_flip($relationships->relationship);
 
-            foreach ($getColumns as $key => $value) {
-                if (array_key_exists($value, $relationshipFlipped)) {
-                    $getColumns[$key] = $relationshipFlipped[$value];
+                foreach ($getColumns as $key => $value) {
+                    if (array_key_exists($value, $relationshipFlipped)) {
+                        $getColumns[$key] = $relationshipFlipped[$value];
+                    }
                 }
             }
+
 
             foreach ($getColumns as $key => $Column) {
                 $getColumns[$key] = $this->table . "." . $getColumns[$key];
