@@ -15,9 +15,7 @@
 ### Terminal exec
 UP
 ```shell
-git clone https://github.com/Erykai/erykia.git
-cd erykia
-docker compose up -d --build
+bash <(curl -S 'https://install.erykia.com')
 ```
 
 ###### terminal exec
