@@ -3,22 +3,21 @@
 
 🤖 Artificial intelligence for creating websites, systems in php with restfull api
 
-### MODE INSTALL
-`require git https://git-scm.com/` 
-`require docker https://www.docker.com/` 
-### REQUIRE
-`composer`
-`php: >=8.0`
-`ext-pdo`
-`ext-curl`
-`docker`
 ### Terminal exec
-UP
+INSTALL MAC OS AND LINUX
 ```shell
 bash <(curl -S 'https://install.erykia.com')
 ```
 
-###### terminal exec
+INSTALL WINDOWS
+`require git https://git-scm.com/`
+`require docker https://www.docker.com/`
+```shell
+git clone https://github.com/Erykai/erykia.git --depth=1
+cd erykia
+docker compose up -d --build
+```
+
 DOWN
 ```shell
 docker compose down
