@@ -41,7 +41,12 @@ function displayMessage(message, messageType) {
         }, 1000);
     }
 }
-
+function stripHTMLAndLimit(text, maxLength) {
+    const strippedText = text.replace(/(<([^>]+)>)/gi, ''); // Remove tags HTML
+    return strippedText.length > maxLength
+        ? strippedText.substr(0, maxLength) + '...'
+        : strippedText;
+}
 function createDataTable(endpoint, endpointActionTrash, endpointActionRead, endpointActionEdit, columnNames, trash) {
     const columns = columnNames.map(name => {
         return {
@@ -55,6 +60,14 @@ function createDataTable(endpoint, endpointActionTrash, endpointActionRead, endp
         let table = new DataTable(document.querySelector('#datatables'), {
             scrollX: '100%',
             dom: 'Bfrtip',
+            columnDefs: [
+                {
+                    targets: '_all',
+                    render: function (data, type, row) {
+                        return stripHTMLAndLimit(data, 50)
+                    }
+                }
+            ],
             buttons: [
                 {
                     extend: 'copy',

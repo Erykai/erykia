@@ -91,7 +91,8 @@
         event.preventDefault();
         submitButton.disabled = true;
         const formData = new FormData(form);
-
+        let fieldName = quill.options.name;
+        formData.set(fieldName, quill.root.innerHTML);
         if (form.coverImage) {
             formData.append('cover', form.coverImage, form.coverImage.name);
         }

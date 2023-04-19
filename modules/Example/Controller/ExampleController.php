@@ -6,6 +6,7 @@ use Modules\Example\Controller\ExampleTrait\Destroy;
 use Modules\Example\Controller\ExampleTrait\Edit;
 use Modules\Example\Controller\ExampleTrait\Read;
 use Modules\Example\Controller\ExampleTrait\Store;
+use Modules\Example\Controller\ExampleTrait\Upload;
 use Source\Controller\System\Resource;
 
 class ExampleController extends Resource
@@ -14,6 +15,7 @@ class ExampleController extends Resource
     use Edit;
     use Read;
     use Destroy;
+    use Upload;
     private static $instance;
 
     protected function __construct()

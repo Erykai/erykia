@@ -21148,3 +21148,14 @@ pre[class*=language-] {
 .dropdown-user-img{
   object-fit: cover;
 }
+
+.editor-fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  background-color: white;
+  overflow-y: auto;
+}
