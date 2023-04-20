@@ -59,7 +59,8 @@ trait Component
      */
     protected function storeComponent(): void
     {
-        $this->populate('/*#store-input#*/', "input");
+        $this->populate('/*#store-input-8#*/', "input");
+        $this->populateSidebar('/*#store-input-4#*/', "input");
     }
 
     /**
@@ -67,7 +68,8 @@ trait Component
      */
     protected function editComponent(): void
     {
-        $this->populate('/*#edit-input#*/', "input");
+        $this->populate('/*#edit-input-8#*/', "input");
+        $this->populateSidebar('/*#edit-input-4#*/', "input");
     }
 
     /**
@@ -79,10 +81,28 @@ trait Component
     private function populate(string $replace, string $ioFolder, string $ioFile = null): void
     {
         $input = "";
-
+        $upload = "";
         foreach ($this->dataComponent() as $key => $item) {
             $item = $this->ensureFieldIsSet($item, $key);
-            if (!str_contains($item->Field, "cover")) {
+            if (!str_contains($item->input, "upload")) {
+                $this->populateInput($item, $ioFolder, $ioFile, $input);
+            }
+        }
+        $this->replaceComponent($replace, $input);
+    }
+
+    /**
+     * @param string $replace
+     * @param string $ioFolder
+     * @param string|null $ioFile
+     * @return void
+     */
+    private function populateSidebar(string $replace, string $ioFolder, string $ioFile = null): void
+    {
+        $input = "";
+        foreach ($this->dataComponent() as $key => $item) {
+            $item = $this->ensureFieldIsSet($item, $key);
+            if (str_contains($item->input, "upload")) {
                 $this->populateInput($item, $ioFolder, $ioFile, $input);
             }
         }
@@ -109,7 +129,7 @@ trait Component
     private function isValidField(string $field): bool
     {
         $invalidFields = [
-            "dad", "cover", "slug", "created_at", "updated_at"
+            "dad", "password", "cover", "slug", "created_at", "updated_at"
         ];
 
         foreach ($invalidFields as $invalidField) {

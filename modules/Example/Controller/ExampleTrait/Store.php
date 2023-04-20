@@ -10,6 +10,7 @@ trait Store
 {
     public function store(array $query, string $response): bool
     {
+
         $this->setRequest($query);
 
         if ($this->validateLogin() && !$this->permission()) {
@@ -23,19 +24,17 @@ trait Store
         }
         $example = new Example();
         $this->upload = new Upload();
-        if (isset($this->data->cover)) {
-            if ($this->upload->response()->type === "error") {
-                echo $this->translate->translator($this->upload->response(), "message")->$response();
-                return false;
-            }
-            if ($this->upload->save()) {
-                foreach ($this->upload->response()->data as $key => $value) {
-                    $example->$key = $value;
-                    $this->setIssetUpload(true);
-                }
+        if ($this->upload->save()) {
+            foreach ($this->upload->response()->data as $key => $value) {
+                $example->$key = $value;
+                $this->setIssetUpload(true);
             }
         }
 
+        if (($this->upload->response()->type === "error") && $this->upload->response()->dynamic !== "Erykai\Upload\Resource::getResponse") {
+            echo $this->translate->translator($this->upload->response(), "message")->$response();
+            return false;
+        }
 
         foreach ($this->data as $key => $value) {
             if(str_contains($key, "id_")){

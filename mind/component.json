@@ -1,0 +1,9 @@
+{
+  "component": "component",
+  "database": {
+    "name":{
+      "type": "varchar(255)",
+      "input": "text"
+    }
+  }
+}

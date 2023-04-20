@@ -24,8 +24,7 @@
                 <thead>
                 <tr>
                     <th>{{Id}}</th>
-                    <th>{{User}}</th>
-                    <th>{{Email}}</th>
+                    <th>{{Name}}</th><th>{{Email}}</th><th>{{Level}}</th>
                     <th>{{Action}}</th>
                 </tr>
                 </thead>
@@ -40,7 +39,7 @@
         "{{TEMPLATE_URL}}{{#/users/all#}}/1",
         "{{TEMPLATE_URL}}{{#/dashboard/users/read#}}",
         "{{TEMPLATE_URL}}{{#/dashboard/users/edit#}}",
-        ["id","name","email"],
+        ["id","name","email","level"],
         "1"
     )
 </script>

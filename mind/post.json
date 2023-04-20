@@ -1,0 +1,25 @@
+{
+  "component": "post",
+  "database": {
+    "id_users":{
+      "type": "int(11)",
+      "input": "select"
+    },
+    "name":{
+      "type": "varchar(255)",
+      "input": "text"
+    },
+    "description":{
+      "type": "longtext",
+      "input": "quill"
+    },
+    "nadegas":{
+      "type": "text",
+      "input": "textarea"
+    },
+    "cover":{
+      "type": "text",
+      "input": "upload"
+    }
+  }
+}

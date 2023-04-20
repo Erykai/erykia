@@ -8,5 +8,4 @@ $translate = Translate::getInstance($path);
 $route->namespace("Modules\User\Controller");
 $route->default('/users', 'UserController', [true,true,true,true], path: $path);
 $route->get($translate->router('/users/all/{trash}', "/{trash}", 'User'),'UserController@read', type: "json");
-$route->post($translate->router('/register', "", 'User'),'UserController@store', type: "json");
-$route->post($translate->router('/recovery', "", 'User'),'UserController@recovery', type: "json");
+$route->post($translate->router('/users/image/upload', "", 'User'),'UserController@upload', type: "json");

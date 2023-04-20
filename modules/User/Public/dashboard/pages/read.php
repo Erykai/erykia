@@ -40,15 +40,7 @@
                 </div>
                 <div class="card-body">
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item">
-                            <b>{{Name}}:</b> {{ $this->user->name }}
-                        </li>
-                        <li class="list-group-item">
-                            <b>{{Email}}:</b> {{ $this->user->email }}
-                        </li>
-                        <li class="list-group-item">
-                            <b>{{Local}}:</b> <span id="localLabel"></span>
-                        </li>
+                        <li class="list-group-item"><b>{{Name}}:</b> {{ $this->user->name }}</li><li class="list-group-item"><b>{{Email}}:</b> {{ $this->user->email }}</li><li class="list-group-item"><b>{{Password}}:</b> {{ $this->user->password }}</li><li class="list-group-item"><b>{{Level}}:</b> {{ $this->user->level }}</li>
                     </ul>
 
                 </div>

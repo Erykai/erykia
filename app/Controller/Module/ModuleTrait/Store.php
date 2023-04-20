@@ -10,6 +10,10 @@ trait Store
      */
     public function store($query): bool
     {
+        if($file = file_get_contents('php://input')){
+            $path = dirname(__DIR__, 4). "/mind/" . json_decode(file_get_contents('php://input'))->component . ".json";
+            file_put_contents($path, $file);
+        }
         $this->setRequest($query);
         if (!$this->permission()) {
             echo $this->translate->translator($this->getResponse(), "message")->json();

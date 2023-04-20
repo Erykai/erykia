@@ -6,6 +6,7 @@ use Modules\User\Controller\UserTrait\Destroy;
 use Modules\User\Controller\UserTrait\Edit;
 use Modules\User\Controller\UserTrait\Read;
 use Modules\User\Controller\UserTrait\Store;
+use Modules\User\Controller\UserTrait\Upload;
 use Source\Controller\System\Resource;
 
 class UserController extends Resource
@@ -14,6 +15,7 @@ class UserController extends Resource
     use Edit;
     use Read;
     use Destroy;
+    use Upload;
     private static $instance;
 
     protected function __construct()

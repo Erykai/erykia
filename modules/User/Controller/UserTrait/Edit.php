@@ -65,6 +65,9 @@ trait Edit
                 echo $this->translate->translator($this->getResponse(), "message")->json();
                 return false;
             }
+            if(str_contains($key, "id_")){
+                $this->data->$key = Cryption::getInstance()->decrypt($this->data->$key);
+            }
             $user->$key = $this->data->$key;
         }
 

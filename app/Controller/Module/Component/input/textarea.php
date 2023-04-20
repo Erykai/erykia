@@ -4,7 +4,5 @@
         name="$this->replace->name"
         class="form-control"
         id="$this->replace->id"
-    >
-        {{ $this->replace->value }}
-    </textarea>
+    >{{ $this->replace->value }}</textarea>
 </div>

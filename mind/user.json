@@ -1,0 +1,25 @@
+{
+  "component": "user",
+  "database": {
+    "name":{
+      "type": "varchar(255)",
+      "input": "text"
+    },
+    "email":{
+      "type": "varchar(255)",
+      "input": "text"
+    },
+    "password":{
+      "type": "varchar(255)",
+      "input": "password"
+    },
+    "level":{
+      "type": "int(11)",
+      "input": "text"
+    },
+    "cover":{
+      "type": "varchar(255)",
+      "input": "upload"
+    }
+  }
+}

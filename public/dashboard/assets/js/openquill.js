@@ -98,4 +98,6 @@ function openquill(idquill, namequill, toolbar, source, endpointUpload)
             }
         };
     });
+
+    return quill;
 }

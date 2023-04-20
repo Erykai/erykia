@@ -68,9 +68,9 @@
 </div>
 <script>
     let idquill = '#$this->replace->id';
-    let namequill = '#$this->replace->name';
+    let namequill = '$this->replace->name';
     let toolbar = '#toolbar-$this->replace->id';
     let source = '#source-$this->replace->id';
     let endpointUpload = "{{TEMPLATE_URL}}{{#/posts/image/upload#}}";
-    openquill(idquill, namequill, toolbar, source, endpointUpload)
+    let globalQuill = openquill(idquill, namequill, toolbar, source, endpointUpload)
 </script>

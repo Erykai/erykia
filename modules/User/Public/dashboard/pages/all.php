@@ -10,11 +10,6 @@
                 </div>
                 <div class="col-12 col-xl-auto mb-3">
                     <a class="btn btn-sm btn-light text-primary"
-                       href="{{TEMPLATE_URL}}{{#/dashboard/user-management-groups-list#}}">
-                        <i class="me-1" data-feather="users"></i>
-                        {{Manage Groups}}
-                    </a>
-                    <a class="btn btn-sm btn-light text-primary"
                        href="{{TEMPLATE_URL}}{{#/dashboard/user-management-add-user#}}">
                         <i class="me-1" data-feather="user-plus"></i>
                         {{Add New User}}
@@ -35,8 +30,7 @@
                 <thead>
                 <tr>
                     <th>{{Id}}</th>
-                    <th>{{User}}</th>
-                    <th>{{Email}}</th>
+                    <th>{{Name}}</th><th>{{Email}}</th><th>{{Level}}</th>
                     <th>{{Action}}</th>
                 </tr>
                 </thead>
@@ -51,7 +45,7 @@
         "{{TEMPLATE_URL}}{{#/users/all#}}/0",
         "{{TEMPLATE_URL}}{{#/dashboard/users/read#}}",
         "{{TEMPLATE_URL}}{{#/dashboard/users/edit#}}",
-        ["id","name","email"],
+        ["id","name","email","level"],
         "0"
     )
 </script>

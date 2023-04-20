@@ -20,30 +20,24 @@
     </nav>
     <hr class="mt-0 mb-4"/>
     <div class="row">
-        <div class="col-xl-4">
+        <div class="col-xl-4" id="colFour">
+
             <!-- Profile picture card-->
             <div class="card mb-4 mb-xl-0">
-                <div class="card-header">{{Example Picture}}</div>
+                <div class="card-header">{{Example}}</div>
                 <div class="card-body text-center">
-                    <!-- Profile picture image-->
-                    <img class="img-account-profile rounded-circle mb-2"
-                         src="{{TEMPLATE_URL}}/public/{{TEMPLATE_DASHBOARD}}/assets/img/illustrations/profiles/profile-1.png"
-                         alt=""/>
-                    <!-- Profile picture help block-->
-                    <div class="small font-italic text-muted mb-4">{{JPG or PNG no larger than 5 MB}}</div>
-                    <!-- Profile picture upload button-->
-                    <button class="btn btn-primary" type="button">{{Upload new image}}</button>
+                    /*#store-input-4#*/
                 </div>
             </div>
         </div>
-        <div class="col-xl-8">
+        <div class="col">
             <!-- Account details card-->
             <div class="card mb-4">
-                <div class="card-header">{{Example Details}}</div>
+                <div class="card-header">{{Details}}</div>
                 <div class="card-body">
                     <form method="post" id="myForm">
                         <!-- Form Group (examplename)-->
-                        /*#store-input#*/
+                        /*#store-input-8#*/
                         <input type="hidden" name="trash" value="0">
                         <button class="btn btn-primary" type="submit">{{Save}}</button>
                     </form>
@@ -70,17 +64,21 @@
     }
 
     // Add event listener to "Upload new image" button
-    const uploadButton = document.querySelector('.btn.btn-primary');
-    const fileInput = document.createElement('input');
-    fileInput.type = 'file';
-    fileInput.accept = 'image/png, image/jpeg';
-    fileInput.style.display = 'none';
-    fileInput.addEventListener('change', handleImageUpload);
-    document.body.appendChild(fileInput);
+    const uploadButton = document.querySelector('#uploadImage');
+    if (uploadButton) {
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = 'image/png, image/jpeg';
+        fileInput.style.display = 'none';
+        fileInput.addEventListener('change', handleImageUpload);
+        document.body.appendChild(fileInput);
 
-    uploadButton.addEventListener('click', () => {
-        fileInput.click();
-    });
+        uploadButton.addEventListener('click', () => {
+            fileInput.click();
+        });
+    }else{
+        document.querySelector('#colFour').remove();
+    }
 
     // Create the div element to display the return message
     const messageElement = document.createElement('div');
@@ -90,9 +88,15 @@
     form.addEventListener('submit', (event) => {
         event.preventDefault();
         submitButton.disabled = true;
+        if (typeof globalQuill !== 'undefined') {
+            form.querySelector(`input[name="${namequill}"]`).value = globalQuill.root.innerHTML;
+            const hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = 'description';
+            form.appendChild(hiddenInput);
+        }
         const formData = new FormData(form);
-        let fieldName = quill.options.name;
-        formData.set(fieldName, quill.root.innerHTML);
+
         if (form.coverImage) {
             formData.append('cover', form.coverImage, form.coverImage.name);
         }
@@ -156,7 +160,7 @@
     };
 </script>
 <script>
-    $(".select2-field").each(function() {
+    $(".select2-field").each(function () {
         const $this = $(this);
 
         // Use data attributes para armazenar informações específicas para cada campo
@@ -169,14 +173,14 @@
             minimumInputLength: 3,
             theme: "bootstrap4",
             ajax: {
-                url: function(params) {
+                url: function (params) {
                     return `{{TEMPLATE_URL}}${searchEndpoint}?search=[nameLIKE%${params.term}%]`;
                 },
                 dataType: "json",
                 headers: {
                     Authorization: "Bearer " + bearerErykia
                 },
-                processResults: function(data) {
+                processResults: function (data) {
                     return {
                         results: data.data.map(item => ({
                             id: item.id,

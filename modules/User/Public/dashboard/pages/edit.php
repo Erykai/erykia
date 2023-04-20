@@ -5,7 +5,7 @@
                 <div class="col-auto mb-3">
                     <h1 class="page-header-title">
                         <div class="page-header-icon"><i data-feather="user"></i></div>
-                        {{Account Settings}} - {{Profile}}
+                        {{Edit User}} - {{User}}
                     </h1>
                 </div>
             </div>
@@ -16,52 +16,109 @@
 <div class="container-xl px-4 mt-4">
     <!-- Account page navigation-->
     <nav class="nav nav-borders">
-        <a class="nav-link active ms-0" href="#">{{Profile}}</a>
+        <a class="nav-link active ms-0" href="#">{{User}}</a>
     </nav>
     <hr class="mt-0 mb-4"/>
     <div class="row">
-        <div class="col-xl-4">
+        <div class="col-xl-4" id="colFour">
+
             <!-- Profile picture card-->
             <div class="card mb-4 mb-xl-0">
-                <div class="card-header">{{Profile Picture}}</div>
+                <div class="card-header">{{User}}</div>
                 <div class="card-body text-center">
-                    <!-- Profile picture image-->
-                    <img class="img-account-profile rounded-circle mb-2"
-                         src="{{TEMPLATE_URL}}/{{ $this->user->cover }}"
-                         alt=""/>
-                    <!-- Profile picture help block-->
-                    <div class="small font-italic text-muted mb-4">{{JPG or PNG no larger than 5 MB}}</div>
-                    <!-- Profile picture upload button-->
-                    <button class="btn btn-primary" type="button">{{Upload new image}}</button>
+                    <label class="small mb-1 d-block" for="UserCover">{{Cover}}</label>
+<!-- Profile picture image-->
+<img id="UserCover"
+     class="img-account-profile mb-2"
+     src="{{TEMPLATE_URL}}/{{ $this->user->cover }}"
+     alt=""/>
+<!-- Profile picture help block-->
+<div class="small font-italic text-muted mb-4">{{JPG or PNG no larger than 5 MB}}</div>
+<!-- Profile picture upload button-->
+<button id="uploadImage" class="btn btn-primary" type="button">{{Upload new image}}</button>
+
+
                 </div>
             </div>
         </div>
-        <div class="col-xl-8">
+        <div class="col">
             <!-- Account details card-->
             <div class="card mb-4">
-                <div class="card-header">{{Account Details}}</div>
+                <div class="card-header">{{Details}}</div>
                 <div class="card-body">
                     <form method="post" id="myForm">
                         <!-- Form Group (username)-->
                         <div class="mb-3">
-                            <label class="small mb-1" for="inputUsername">
-                                {{Username (how your name will appear to other users on the site)}}
-                            </label>
-                            <input name="name" class="form-control" id="inputUsername" type="text"
-                                   placeholder="{{Enter your name}}" value="{{ $this->user->name }}"/>
-                        </div>
+    <label class="small mb-1" for="UserName">{{Name}}</label>
+    <input
+        name="name"
+        class="form-control"
+        id="UserName"
+        type="text"
+        placeholder="{{Name}}"
+        value="{{ $this->user->name }}"
+    />
+</div>
+<div class="mb-3">
+    <label class="small mb-1" for="UserEmail">{{Email}}</label>
+    <input
+        name="email"
+        class="form-control"
+        id="UserEmail"
+        type="text"
+        placeholder="{{Email}}"
+        value="{{ $this->user->email }}"
+    />
+</div>
+<div class="mb-3 position-relative">
+    <label class="small mb-1" for="UserPassword">{{Password}}</label>
+    <div class="input-group input-group-joined">
+        <input
+                name="password"
+                class="form-control"
+                id="UserPassword"
+                type="password"
+                placeholder="{{Password}}"
+                value=""
+        />
+        <span class="toggle-password input-group-text">
+        <i class="fas fa-eye"></i>
+    </span>
+    </div>
+</div>
 
-                        <div class="mb-3">
-                            <label class="small mb-1" for="inputCurrentPassword">{{Password}}</label>
-                            <input name="password" class="form-control" id="inputCurrentPassword" type="password"
-                                   placeholder="{{Enter a password to change the current one}}"/>
-                        </div>
+<!-- Joined input group append example-->
 
-                        <div class="mb-3">
-                            <label class="small mb-1" for="inputEmailAddress">{{Email address}}</label>
-                            <input name="email" class="form-control" id="inputEmailAddress" type="email"
-                                   placeholder="Enter your email address" value="{{ $this->user->email }}"/>
-                        </div>
+
+<script>
+    document.querySelector('.toggle-password').addEventListener('click', function () {
+        const passwordInput = document.getElementById('UserPassword');
+        const passwordIcon = this.querySelector('.fas');
+
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            passwordIcon.classList.remove('fa-eye');
+            passwordIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            passwordIcon.classList.remove('fa-eye-slash');
+            passwordIcon.classList.add('fa-eye');
+        }
+    });
+
+</script><div class="mb-3">
+    <label class="small mb-1" for="UserLevel">{{Level}}</label>
+    <input
+        name="level"
+        class="form-control"
+        id="UserLevel"
+        type="text"
+        placeholder="{{Level}}"
+        value="{{ $this->user->level }}"
+    />
+</div>
+
+                        <input type="hidden" name="trash" value="0">
                         <button class="btn btn-primary" type="submit">{{Save changes}}</button>
                     </form>
                 </div>
@@ -87,17 +144,21 @@
     }
 
     // Add event listener to "Upload new image" button
-    const uploadButton = document.querySelector('.btn.btn-primary');
-    const fileInput = document.createElement('input');
-    fileInput.type = 'file';
-    fileInput.accept = 'image/png, image/jpeg';
-    fileInput.style.display = 'none';
-    fileInput.addEventListener('change', handleImageUpload);
-    document.body.appendChild(fileInput);
+    const uploadButton = document.querySelector('#uploadImage');
+    if (uploadButton) {
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = 'image/png, image/jpeg';
+        fileInput.style.display = 'none';
+        fileInput.addEventListener('change', handleImageUpload);
+        document.body.appendChild(fileInput);
 
-    uploadButton.addEventListener('click', () => {
-        fileInput.click();
-    });
+        uploadButton.addEventListener('click', () => {
+            fileInput.click();
+        });
+    }else{
+        document.querySelector('#colFour').remove();
+    }
 
     // Create the div element to display the return message
     const messageElement = document.createElement('div');
@@ -107,6 +168,13 @@
     form.addEventListener('submit', (event) => {
         event.preventDefault();
         submitButton.disabled = true;
+        if (typeof globalQuill !== 'undefined') {
+            form.querySelector(`input[name="${namequill}"]`).value = globalQuill.root.innerHTML;
+            const hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = 'description';
+            form.appendChild(hiddenInput);
+        }
         const formData = new FormData(form);
 
         if (form.coverImage) {
@@ -142,4 +210,91 @@
             });
     });
 </script>
+<script>
+    const select2Translations = {
+        "{{LANG}}": {
+            errorLoading: function () {
+                return '{{Results could not be loaded}}.';
+            },
+            inputTooLong: function (args) {
+                const overChars = args.input.length - args.maximum;
+                return '{{Erase}} ' + overChars + ' {{characters}}';
+            },
+            inputTooShort: function (args) {
+                const remainingChars = args.minimum - args.input.length;
+                return '{{Enter}} ' + remainingChars + ' {{or more characters}}';
+            },
+            loadingMore: function () {
+                return '{{Loading more results}}...';
+            },
+            noResults: function () {
+                return '{{No results found}}';
+            },
+            searching: function () {
+                return '{{Seeking out}}...';
+            },
+            removeAllItems: function () {
+                return '{{Remove all items}}';
+            }
+        }
+    };
+    $(document).ready(function () {
+        $('.select2-field').each(function () {
+            const selectElement = $(this);
+            const selectedId = selectElement.data('selected-id');
 
+            if (selectedId) {
+                const searchEndpoint = selectElement.data('search-endpoint');
+                const requestUrl = `{{TEMPLATE_URL}}${searchEndpoint}/${selectedId}`;
+
+
+
+                fetch(requestUrl, {
+                    headers: {
+                        "Authorization": "Bearer " + bearerErykia
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        const selectedOption = new Option(data.data[0].name, data.data[0].id, true, true);
+                        selectElement.append(selectedOption).trigger('change');
+                        initializeSelect2(selectElement);
+                    });
+
+            } else {
+                initializeSelect2(selectElement);
+            }
+        });
+    });
+
+    function initializeSelect2(selectElement) {
+        selectElement.select2({
+            width: "100%",
+            language: select2Translations["{{LANG}}"],
+            placeholder: "{{Type to search}}",
+            minimumInputLength: 3,
+            theme: "bootstrap4",
+            ajax: {
+                url: function (params) {
+                    const searchEndpoint = selectElement.data('search-endpoint');
+                    return `${searchEndpoint}?search=[nameLIKE%${params.term}%]`;
+                },
+                dataType: "json",
+                headers: {
+                    "Authorization": "Bearer " + bearerErykia
+                },
+                processResults: function (data) {
+                    return {
+                        results: data.data.map(item => ({
+                            id: item.id,
+                            text: item.name
+                        }))
+                    };
+                }
+            }
+        }).on('select2:open', function () {
+            $('.select2-results:not(:has(a))').append('<a href="{{TEMPLATE_URL}}${searchEndpoint}{{#/store#}}" style="display:block;padding: 6px;border-top: 1px solid #ddd;">{{Add new country}}</a>');
+        });
+    }
+
+</script>

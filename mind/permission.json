@@ -1,0 +1,25 @@
+{
+  "component": "permission",
+  "database": {
+    "id_users":{
+      "type": "int(11)",
+      "input": "select"
+    },
+    "id_components":{
+      "type": "int(11)",
+      "input": "select"
+    },
+    "view":{
+      "type": "tinyint(1)",
+      "input": "text"
+    },
+    "edit":{
+      "type": "tinyint(1)",
+      "input": "text"
+    },
+    "destroy":{
+      "type": "tinyint(1)",
+      "input": "text"
+    }
+  }
+}

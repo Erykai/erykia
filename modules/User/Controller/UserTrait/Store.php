@@ -10,6 +10,7 @@ trait Store
 {
     public function store(array $query, string $response): bool
     {
+
         $this->setRequest($query);
 
         if ($this->validateLogin() && !$this->permission()) {
@@ -22,32 +23,33 @@ trait Store
             return false;
         }
         $user = new User();
-
         $this->upload = new Upload();
-        if (isset($this->data->cover)) {
-            if ($this->upload->response()->type === "error") {
-                echo $this->translate->translator($this->upload->response(), "message")->$response();
-                return false;
-            }
-            if ($this->upload->save()) {
-                foreach ($this->upload->response()->data as $key => $value) {
-                    $user->$key = $value;
-                    $this->setIssetUpload(true);
-                }
+        if ($this->upload->save()) {
+            foreach ($this->upload->response()->data as $key => $value) {
+                $user->$key = $value;
+                $this->setIssetUpload(true);
             }
         }
 
+        if (($this->upload->response()->type === "error") && $this->upload->response()->dynamic !== "Erykai\Upload\Resource::getResponse") {
+            echo $this->translate->translator($this->upload->response(), "message")->$response();
+            return false;
+        }
 
         foreach ($this->data as $key => $value) {
+            if(str_contains($key, "id_")){
+                $value = Cryption::getInstance()->decrypt($value);
+            }
             $user->$key = $value;
         }
         if ($this->validateLogin()) {
-            $id = (int)$this->session->get()->login->id;
+            $id = (int) Cryption::getInstance()->decrypt($this->session->get()->login->id);
             $user->id_users = Cryption::getInstance()->decrypt($this->session->get()->login->id);
-            $user->dad =
-                $id === 1
-                    ? Cryption::getInstance()->decrypt($this->session->get()->login->id)
-                    : Cryption::getInstance()->decrypt($this->session->get()->login->id) . "," . Cryption::getInstance()->decrypt($this->session->get()->login->dad);
+            if($id === 1) {
+                $user->dad = 1;
+            }else{
+                $user->dad = $this->session->get()->login->dad . "," . Cryption::getInstance()->decrypt($this->session->get()->login->id);
+            }
         } else {
             $user->dad = 1;
             $user->id_users = 1;
