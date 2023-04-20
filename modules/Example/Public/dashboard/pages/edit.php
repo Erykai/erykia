@@ -1,17 +1,3 @@
-<header class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
-    <div class="container-xl px-4">
-        <div class="page-header-content">
-            <div class="row align-items-center justify-content-between pt-3">
-                <div class="col-auto mb-3">
-                    <h1 class="page-header-title">
-                        <div class="page-header-icon"><i data-feather="example"></i></div>
-                        {{Edit Example}} - {{Example}}
-                    </h1>
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
 <!-- Main page content-->
 <div class="container-xl px-4 mt-4">
     <!-- Account page navigation-->
@@ -213,7 +199,9 @@
                 }
             }
         }).on('select2:open', function () {
-            $('.select2-results:not(:has(a))').append('<a href="{{TEMPLATE_URL}}${searchEndpoint}{{#/store#}}" style="display:block;padding: 6px;border-top: 1px solid #ddd;">{{Add new country}}</a>');
+            let searchEndpoint = selectElement.data('search-endpoint');
+            let endpoint = `{{TEMPLATE_URL}}/{{TEMPLATE_DASHBOARD}}${searchEndpoint}{{#/store#}}`;
+            $('.select2-results:not(:has(a))').append('<a href="'+endpoint+'" style="display:block;padding: 6px;border-top: 1px solid #ddd;">{{Add new}}</a>');
         });
     }
 

@@ -1,17 +1,3 @@
-<header class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
-    <div class="container-xl px-4">
-        <div class="page-header-content">
-            <div class="row align-items-center justify-content-between pt-3">
-                <div class="col-auto mb-3">
-                    <h1 class="page-header-title">
-                        <div class="page-header-icon"><i data-feather="example"></i></div>
-                        {{Add Example}} - {{Example}}
-                    </h1>
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
 <!-- Main page content-->
 <div class="container-xl px-4 mt-4">
     <!-- Account page navigation-->
@@ -39,7 +25,7 @@
                         <!-- Form Group (examplename)-->
                         /*#store-input-8#*/
                         <input type="hidden" name="trash" value="0">
-                        <button class="btn btn-primary" type="submit">{{Save}}</button>
+                        <button class="btn btn-primary" type="submit">{{Save changes}}</button>
                     </form>
                 </div>
             </div>
@@ -158,15 +144,37 @@
             }
         }
     };
-</script>
-<script>
-    $(".select2-field").each(function () {
-        const $this = $(this);
+    $(document).ready(function () {
+        $('.select2-field').each(function () {
+            const selectElement = $(this);
+            const selectedId = selectElement.data('selected-id');
 
-        // Use data attributes para armazenar informações específicas para cada campo
-        const searchEndpoint = $this.data("search-endpoint");
+            if (selectedId) {
+                const searchEndpoint = selectElement.data('search-endpoint');
+                const requestUrl = `{{TEMPLATE_URL}}${searchEndpoint}/${selectedId}`;
 
-        $this.select2({
+
+
+                fetch(requestUrl, {
+                    headers: {
+                        "Authorization": "Bearer " + bearerErykia
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        const selectedOption = new Option(data.data[0].name, data.data[0].id, true, true);
+                        selectElement.append(selectedOption).trigger('change');
+                        initializeSelect2(selectElement);
+                    });
+
+            } else {
+                initializeSelect2(selectElement);
+            }
+        });
+    });
+
+    function initializeSelect2(selectElement) {
+        selectElement.select2({
             width: "100%",
             language: select2Translations["{{LANG}}"],
             placeholder: "{{Type to search}}",
@@ -174,11 +182,12 @@
             theme: "bootstrap4",
             ajax: {
                 url: function (params) {
-                    return `{{TEMPLATE_URL}}${searchEndpoint}?search=[nameLIKE%${params.term}%]`;
+                    const searchEndpoint = selectElement.data('search-endpoint');
+                    return `${searchEndpoint}?search=[nameLIKE%${params.term}%]`;
                 },
                 dataType: "json",
                 headers: {
-                    Authorization: "Bearer " + bearerErykia
+                    "Authorization": "Bearer " + bearerErykia
                 },
                 processResults: function (data) {
                     return {
@@ -189,6 +198,11 @@
                     };
                 }
             }
+        }).on('select2:open', function () {
+            let searchEndpoint = selectElement.data('search-endpoint');
+            let endpoint = `{{TEMPLATE_URL}}/{{TEMPLATE_DASHBOARD}}${searchEndpoint}{{#/store#}}`;
+            $('.select2-results:not(:has(a))').append('<a href="'+endpoint+'" style="display:block;padding: 6px;border-top: 1px solid #ddd;">{{Add new}}</a>');
         });
-    });
+    }
+
 </script>
