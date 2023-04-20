@@ -11,7 +11,7 @@ class View extends Resource
     use ViewTrait\AccountProfile;
     use ViewTrait\ForgotPassword;
 
-    protected function __construct()
+    public function __construct()
     {
         parent::__construct();
     }

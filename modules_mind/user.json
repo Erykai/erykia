@@ -14,9 +14,6 @@
       "input": "password"
     },
     "level":{
-        "schema":{
-            "default": 10
-        },
       "type": "int(11)",  
       "input": "text"
     },
