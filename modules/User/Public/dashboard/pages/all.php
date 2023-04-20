@@ -10,7 +10,7 @@
                 </div>
                 <div class="col-12 col-xl-auto mb-3">
                     <a class="btn btn-sm btn-light text-primary"
-                       href="{{TEMPLATE_URL}}{{#/dashboard/user-management-add-user#}}">
+                       href="{{TEMPLATE_URL}}{{#/dashboard/users/store#}}">
                         <i class="me-1" data-feather="user-plus"></i>
                         {{Add New User}}
                     </a>

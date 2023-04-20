@@ -1,38 +1,21 @@
-<header class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
-    <div class="container-xl px-4">
-        <div class="page-header-content">
-            <div class="row align-items-center justify-content-between pt-3">
-                <div class="col-auto mb-3">
-                    <h1 class="page-header-title">
-                        <div class="page-header-icon"><i data-feather="example"></i></div>
-                        {{Account Settings}} - {{Profile}}
-                    </h1>
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
 <!-- Main page content-->
 <div class="container-xl px-4 mt-4">
     <!-- Account page navigation-->
     <nav class="nav nav-borders">
-        <a class="nav-link active ms-0" href="#">{{Profile}}</a>
+        <a class="nav-link active ms-0" href="#">{{Example}}</a>
     </nav>
     <hr class="mt-0 mb-4"/>
     <div class="row">
-        <div class="col-xl-4">
+        <div class="col-xl-4" id="colFour">
             <!-- Profile picture card-->
             <div class="card mb-4 mb-xl-0">
-                <div class="card-header">{{Photo}}</div>
+                <div class="card-header">{{Example}}</div>
                 <div class="card-body text-center">
-                    <!-- Profile picture image-->
-                    <img class="img-account-profile rounded-circle mb-2"
-                         src="{{TEMPLATE_URL}}/{{ $this->example->cover }}"
-                         alt=""/>
+                    /*#store-output-4#*/
                 </div>
             </div>
         </div>
-        <div class="col-xl-8">
+        <div class="col">
             <!-- Account details card-->
             <div class="card mb-4">
                 <div class="card-header">
@@ -47,14 +30,14 @@
                 <div class="card-footer">
                     <a href="{{TEMPLATE_URL}}{{#/dashboard/examples/edit#}}/{{ $this->example->id }}"
                        class="btn btn-blue" title="{{Edit}}">
-                        <i class="fas fa-edit"></i> {{Edit}}
+                        <i class="fas fa-edit"></i>
                     </a>
                     <a href="#"
                        id="trashBtn"
                        class="btn btn-danger"
                        title="{{Destroy}}"
                        onclick="handleDeleteBtnClick(event, '{{TEMPLATE_URL}}{{#/examples#}}/{{ $this->example->id }}', 1)">
-                        <i class="fas fa-trash"></i> {{Move Trash}}
+                        <i class="fas fa-trash"></i>
                     </a>
                 </div>
             </div>
@@ -87,7 +70,11 @@
             localLabelElement.textContent = "Valor inválido";
         }
     }
-
+    const uploadButton = document.querySelector('#uploadImage');
+    if (!uploadButton) {
+        document.querySelector('#colFour').remove();
+    }
+    // document.querySelector('#colFour').remove();
     document.addEventListener('DOMContentLoaded', function() {
         updatePageElements('{{ $this->example->trash }}');
     });

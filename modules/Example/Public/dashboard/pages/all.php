@@ -10,7 +10,7 @@
                 </div>
                 <div class="col-12 col-xl-auto mb-3">
                     <a class="btn btn-sm btn-light text-primary"
-                       href="{{TEMPLATE_URL}}{{#/dashboard/example-management-add-example#}}">
+                       href="{{TEMPLATE_URL}}{{#/dashboard/examples/store#}}">
                         <i class="me-1" data-feather="example-plus"></i>
                         {{Add New Example}}
                     </a>

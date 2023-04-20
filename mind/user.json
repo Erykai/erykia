@@ -14,7 +14,10 @@
       "input": "password"
     },
     "level":{
-      "type": "int(11)",
+        "schema":{
+            "default": 10
+        },
+      "type": "int(11)",  
       "input": "text"
     },
     "cover":{

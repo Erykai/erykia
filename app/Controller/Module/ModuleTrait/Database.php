@@ -20,9 +20,6 @@ trait Database
 
         foreach ($data as $key => $column) {
             $column->default = null;
-            if(isset($column->schema->type)){
-                $column->type = $column->schema->type;
-            }
             if(isset($column->schema->default)){
                 $column->default = $column->schema->default;
             }

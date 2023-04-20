@@ -150,6 +150,7 @@ class Model extends Database
                         $paramsReplace[] = " $relationship ";
                     }
                 }
+                $this->query = str_replace('.' . $relationship, '.' . $key, $this->query);
 
                 if (!empty($getColumns)) {
 

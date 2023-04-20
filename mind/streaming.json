@@ -1,0 +1,76 @@
+{
+  "component": "streaming",
+  "database": {
+    "id_streamings_categories":{
+      "type": "int(11)",
+      "input": "select"
+    },
+    "id_countries":{
+      "type": "int(11)",
+      "input": "select"
+    },
+    "id_states":{
+      "type": "int(11)",
+      "input": "select"
+    },
+    "id_cities":{
+      "type": "int(11)",
+      "input": "select"
+    },
+    "name":{
+      "type": "varchar(255)",
+      "input": "text"
+    },
+    "subtitle":{
+      "type": "text",
+      "input": "textarea"
+    },
+    "description":{
+      "type": "text",
+      "input": "textarea"
+    },
+    "tag":{
+      "type": "text",
+      "null": true,
+      "input": "text"
+    },
+    "url":{
+      "type": "varchar(255)",
+      "input": "text"
+    },
+    "like":{
+      "type": "int(11)",
+      "null": true,
+      "input": "text"
+    },
+    "dislike":{
+      "type": "int(11)",
+      "null": true,
+      "input": "text"
+    },
+    "slug":{
+      "type": "text",
+      "input": "text"
+    },
+    "cover":{
+      "type": "text",
+      "null": true,
+      "input": "upload"
+    }
+  },
+  "category": {
+    "name": {
+      "type": "varchar(255)",
+      "input": "text"
+    },
+    "slug": {
+      "type": "text",
+      "input": "text"
+    },
+    "cover": {
+      "type": "text",
+      "null": true,
+      "input": "upload"
+    }
+  }
+}

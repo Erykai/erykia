@@ -52,6 +52,7 @@ trait Component
     protected function readComponent(): void
     {
         $this->populate('/*#read-li#*/', "output", "li");
+        $this->populateSidebar('/*#store-output-4#*/', "output", "cover");
     }
 
     /**

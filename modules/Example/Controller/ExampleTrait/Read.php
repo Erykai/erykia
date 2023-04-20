@@ -3,6 +3,7 @@
 namespace Modules\Example\Controller\ExampleTrait;
 
 use Source\Core\Cryption;
+use Source\Core\Helper;
 use Source\Core\Response;
 use Modules\Example\Model\Example;
 
@@ -38,6 +39,7 @@ trait Read
             }
             $this->setParams($params);
         }
+
         $result = $examples->find("examples.id", $this->getFind(), $this->getParams())->fetchReference(count: true);
         $this->setPaginator($result);
         $this->setOrder();

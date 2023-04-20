@@ -3,6 +3,7 @@
 namespace Modules\User\Controller\UserTrait;
 
 use Source\Core\Cryption;
+use Source\Core\Helper;
 use Source\Core\Response;
 use Modules\User\Model\User;
 
@@ -38,6 +39,7 @@ trait Read
             }
             $this->setParams($params);
         }
+
         $result = $users->find("users.id", $this->getFind(), $this->getParams())->fetchReference(count: true);
         $this->setPaginator($result);
         $this->setOrder();
