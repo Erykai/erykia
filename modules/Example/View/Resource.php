@@ -8,7 +8,7 @@ abstract class Resource extends Controller
 {
     private static array $instances = [];
 
-    protected function __construct()
+    public function __construct()
     {
         $directoryPath = dirname(__FILE__);
         $directoryPath = dirname($directoryPath);
