@@ -41,7 +41,9 @@ trait Auth
 
         $middleware = new Middleware();
         $this->session->set('login', $this->login );
-        return $middleware->create($this->login->email);
+        $token = $middleware->create($this->login->email);
+        $this->session->set('token', $token );
+        return $token;
     }
     protected function validateLogin(): bool
     {
