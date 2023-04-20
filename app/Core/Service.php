@@ -20,6 +20,7 @@ class Service
 
     public function get(string $endpoint)
     {
+        $session = new Session();
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -33,14 +34,23 @@ class Service
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_HTTPHEADER => array(
-                'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImNvbnRhdG9Ad2ViYXYuY29tLmJyIn0=.0hZqrJNpMFOqMPtfWUMHGbaCbqxunhj9m/KAu2V6jv4='
+                'Authorization: Bearer ' . $session->get()->token
             ),
         ));
         $response = curl_exec($curl);
+
         if ($response === false) {
             $error = curl_error($curl);
             echo "cURL error: " . $error . "\n";
+            return false;
         }
+
+        if(isset(json_decode($response)->type) && json_decode($response)->type === "error"){
+            echo json_decode($response)->text;
+            $session->destroy();
+            return false;
+        }
+
         curl_close($curl);
         return json_decode($response)->data[0];
     }
