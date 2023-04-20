@@ -8,7 +8,7 @@ class IaUserController extends Resource
 {
     private static $instance;
 
-    protected function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
