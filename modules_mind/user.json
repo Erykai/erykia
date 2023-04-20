@@ -22,6 +22,7 @@
     },
     "cover":{
       "type": "varchar(255)",
+      "null": true,
       "input": "upload"
     }
   }

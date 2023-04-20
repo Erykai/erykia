@@ -26,7 +26,7 @@ class ModuleController extends Resource
     private static ?ModuleController $instance = null;
     private stdClass $replace;
 
-    private function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
