@@ -18,7 +18,7 @@ class UserController extends Resource
     use Upload;
     private static $instance;
 
-    protected function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
