@@ -11,7 +11,7 @@ trait Store
     public function store($query): bool
     {
         if($file = file_get_contents('php://input')){
-            $path = dirname(__DIR__, 4). "/mind/" . json_decode(file_get_contents('php://input'))->component . ".json";
+            $path = dirname(__DIR__, 4) . "/modules_mind/" . json_decode(file_get_contents('php://input'))->component . ".json";
             file_put_contents($path, $file);
         }
         $this->setRequest($query);
